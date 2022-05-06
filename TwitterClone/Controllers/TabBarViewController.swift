@@ -34,10 +34,10 @@ class TabBarViewController: UITabBarController {
         let nav3 = UINavigationController(rootViewController: vc3)
         let nav4 = UINavigationController(rootViewController: vc4)
         
-        nav1.navigationBar.tintColor = .label
-        nav2.navigationBar.tintColor = .label
-        nav3.navigationBar.tintColor = .label
-        nav4.navigationBar.tintColor = .label
+        nav1.navigationBar.tintColor = .white
+        nav2.navigationBar.tintColor = .white
+        nav3.navigationBar.tintColor = .white
+        nav4.navigationBar.tintColor = .white
         
         nav1.navigationBar.prefersLargeTitles = true
         nav2.navigationBar.prefersLargeTitles = true
@@ -52,6 +52,7 @@ class TabBarViewController: UITabBarController {
         setViewControllers([nav1,nav2,nav3,nav4], animated: false)
         
         UITabBar.appearance().barTintColor = .systemBackground
+        UITabBar.appearance().tintColor = .white
 
  
     }
