@@ -13,7 +13,7 @@
 		AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */; };
 		AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */; };
 		AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853B92825632E00D080D4 /* APICaller.swift */; };
-		AFD853BD2825682800D080D4 /* VolumeStreamsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853BC2825682800D080D4 /* VolumeStreamsResponse.swift */; };
+		AFD853BD2825682800D080D4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853BC2825682800D080D4 /* SearchResponse.swift */; };
 		AFD853C32825784E00D080D4 /* HomeTweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853C22825784E00D080D4 /* HomeTweetTableViewCell.swift */; };
 		AFD853C628257D9500D080D4 /* HomeTweetViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853C528257D9500D080D4 /* HomeTweetViewCellViewModel.swift */; };
 		AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBA2262824B98B00085DDC /* AppDelegate.swift */; };
@@ -31,7 +31,7 @@
 		AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		AFD853B92825632E00D080D4 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
-		AFD853BC2825682800D080D4 /* VolumeStreamsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeStreamsResponse.swift; sourceTree = "<group>"; };
+		AFD853BC2825682800D080D4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		AFD853C22825784E00D080D4 /* HomeTweetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTweetTableViewCell.swift; sourceTree = "<group>"; };
 		AFD853C528257D9500D080D4 /* HomeTweetViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTweetViewCellViewModel.swift; sourceTree = "<group>"; };
 		AFDBA2232824B98B00085DDC /* TwitterClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,7 +86,7 @@
 		AFD853BE2825683000D080D4 /* API Responses */ = {
 			isa = PBXGroup;
 			children = (
-				AFD853BC2825682800D080D4 /* VolumeStreamsResponse.swift */,
+				AFD853BC2825682800D080D4 /* SearchResponse.swift */,
 			);
 			path = "API Responses";
 			sourceTree = "<group>";
@@ -216,7 +216,7 @@
 				AFDBA22B2824B98B00085DDC /* ViewController.swift in Sources */,
 				AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */,
 				AFDBA2312824B98B00085DDC /* TwitterClone.xcdatamodeld in Sources */,
-				AFD853BD2825682800D080D4 /* VolumeStreamsResponse.swift in Sources */,
+				AFD853BD2825682800D080D4 /* SearchResponse.swift in Sources */,
 				AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */,
 				AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */,
 				AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */,

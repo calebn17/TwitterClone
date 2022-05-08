@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct VolumeStreamsResponse: Codable {
+struct SearchResponse: Codable {
     let data: [Tweet]
 }
 
 struct Tweet: Codable {
-    let author_id: Int?
-    let created_at: String?
-    let id: Int?
+    //let author_id: String?
+    //let created_at: String?
+    let id: String?
     let text: String?
 }
 

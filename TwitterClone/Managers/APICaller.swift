@@ -23,21 +23,20 @@ final class APICaller {
     static let shared = APICaller()
     private init() {}
     
-    public func getVolumeStreams(completion: @escaping (Result<[Tweet], Error>) -> Void) {
+    public func getSearch(completion: @escaping (Result<[Tweet], Error>) -> Void) {
         createRequest(with:
-                      URL(string: "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=created_at&expansions=author_id&user.fields=created_at"), type: .GET) { request in
+                        URL(string: "\(K.baseURL)tweets/search/recent?query=bitcoin&max_results=30"), type: .GET) { request in
             
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
+                    print("error before decoder")
                     completion(.failure(APIError.failedtoGetData))
                     return
                 }
                 do {
                     //passing the result data as a Success value into the completion handler. Makes it easier to verfiy that API call worked.
-                    let result = try JSONDecoder().decode(VolumeStreamsResponse.self, from: data)
+                    let result = try JSONDecoder().decode(SearchResponse.self, from: data)
                     completion(.success(result.data))
-                    print(result)
-                    
                 }
                 catch {
                     //passing the error to the completion handler
@@ -66,9 +65,9 @@ final class APICaller {
         
         var request = URLRequest(url: apiURL)
         request.setValue("Bearer \(K.bearerToken)", forHTTPHeaderField: "Authorization")
+        
         request.httpMethod = type.rawValue
         request.timeoutInterval = 60
-        print(request)
         completion(request)
     }
 

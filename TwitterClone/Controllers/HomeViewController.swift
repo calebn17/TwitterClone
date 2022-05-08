@@ -14,8 +14,6 @@ class HomeViewController: UIViewController {
     private let homeFeedTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(HomeTweetTableViewCell.self, forCellReuseIdentifier: HomeTweetTableViewCell.identifier)
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
         return tableView
     }()
 
@@ -30,7 +28,7 @@ class HomeViewController: UIViewController {
         homeFeedTableView.delegate = self
         homeFeedTableView.dataSource = self
         
-        //fetchData()
+        fetchData()
         
     }
     
@@ -55,12 +53,14 @@ class HomeViewController: UIViewController {
     }
     
     private func fetchData() {
-        APICaller.shared.getVolumeStreams { [weak self] results in
+        APICaller.shared.getSearch { [weak self] results in
             switch results {
             case .success(let tweets):
-                self?.tweets = tweets
-                self?.homeFeedTableView.reloadData()
-                print("successfully got tweets")
+                DispatchQueue.main.async {
+                    self?.tweets = tweets
+                    self?.homeFeedTableView.reloadData()
+                    print("successfully got tweets")
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -71,7 +71,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return tweets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,12 +79,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTweetTableViewCell.identifier, for: indexPath) as? HomeTweetTableViewCell
         else {return UITableViewCell()}
         
-        cell.configure(with: HomeTweetViewCellViewModel(userName: "tester", userAvatar: nil, tweetBody: "This is a test message"))
+        let id = tweets[indexPath.row].id ?? "unknown user"
+        print(id)
+        let text = tweets[indexPath.row].text ?? "missing body"
+        
+        cell.configure(with: HomeTweetViewCellViewModel(userName: id, userAvatar: nil, tweetBody: text))
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
 }
