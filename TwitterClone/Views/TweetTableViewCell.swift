@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeTweetTableViewCell: UITableViewCell {
+class TweetTableViewCell: UITableViewCell {
     
     static let identifier = "HomeTweetTableViewCell"
     
@@ -102,6 +102,7 @@ class HomeTweetTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     private func configureConstraints() {
         

@@ -11,9 +11,21 @@ class HomeViewController: UIViewController {
     
     private var tweets: [Tweet] = []
     
+    private let addTweetButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50))
+        button.setImage(image, for: .normal)
+        button.backgroundColor = .systemCyan
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 25
+        button.layer.masksToBounds = true
+        return button
+    }()
+    
     private let homeFeedTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(HomeTweetTableViewCell.self, forCellReuseIdentifier: HomeTweetTableViewCell.identifier)
+        tableView.register(TweetTableViewCell.self, forCellReuseIdentifier: TweetTableViewCell.identifier)
         return tableView
     }()
 
@@ -24,11 +36,13 @@ class HomeViewController: UIViewController {
         configureNavbar()
         title = "Home"
         view.addSubview(homeFeedTableView)
+        view.addSubview(addTweetButton)
         
         homeFeedTableView.delegate = self
         homeFeedTableView.dataSource = self
         
         fetchData()
+        configureConstraints()
         
     }
     
@@ -52,8 +66,16 @@ class HomeViewController: UIViewController {
         navigationItem.title = ""
     }
     
+    private func configureConstraints() {
+        let addTweetButtonConstraints = [
+            addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+        ]
+        NSLayoutConstraint.activate(addTweetButtonConstraints)
+    }
+    
     private func fetchData() {
-        APICaller.shared.getSearch { [weak self] results in
+        APICaller.shared.getSearch(with: "bitcoin") { [weak self] results in
             switch results {
             case .success(let tweets):
                 DispatchQueue.main.async {
@@ -76,7 +98,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTweetTableViewCell.identifier, for: indexPath) as? HomeTweetTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell
         else {return UITableViewCell()}
         
         let id = tweets[indexPath.row].id ?? "unknown user"
