@@ -81,7 +81,6 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async {
                     self?.tweets = tweets
                     self?.homeFeedTableView.reloadData()
-                    print("successfully got tweets")
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -102,12 +101,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         else {return UITableViewCell()}
         
         let id = tweets[indexPath.row].id ?? "unknown user"
-        print(id)
         let text = tweets[indexPath.row].text ?? "missing body"
         
         cell.configure(with: HomeTweetViewCellViewModel(userName: id, userAvatar: nil, tweetBody: text))
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

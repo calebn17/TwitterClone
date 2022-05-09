@@ -44,6 +44,7 @@ class SearchViewController: UIViewController {
         searchTableView.delegate = self
         searchTableView.dataSource = self
         
+        configureNavbar()
         
         if searchResultTweets.isEmpty {
             view.addSubview(searchTableViewPlaceholderImage)
@@ -65,6 +66,21 @@ class SearchViewController: UIViewController {
         ]
         
         NSLayoutConstraint.activate(searchTableViewPlacholderImageConstraints)
+    }
+    
+    private func configureNavbar() {
+        var image = UIImage(named: "twitterLogo")
+        image?.accessibilityFrame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        //forces xcode to use the original image (logo comes out as different color if this isnt done)
+        image = image?.withRenderingMode(.alwaysOriginal)
+        
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
+            UIBarButtonItem(image: image, style: .done, target: self, action: nil),
+            ]
+        
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = ""
     }
 
 }

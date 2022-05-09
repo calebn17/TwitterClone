@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3BC26E05282949D000A56D5C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E04282949D000A56D5C /* Constants.swift */; };
 		3BC26E092829528C00A56D5C /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */; };
+		3BC26E0B282970C400A56D5C /* SettingsSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E0A282970C400A56D5C /* SettingsSections.swift */; };
 		AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED752824BCCF002E9264 /* TabBarViewController.swift */; };
 		AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED772824BD4A002E9264 /* HomeViewController.swift */; };
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		3BC26E04282949D000A56D5C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
+		3BC26E0A282970C400A56D5C /* SettingsSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSections.swift; sourceTree = "<group>"; };
 		AF2DED752824BCCF002E9264 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		AF2DED772824BD4A002E9264 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				AFD853BE2825683000D080D4 /* API Responses */,
+				3BC26E0A282970C400A56D5C /* SettingsSections.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */,
 				AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */,
 				AFD853C628257D9500D080D4 /* HomeTweetViewCellViewModel.swift in Sources */,
+				3BC26E0B282970C400A56D5C /* SettingsSections.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
