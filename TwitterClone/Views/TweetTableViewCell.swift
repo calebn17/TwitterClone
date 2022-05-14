@@ -14,7 +14,7 @@ class TweetTableViewCell: UITableViewCell {
     private let userNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .label
         label.textAlignment = .left
         label.text = "Username"
         return label
@@ -32,7 +32,7 @@ class TweetTableViewCell: UITableViewCell {
     private let twitterTextLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .label
         label.numberOfLines = 0
         label.clipsToBounds = true
         return label

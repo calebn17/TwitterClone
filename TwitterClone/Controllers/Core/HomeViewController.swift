@@ -9,6 +9,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    struct Constants {
+        static let addButtonSize: CGFloat = 60
+    }
+    
     private var tweets: [Tweet] = []
     
     private let addTweetButton: UIButton = {
@@ -18,7 +22,7 @@ class HomeViewController: UIViewController {
         button.backgroundColor = .systemCyan
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = Constants.addButtonSize/2
         button.layer.masksToBounds = true
         return button
     }()
@@ -34,7 +38,7 @@ class HomeViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
         configureNavbar()
-        title = "Home"
+        title = nil
         view.addSubview(homeFeedTableView)
         view.addSubview(addTweetButton)
         
@@ -69,7 +73,9 @@ class HomeViewController: UIViewController {
     private func configureConstraints() {
         let addTweetButtonConstraints = [
             addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            addTweetButton.heightAnchor.constraint(equalToConstant: Constants.addButtonSize),
+            addTweetButton.widthAnchor.constraint(equalToConstant: Constants.addButtonSize)
         ]
         NSLayoutConstraint.activate(addTweetButtonConstraints)
     }

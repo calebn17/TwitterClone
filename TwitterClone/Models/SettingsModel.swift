@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SettingsSections {
+struct SettingsModel {
     let title: String
-    let options: String
+    let icon: String?
 }

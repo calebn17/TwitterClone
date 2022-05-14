@@ -24,10 +24,10 @@ class TabBarViewController: UITabBarController {
         vc3.title = "Notifications"
         vc4.title = "Settings"
         
-        vc1.navigationItem.largeTitleDisplayMode = .always
-        vc2.navigationItem.largeTitleDisplayMode = .always
-        vc3.navigationItem.largeTitleDisplayMode = .always
-        vc4.navigationItem.largeTitleDisplayMode = .always
+        vc1.navigationItem.largeTitleDisplayMode = .never
+        vc2.navigationItem.largeTitleDisplayMode = .never
+        vc3.navigationItem.largeTitleDisplayMode = .never
+        vc4.navigationItem.largeTitleDisplayMode = .never
         
         let nav1 = UINavigationController(rootViewController: vc1)
         let nav2 = UINavigationController(rootViewController: vc2)
@@ -44,10 +44,10 @@ class TabBarViewController: UITabBarController {
         nav3.navigationBar.prefersLargeTitles = true
         nav4.navigationBar.prefersLargeTitles = true
         
-        nav1.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)
-        nav2.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
-        nav3.tabBarItem = UITabBarItem(title: "Notifications", image: UIImage(systemName: "bell.fill"), tag: 1)
-        nav4.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), tag: 1)
+        nav1.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "house"), tag: 1)
+        nav2.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "magnifyingglass"), tag: 1)
+        nav3.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "bell.fill"), tag: 1)
+        nav4.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "gearshape.fill"), tag: 1)
         
         setViewControllers([nav1,nav2,nav3,nav4], animated: false)
         

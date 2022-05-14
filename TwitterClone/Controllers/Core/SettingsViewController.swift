@@ -9,21 +9,30 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
-    private var settingsSections: [SettingsSections] = []
+    struct Constants {
+        static let rowHeight: CGFloat = 70
+    }
+    
+    private var settingsModel: [SettingsModel] = []
+    
+    private var headerView: SettingsHeaderView?
     
     private let settingsTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         return tableView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = nil
         view.addSubview(settingsTableView)
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         configureSettingsSections()
+        
+        headerView = SettingsHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 150))
+        settingsTableView.tableHeaderView = headerView
     }
     
     override func viewDidLayoutSubviews() {
@@ -32,8 +41,20 @@ class SettingsViewController: UIViewController {
     }
     
     private func configureSettingsSections() {
-        settingsSections.append(SettingsSections(title: "Profile", options: "View Profile"))
-        settingsSections.append(SettingsSections(title: "Sign Out", options: "Sign Out"))
+        settingsModel.append(SettingsModel(title: "Profile", icon: "person"))
+        settingsModel.append(SettingsModel(title: "Lists", icon: "list.bullet.rectangle"))
+        settingsModel.append(SettingsModel(title: "Topics", icon: "text.bubble"))
+        settingsModel.append(SettingsModel(title: "Bookmarks", icon: "bookmark"))
+        settingsModel.append(SettingsModel(title: "TwitterBlue", icon: "b.square"))
+        settingsModel.append(SettingsModel(title: "Moments", icon: "bolt"))
+        settingsModel.append(SettingsModel(title: "Purchases", icon: "cart"))
+        settingsModel.append(SettingsModel(title: "Monetization", icon: "dollarsign.square"))
+        
+        settingsModel.append(SettingsModel(title: "Twitter for Professionals", icon: "airplane"))
+        
+        settingsModel.append(SettingsModel(title: "Settings and privacy", icon: nil))
+        settingsModel.append(SettingsModel(title: "Help Center", icon: nil))
+        settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
         
     }
 }
@@ -41,19 +62,20 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return settingsSections.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return settingsModel.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.identifier, for: indexPath)
+                            as? SettingsTableViewCell
+        else {return UITableViewCell()}
         
-        cell.textLabel?.text = settingsSections[indexPath.section].options
-        
+        cell.configure(with: settingsModel[indexPath.row])
         return cell
     }
     
@@ -61,7 +83,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return settingsSections[section].title
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constants.rowHeight
     }
+    
+    
 }
