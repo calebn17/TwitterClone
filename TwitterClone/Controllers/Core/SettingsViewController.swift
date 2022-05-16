@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController {
     
     struct Constants {
         static let rowHeight: CGFloat = 70
@@ -55,7 +56,13 @@ class SettingsViewController: UIViewController {
         settingsModel.append(SettingsModel(title: "Settings and privacy", icon: nil))
         settingsModel.append(SettingsModel(title: "Help Center", icon: nil))
         settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
+    }
+    
+    private func presentHelpPage(){
         
+        guard let url = URL(string: "https://help.twitter.com/en") else {return}
+        let vc = SFSafariViewController(url: url)
+        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -67,7 +74,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settingsModel.count
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,6 +87,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row == 10 {
+            presentHelpPage()
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

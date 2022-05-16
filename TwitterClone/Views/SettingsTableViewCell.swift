@@ -21,6 +21,7 @@ class SettingsTableViewCell: UITableViewCell {
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "list.bullet.rectangle")
+        imageView.tintColor = .label
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -59,6 +60,10 @@ class SettingsTableViewCell: UITableViewCell {
     public func configure(with model: SettingsModel) {
         label.text = model.title
         iconImageView.image = UIImage(systemName: model.icon ?? "")
+        
+        if model.title == "TwitterBlue" {
+            iconImageView.tintColor = .systemBlue
+        }
     }
 
 }

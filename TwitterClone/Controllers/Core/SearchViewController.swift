@@ -29,6 +29,7 @@ class SearchViewController: UIViewController {
         let imageView = UIImageView()
         let image = UIImage(systemName: "rectangle.and.text.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100))
         imageView.image = image
+        imageView.tintColor = .label
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

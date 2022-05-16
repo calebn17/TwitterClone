@@ -13,6 +13,8 @@
 		7038FEAA2830597200715D54 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEA92830597200715D54 /* SettingsHeaderView.swift */; };
 		7038FEAC28305E4E00715D54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAB28305E4E00715D54 /* Extensions.swift */; };
 		7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */; };
+		708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F128317A2200978DD6 /* AddTweetViewController.swift */; };
+		708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F32831A0E200978DD6 /* AddCommentViewController.swift */; };
 		AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED752824BCCF002E9264 /* TabBarViewController.swift */; };
 		AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED772824BD4A002E9264 /* HomeViewController.swift */; };
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
@@ -37,6 +39,8 @@
 		7038FEA92830597200715D54 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		7038FEAB28305E4E00715D54 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		708C50F128317A2200978DD6 /* AddTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTweetViewController.swift; sourceTree = "<group>"; };
+		708C50F32831A0E200978DD6 /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		AF2DED752824BCCF002E9264 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		AF2DED772824BD4A002E9264 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 			isa = PBXGroup;
 			children = (
 				3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */,
+				708C50F128317A2200978DD6 /* AddTweetViewController.swift */,
+				708C50F32831A0E200978DD6 /* AddCommentViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -266,12 +272,14 @@
 				AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */,
 				AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */,
 				AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */,
+				708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */,
 				AFD853C628257D9500D080D4 /* HomeTweetViewCellViewModel.swift in Sources */,
 				3BC26E0B282970C400A56D5C /* SettingsModel.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
+				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

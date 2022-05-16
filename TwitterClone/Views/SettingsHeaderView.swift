@@ -9,10 +9,6 @@ import UIKit
 
 class SettingsHeaderView: UIView {
     
-    struct Constants {
-        static let userImageSize: CGFloat = 40.0
-    }
-
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.fill")
@@ -90,8 +86,8 @@ class SettingsHeaderView: UIView {
         let userImageViewConstraints = [
             userImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             userImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            userImageView.widthAnchor.constraint(equalToConstant: Constants.userImageSize),
-            userImageView.heightAnchor.constraint(equalToConstant: Constants.userImageSize)
+            userImageView.widthAnchor.constraint(equalToConstant: K.userImageSize),
+            userImageView.heightAnchor.constraint(equalToConstant: K.userImageSize)
         ]
         let userNameButtonConstraints = [
             userNameButton.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: 5),
@@ -115,8 +111,8 @@ class SettingsHeaderView: UIView {
         let accountsButtonConstraints = [
             accountsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
             accountsButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            accountsButton.heightAnchor.constraint(equalToConstant: Constants.userImageSize),
-            accountsButton.widthAnchor.constraint(equalToConstant: Constants.userImageSize)
+            accountsButton.heightAnchor.constraint(equalToConstant: K.userImageSize),
+            accountsButton.widthAnchor.constraint(equalToConstant: K.userImageSize)
         ]
         
         NSLayoutConstraint.activate(userImageViewConstraints)

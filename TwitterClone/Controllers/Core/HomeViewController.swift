@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     
     struct Constants {
         static let addButtonSize: CGFloat = 60
@@ -15,9 +15,17 @@ class HomeViewController: UIViewController {
     
     private var tweets: [Tweet] = []
     
+    private let twitterIcon: UIImageView = {
+        let icon = UIImageView()
+        icon.image = UIImage(named: "twitterLogo")
+        icon.clipsToBounds = true
+        icon.contentMode = .scaleAspectFit
+        return icon
+    }()
+    
     private let addTweetButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50))
+        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         button.setImage(image, for: .normal)
         button.backgroundColor = .systemCyan
         button.tintColor = .white
@@ -48,6 +56,8 @@ class HomeViewController: UIViewController {
         fetchData()
         configureConstraints()
         
+        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -61,10 +71,11 @@ class HomeViewController: UIViewController {
         //forces xcode to use the original image (logo comes out as different color if this isnt done)
         image = image?.withRenderingMode(.alwaysOriginal)
         
-        navigationItem.leftBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
-            UIBarButtonItem(image: image, style: .done, target: self, action: nil),
-            ]
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: nil)
+        navigationItem.titleView = twitterIcon
         
         navigationController?.navigationBar.tintColor = .white
         navigationItem.title = ""
@@ -93,6 +104,14 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    @objc private func didTapAddTweetButton() {
+        //present the addTweetViewController
+        let vc = AddTweetViewController()
+        vc.modalPresentationStyle = .fullScreen
+        //navigationController?.pushViewController(vc, animated: true)
+        present(vc, animated: true, completion: nil)
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
@@ -109,6 +128,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let id = tweets[indexPath.row].id ?? "unknown user"
         let text = tweets[indexPath.row].text ?? "missing body"
         
+        cell.delegate = self
         cell.configure(with: HomeTweetViewCellViewModel(userName: id, userAvatar: nil, tweetBody: text))
         
         return cell
@@ -117,5 +137,27 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
+
+extension HomeViewController: TweetTableViewCellDelegate {
+    
+    func didTapCommentButton() {
+        let vc = AddCommentViewController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
+    func didTapRetweetButton() {
+        //
+    }
+    
+    func didTapLikeButton(liked: Bool) {
+        //
+    }
+    
+    func didTapShareButton() {
+        //
+    }
+    
     
 }

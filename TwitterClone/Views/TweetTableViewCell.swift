@@ -7,9 +7,18 @@
 
 import UIKit
 
+protocol TweetTableViewCellDelegate: AnyObject {
+    func didTapCommentButton()
+    func didTapRetweetButton()
+    func didTapLikeButton(liked: Bool)
+    func didTapShareButton()
+}
+
 class TweetTableViewCell: UITableViewCell {
     
     static let identifier = "HomeTweetTableViewCell"
+    
+    public weak var delegate: TweetTableViewCellDelegate?
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
@@ -95,8 +104,8 @@ class TweetTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         contentView.addSubview(retweetButton)
         contentView.addSubview(shareButton)
-        
         configureConstraints()
+        addActions()
     }
     
     required init?(coder: NSCoder) {
@@ -170,4 +179,39 @@ class TweetTableViewCell: UITableViewCell {
         //userNameLabel.text = model.userName
         twitterTextLabel.text = model.tweetBody
     }
+    
+    private func addActions() {
+        commentButton.addTarget(self, action: #selector(tappedCommentButton), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(tappedLikeButton), for: .touchUpInside)
+        retweetButton.addTarget(self, action: #selector(tappedRetweetButton), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(tappedShareButton), for: .touchUpInside)
+    }
+    
+    @objc private func tappedCommentButton() {
+        delegate?.didTapCommentButton()
+    }
+    
+    @objc private func tappedLikeButton() {
+        
+        if likeButton.tintColor == .red {
+            let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
+            likeButton.setImage(image, for: .normal)
+            likeButton.tintColor = .label
+            delegate?.didTapLikeButton(liked: false)
+        }else {
+            let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
+            likeButton.setImage(image, for: .normal)
+            likeButton.tintColor = .red
+            delegate?.didTapLikeButton(liked: true)
+        }
+    }
+    
+    @objc private func tappedRetweetButton() {
+        delegate?.didTapRetweetButton()
+    }
+    
+    @objc private func tappedShareButton() {
+        delegate?.didTapShareButton()
+    }
+    
 }
