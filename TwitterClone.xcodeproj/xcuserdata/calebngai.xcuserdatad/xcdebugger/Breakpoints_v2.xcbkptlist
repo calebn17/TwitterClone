@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "27"
             endingLineNumber = "27"
-            landmarkName = "getVolumeStreams(completion:)"
+            landmarkName = "getSearch(with:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -24,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "AA46F87E-CB65-4BF5-A132-AC59849D62C8"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TwitterClone/Managers/APICaller.swift"
@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
             endingLineNumber = "36"
-            landmarkName = "getVolumeStreams(completion:)"
+            landmarkName = "getSearch(with:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -40,7 +40,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "116993F3-E207-47F4-8351-D7E88522FACA"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TwitterClone/Managers/APICaller.swift"
@@ -48,40 +48,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "31"
             endingLineNumber = "31"
-            landmarkName = "getVolumeStreams(completion:)"
+            landmarkName = "getSearch(with:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "116993F3-E207-47F4-8351-D7E88522FACA - 5edcf5d62567b2ad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 (Foundation.URLRequest) -&gt; () in TwitterClone.APICaller.getVolumeStreams(completion: (Swift.Result&lt;Swift.Array&lt;TwitterClone.Tweet&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "TwitterClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/calebngai/Desktop/iOS%20Development/TwitterClone/TwitterClone/Managers/APICaller.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31"
-                  offsetFromSymbolStart = "144">
-               </Location>
-               <Location
-                  uuid = "116993F3-E207-47F4-8351-D7E88522FACA - 5edcf5d62567b2ad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 (Foundation.URLRequest) -&gt; () in TwitterClone.APICaller.getVolumeStreams(completion: (Swift.Result&lt;Swift.Array&lt;TwitterClone.Tweet&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "TwitterClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/calebngai/Desktop/iOS%20Development/TwitterClone/TwitterClone/Managers/APICaller.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31"
-                  offsetFromSymbolStart = "188">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -96,8 +64,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
-            landmarkName = "getVolumeStreams(completion:)"
-            landmarkType = "7">
+            landmarkName = "APICaller"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -128,8 +96,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
             endingLineNumber = "66"
-            landmarkName = "createRequest(with:type:completion:)"
-            landmarkType = "7">
+            landmarkName = "APICaller"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -143,9 +111,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "createRequest(with:type:completion:)"
-            landmarkType = "7">
+            endingLineNumber = "72">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

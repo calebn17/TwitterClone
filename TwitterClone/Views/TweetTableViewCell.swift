@@ -9,7 +9,7 @@ import UIKit
 
 protocol TweetTableViewCellDelegate: AnyObject {
     func didTapCommentButton()
-    func didTapRetweetButton()
+    func didTapRetweet(with model: HomeTweetViewCellViewModel, completion: @escaping (Bool) -> Void)
     func didTapLikeButton(liked: Bool)
     func didTapShareButton()
 }
@@ -19,6 +19,8 @@ class TweetTableViewCell: UITableViewCell {
     static let identifier = "HomeTweetTableViewCell"
     
     public weak var delegate: TweetTableViewCellDelegate?
+    
+    private var tweetModel: HomeTweetViewCellViewModel?
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
@@ -61,7 +63,7 @@ class TweetTableViewCell: UITableViewCell {
         let image = UIImage(systemName: "bubble.left", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .white
+        button.tintColor = .label
         return button
     }()
     
@@ -70,7 +72,7 @@ class TweetTableViewCell: UITableViewCell {
         let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .white
+        button.tintColor = .label
         return button
     }()
     
@@ -79,7 +81,7 @@ class TweetTableViewCell: UITableViewCell {
         let image = UIImage(systemName: "arrow.2.squarepath", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .white
+        button.tintColor = .label
         return button
     }()
     
@@ -88,7 +90,7 @@ class TweetTableViewCell: UITableViewCell {
         let image = UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .white
+        button.tintColor = .label
         return button
     }()
     
@@ -176,6 +178,7 @@ class TweetTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: HomeTweetViewCellViewModel){
+        tweetModel = model
         //userNameLabel.text = model.userName
         twitterTextLabel.text = model.tweetBody
     }
@@ -207,7 +210,20 @@ class TweetTableViewCell: UITableViewCell {
     }
     
     @objc private func tappedRetweetButton() {
-        delegate?.didTapRetweetButton()
+        if retweetButton.tintColor == .systemGreen {
+            retweetButton.tintColor = .label
+            //undo retweet state
+        }
+        else {
+            guard let tweetModel = tweetModel else {return}
+            delegate?.didTapRetweet(with: tweetModel, completion: {[weak self] result in
+                DispatchQueue.main.async {
+                    if result {
+                        self?.retweetButton.tintColor = .systemGreen
+                    }
+                }
+            })
+        }
     }
     
     @objc private func tappedShareButton() {

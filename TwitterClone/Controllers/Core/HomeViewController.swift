@@ -129,7 +129,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let text = tweets[indexPath.row].text ?? "missing body"
         
         cell.delegate = self
-        cell.configure(with: HomeTweetViewCellViewModel(userName: id, userAvatar: nil, tweetBody: text))
+        cell.configure(with: HomeTweetViewCellViewModel(id: nil, userName: id, userAvatar: nil, tweetBody: text, url_link: nil))
         
         return cell
     }
@@ -147,8 +147,20 @@ extension HomeViewController: TweetTableViewCellDelegate {
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweetButton() {
-        //
+    func didTapRetweet(with model: HomeTweetViewCellViewModel, completion: @escaping (Bool) -> Void) {
+        
+        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
+            print("retweet")
+            completion(true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
+            let vc = AddTweetViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self?.present(vc, animated: true, completion: nil)
+        }))
+        present(actionSheet, animated: true, completion: nil)
     }
     
     func didTapLikeButton(liked: Bool) {
@@ -156,7 +168,10 @@ extension HomeViewController: TweetTableViewCellDelegate {
     }
     
     func didTapShareButton() {
-        //
+        let firstAction = "This Tweet"
+        let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
+        shareAction.isModalInPresentation = true
+        present(shareAction, animated: true, completion: nil)
     }
     
     

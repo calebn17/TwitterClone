@@ -14,7 +14,7 @@ class SearchViewController: UIViewController {
     let searchController: UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
         vc.searchBar.placeholder = "Search Twitter"
-        vc.searchBar.searchBarStyle = .minimal
+        vc.searchBar.searchBarStyle = .default
         vc.definesPresentationContext = true
         return vc
     }()

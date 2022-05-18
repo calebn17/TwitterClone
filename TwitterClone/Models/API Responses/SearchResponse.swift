@@ -16,6 +16,7 @@ struct Tweet: Codable {
     //let created_at: String?
     let id: String?
     let text: String?
+    let likes: Int?
 }
 
 

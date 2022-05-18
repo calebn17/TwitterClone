@@ -8,7 +8,9 @@
 import Foundation
 
 struct HomeTweetViewCellViewModel {
+    let id: Int?
     let userName: String
     let userAvatar: URL?
     let tweetBody: String
+    let url_link: URL?
 }

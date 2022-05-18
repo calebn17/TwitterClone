@@ -36,10 +36,6 @@ class SearchResultsViewController: UIViewController {
         searchResultTweets = results
         searchResultsTableView.reloadData()
     }
-    
-
-  
-
 }
 
 extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -55,7 +51,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         let userName = searchResultTweets[indexPath.row].id ?? ""
         let tweetBody = searchResultTweets[indexPath.row].text ?? ""
         
-        cell.configure(with: HomeTweetViewCellViewModel(userName: userName, userAvatar: nil, tweetBody: tweetBody))
+        cell.configure(with: HomeTweetViewCellViewModel(id: nil ,userName: userName, userAvatar: nil, tweetBody: tweetBody, url_link: nil))
         
         
         return cell
