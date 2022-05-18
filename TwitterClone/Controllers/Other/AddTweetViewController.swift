@@ -12,6 +12,7 @@ protocol AddTweetViewControllerDelegate: AnyObject {
 }
 
 final class AddTweetViewController: UIViewController {
+//MARK: - Setup
     
     public weak var delegate: AddTweetViewControllerDelegate?
     
@@ -65,6 +66,8 @@ final class AddTweetViewController: UIViewController {
         return button
     }()
 
+//MARK: - View Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -83,6 +86,8 @@ final class AddTweetViewController: UIViewController {
         chooseAudienceButton.addTarget(self, action: #selector(didTapChooseAudienceButton), for: .touchUpInside)
         
     }
+ 
+//MARK: - Configure Methods
     
     private func addConstraints() {
         let userImageViewConstraints = [
@@ -116,6 +121,8 @@ final class AddTweetViewController: UIViewController {
         NSLayoutConstraint.activate(cancelButtonConstraints)
     }
     
+//MARK: - Action Methods
+    
     @objc private func tappedTweetPublishButton() {
         dismiss(animated: true) {[weak self] in
             //passing tweet body through
@@ -141,6 +148,8 @@ final class AddTweetViewController: UIViewController {
         present(actionSheet, animated: true, completion: nil)
     }
 }
+
+//MARK: - TextField Methods
 
 extension AddTweetViewController: UITextFieldDelegate {
     

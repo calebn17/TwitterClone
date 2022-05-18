@@ -7,6 +7,7 @@
 
 import Foundation
 
+///Tweet's metadata
 struct HomeTweetViewCellViewModel {
     let id: Int?
     let userName: String

@@ -6,8 +6,10 @@
 //
 
 import UIKit
+///Search Screen
+final class SearchViewController: UIViewController {
 
-class SearchViewController: UIViewController {
+//MARK: - Setup
     
     private let searchResultTweets: [Tweet] = []
     
@@ -34,6 +36,8 @@ class SearchViewController: UIViewController {
         return imageView
     }()
 
+//MARK: - View Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,6 +63,8 @@ class SearchViewController: UIViewController {
         
         searchTableView.frame = view.bounds
     }
+
+//MARK: - Configure Methods
     
     private func configurePlaceholderConstraints() {
         let searchTableViewPlacholderImageConstraints = [
@@ -86,6 +92,8 @@ class SearchViewController: UIViewController {
 
 }
 
+//MARK: - TableView Methods
+
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,6 +108,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+//MARK: - SearchBar Methods
 
 extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
     

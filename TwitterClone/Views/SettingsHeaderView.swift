@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol SettingsHeaderViewDelegate: AnyObject {
+    func didTapAccountsButton()
+}
+
 class SettingsHeaderView: UIView {
+
+//MARK: - Setup
+    
+    public weak var delegate: SettingsHeaderViewDelegate?
     
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
@@ -57,12 +65,15 @@ class SettingsHeaderView: UIView {
         button.setImage(image, for: .normal)
         return button
     }()
-    
+ 
+//MARK: - Init and View Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
+        
+        accountsButton.addTarget(self, action: #selector(didTapAccountsButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -81,6 +92,8 @@ class SettingsHeaderView: UIView {
         addSubview(userHandleButton)
         addSubview(accountsButton)
     }
+  
+//MARK: - Configure Methods
     
     private func configureConstraints() {
         let userImageViewConstraints = [
@@ -125,5 +138,11 @@ class SettingsHeaderView: UIView {
     
     public func configure(with model: String) {
         
+    }
+    
+//MARK: - Action Methods
+    
+    @objc private func didTapAccountsButton() {
+        delegate?.didTapAccountsButton()
     }
 }

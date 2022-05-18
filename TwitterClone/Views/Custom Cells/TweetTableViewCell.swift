@@ -13,8 +13,10 @@ protocol TweetTableViewCellDelegate: AnyObject {
     func didTapLikeButton(liked: Bool)
     func didTapShareButton()
 }
-
+///Individual Tweet Cell
 class TweetTableViewCell: UITableViewCell {
+
+//MARK: - Setup
     
     static let identifier = "HomeTweetTableViewCell"
     
@@ -93,7 +95,8 @@ class TweetTableViewCell: UITableViewCell {
         button.tintColor = .label
         return button
     }()
-    
+  
+//MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -114,7 +117,7 @@ class TweetTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+//MARK: - Configure
     private func configureConstraints() {
         
         let userImageConstraints = [
@@ -182,6 +185,8 @@ class TweetTableViewCell: UITableViewCell {
         //userNameLabel.text = model.userName
         twitterTextLabel.text = model.tweetBody
     }
+ 
+//MARK: - Action Methods
     
     private func addActions() {
         commentButton.addTarget(self, action: #selector(tappedCommentButton), for: .touchUpInside)
@@ -201,7 +206,8 @@ class TweetTableViewCell: UITableViewCell {
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .label
             delegate?.didTapLikeButton(liked: false)
-        }else {
+        }
+        else {
             let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .red
@@ -229,5 +235,4 @@ class TweetTableViewCell: UITableViewCell {
     @objc private func tappedShareButton() {
         delegate?.didTapShareButton()
     }
-    
 }

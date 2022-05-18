@@ -13,6 +13,8 @@ protocol AddCommentViewControllerDelegate: AnyObject {
 
 final class AddCommentViewController: UIViewController {
     
+//MARK: - Setup
+    
     public weak var delegate: AddCommentViewControllerDelegate?
     
     private var tweetBody: String?
@@ -53,6 +55,8 @@ final class AddCommentViewController: UIViewController {
         return button
     }()
 
+//MARK: - View Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -68,6 +72,8 @@ final class AddCommentViewController: UIViewController {
         replyButton.addTarget(self, action: #selector(tappedReplyButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
+    
+//MARK: - Configure Methods
     
     private func addConstraints() {
         let userImageViewConstraints = [
@@ -94,6 +100,8 @@ final class AddCommentViewController: UIViewController {
         NSLayoutConstraint.activate(replyButtonConstraints)
         NSLayoutConstraint.activate(cancelButtonConstraints)
     }
+
+//MARK: - Action Methods
     
     @objc private func tappedReplyButton() {
         dismiss(animated: true) {[weak self] in
@@ -121,6 +129,7 @@ final class AddCommentViewController: UIViewController {
     }
 }
 
+//MARK: - TextField Methods
 extension AddCommentViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

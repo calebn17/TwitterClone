@@ -6,9 +6,11 @@
 //
 
 import UIKit
-
+///Search Results Screen
 class SearchResultsViewController: UIViewController {
 
+//MARK: - Setup
+    
     private var searchResultTweets: [Tweet] = []
     
     private let searchResultsTableView: UITableView = {
@@ -16,6 +18,8 @@ class SearchResultsViewController: UIViewController {
         tableView.register(TweetTableViewCell.self, forCellReuseIdentifier: TweetTableViewCell.identifier)
         return tableView
     }()
+ 
+//MARK: - View Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()

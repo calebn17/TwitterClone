@@ -7,7 +7,10 @@
 
 import UIKit
 
+///Home Screen
 final class HomeViewController: UIViewController {
+
+//MARK: - Setup
     
     struct Constants {
         static let addButtonSize: CGFloat = 60
@@ -41,6 +44,7 @@ final class HomeViewController: UIViewController {
         return tableView
     }()
 
+//MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -64,6 +68,8 @@ final class HomeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         homeFeedTableView.frame = view.bounds
     }
+    
+//MARK: - Configure Methods
     
     private func configureNavbar() {
         var image = UIImage(named: "twitterLogo")
@@ -91,6 +97,8 @@ final class HomeViewController: UIViewController {
         NSLayoutConstraint.activate(addTweetButtonConstraints)
     }
     
+//MARK: - Action Methods
+    
     private func fetchData() {
         APICaller.shared.getSearch(with: "bitcoin") { [weak self] results in
             switch results {
@@ -113,6 +121,8 @@ final class HomeViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
 }
+
+//MARK: - TableView Methods
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -139,6 +149,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+//MARK: - TweetTableViewCellDelegate Methods
 extension HomeViewController: TweetTableViewCellDelegate {
     
     func didTapCommentButton() {

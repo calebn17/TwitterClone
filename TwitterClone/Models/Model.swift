@@ -11,3 +11,9 @@ struct SettingsModel {
     let title: String
     let icon: String?
 }
+
+struct SettingsAndPrivacyModel {
+    let title: String
+    let icon: String
+    let description: String
+}
