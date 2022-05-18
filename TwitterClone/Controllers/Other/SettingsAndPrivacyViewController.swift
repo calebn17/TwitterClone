@@ -11,7 +11,7 @@ class SettingsAndPrivacyViewController: UIViewController {
 
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
+        tableView.register(SettingsAndPrivacyTableViewCell.self, forCellReuseIdentifier: SettingsAndPrivacyTableViewCell.identifier)
         return tableView
     }()
     
@@ -22,6 +22,7 @@ class SettingsAndPrivacyViewController: UIViewController {
         view.backgroundColor = .systemBackground
         configureNavbar()
         configureTableView()
+        configureModels()
         
     }
     
@@ -38,17 +39,18 @@ class SettingsAndPrivacyViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorColor = UIColor.clear
     }
     
     private func configureModels() {
-        models.append(SettingsAndPrivacyModel(title: "Your Account", icon: "person", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Security and Account Access", icon: "lock", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Monetization", icon: "dollarsign.square", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Twitter Blue", icon: "b.square", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Privacy and Safety", icon: "shield.lefthalf.filled", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Notifications", icon: "bell", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Accessibility, display, and languages", icon: "figure.stand", description: ""))
-        models.append(SettingsAndPrivacyModel(title: "Additional Resources", icon: "ellipsis.circle", description: ""))
+        models.append(SettingsAndPrivacyModel(title: "Your Account", icon: "person", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Security and Account Access", icon: "lock", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Monetization", icon: "dollarsign.square", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Twitter Blue", icon: "b.square", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Privacy and Safety", icon: "shield.lefthalf.filled", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Notifications", icon: "bell", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Accessibility, display, and languages", icon: "figure.stand", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Additional Resources", icon: "ellipsis.circle", description: "This is a mock description so that I can see how everything looks when put in this cell"))
     }
     
     
@@ -65,6 +67,13 @@ extension SettingsAndPrivacyViewController: UITableViewDelegate, UITableViewData
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsAndPrivacyTableViewCell.identifier, for: indexPath) as? SettingsAndPrivacyTableViewCell
         else {return UITableViewCell()}
         
+        cell.accessoryType = .disclosureIndicator
+        cell.configure(with: models[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 }

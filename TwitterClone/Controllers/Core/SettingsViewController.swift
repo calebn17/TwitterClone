@@ -35,6 +35,7 @@ final class SettingsViewController: UIViewController {
         view.addSubview(settingsTableView)
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
+        settingsTableView.separatorColor = UIColor.clear
         configureSettingsSections()
         
         configureHeaderView()
@@ -80,6 +81,8 @@ final class SettingsViewController: UIViewController {
     }
     
     private func presentSettingsAndPrivacyPage() {
+        let vc = SettingsAndPrivacyViewController()
+        navigationController?.pushViewController(vc, animated: true)
         
     }
 }
