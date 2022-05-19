@@ -17,3 +17,17 @@ struct SettingsAndPrivacyModel {
     let icon: String
     let description: String
 }
+
+public enum NotificationActions {
+    case liked
+    case reply
+    case retweet
+    case followed
+}
+
+struct NotificationsModel {
+    let userName: String
+    let action: NotificationActions
+    let profilePictureL: URL?
+    let date: Date?
+}

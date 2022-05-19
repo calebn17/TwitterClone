@@ -37,7 +37,6 @@ final class SettingsViewController: UIViewController {
         settingsTableView.dataSource = self
         settingsTableView.separatorColor = UIColor.clear
         configureSettingsSections()
-        
         configureHeaderView()
     }
     
@@ -65,7 +64,7 @@ final class SettingsViewController: UIViewController {
     }
     
     private func configureHeaderView() {
-        headerView = SettingsHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 150))
+        headerView = SettingsHeaderView(frame: CGRect(x: 0, y: 0, width: view.width, height: 150))
         settingsTableView.tableHeaderView = headerView
         headerView?.delegate = self
     }

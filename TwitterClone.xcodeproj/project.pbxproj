@@ -20,6 +20,8 @@
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
 		AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */; };
 		AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */; };
+		AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */; };
+		AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
 		AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */; };
 		AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853B92825632E00D080D4 /* APICaller.swift */; };
@@ -48,6 +50,8 @@
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHeaderView.swift; sourceTree = "<group>"; };
+		AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEmptyStateView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
 		AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyTableViewCell.swift; sourceTree = "<group>"; };
 		AFD853B92825632E00D080D4 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
@@ -117,6 +121,15 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		AF6A444428366B50001F0018 /* Header Views */ = {
+			isa = PBXGroup;
+			children = (
+				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
+				AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */,
+			);
+			path = "Header Views";
+			sourceTree = "<group>";
+		};
 		AF8C41B8283581D00005E023 /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,8 +168,9 @@
 		AFD853BF282577C400D080D4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AF6A444428366B50001F0018 /* Header Views */,
 				AF8C41B8283581D00005E023 /* Custom Cells */,
-				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
+				AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,6 +310,8 @@
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
+				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
+				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
