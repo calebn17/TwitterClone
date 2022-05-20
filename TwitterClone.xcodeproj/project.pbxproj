@@ -15,6 +15,8 @@
 		7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */; };
 		708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F128317A2200978DD6 /* AddTweetViewController.swift */; };
 		708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F32831A0E200978DD6 /* AddCommentViewController.swift */; };
+		AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */; };
+		AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */; };
 		AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED752824BCCF002E9264 /* TabBarViewController.swift */; };
 		AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED772824BD4A002E9264 /* HomeViewController.swift */; };
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
@@ -45,6 +47,8 @@
 		7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		708C50F128317A2200978DD6 /* AddTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTweetViewController.swift; sourceTree = "<group>"; };
 		708C50F32831A0E200978DD6 /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
+		AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_All_TableViewCell.swift; sourceTree = "<group>"; };
+		AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_Mentions_TableViewCell.swift; sourceTree = "<group>"; };
 		AF2DED752824BCCF002E9264 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		AF2DED772824BD4A002E9264 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +140,8 @@
 				7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */,
 				AFD853C22825784E00D080D4 /* TweetTableViewCell.swift */,
 				AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */,
+				AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */,
+				AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */,
 			);
 			path = "Custom Cells";
 			sourceTree = "<group>";
@@ -304,6 +310,7 @@
 				AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */,
 				708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */,
 				AFD853C628257D9500D080D4 /* HomeTweetViewCellViewModel.swift in Sources */,
+				AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */,
 				3BC26E0B282970C400A56D5C /* Model.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
@@ -312,6 +319,7 @@
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
+				AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */,
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

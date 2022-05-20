@@ -73,6 +73,10 @@ class NotificationsHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    
     private func addSubviews() {
         addSubview(allButton)
         addSubview(mentionsButton)
@@ -115,14 +119,20 @@ class NotificationsHeaderView: UIView {
 //MARK: - Action Methods
     
     @objc private func didTapAllButton() {
-        mentionsButtonIndicator.isHidden = true
-        allButtonIndicator.isHidden = false
+        UIView.animate(withDuration: 0.2) {
+            //animate later
+            self.mentionsButtonIndicator.isHidden = true
+            self.allButtonIndicator.isHidden = false
+        }
         delegate?.tappedAllButton()
     }
     
     @objc private func didTapMentionsButton() {
-        allButtonIndicator.isHidden = true
-        mentionsButtonIndicator.isHidden = false
+        UIView.animate(withDuration: 0.2) {
+            //animate later
+            self.allButtonIndicator.isHidden = true
+            self.mentionsButtonIndicator.isHidden = false
+        }
         delegate?.tappedMentionsButton()
     }
 }

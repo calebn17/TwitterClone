@@ -67,6 +67,7 @@ class SettingsHeaderView: UIView {
     }()
  
 //MARK: - Init and View Methods
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground

@@ -24,6 +24,7 @@ final class SettingsViewController: UIViewController {
     private let settingsTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
 
@@ -32,20 +33,51 @@ final class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = nil
-        view.addSubview(settingsTableView)
-        settingsTableView.delegate = self
-        settingsTableView.dataSource = self
-        settingsTableView.separatorColor = UIColor.clear
-        configureSettingsSections()
         configureHeaderView()
+        configureTableView()
+        configureSettingsSections()
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        settingsTableView.frame = view.bounds
+        //settingsTableView.frame = view.bounds
     }
 
 //MARK: - Configure Methods
+    
+    private func configureHeaderView() {
+        headerView = SettingsHeaderView(frame: CGRect(x: 0, y: 0, width: view.width, height: 150))
+        headerView?.delegate = self
+        guard let headerView = headerView else {return}
+        view.addSubview(headerView)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        let headerViewConstraints = [
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 150),
+            headerView.widthAnchor.constraint(equalToConstant: view.width)
+        ]
+        NSLayoutConstraint.activate(headerViewConstraints)
+    }
+    
+    private func configureTableView() {
+        view.addSubview(settingsTableView)
+        settingsTableView.delegate = self
+        settingsTableView.dataSource = self
+        settingsTableView.separatorColor = UIColor.clear
+        
+        let settingsTableViewConstraints = [
+            settingsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 230),
+            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(settingsTableViewConstraints)
+        
+    }
+    
     private func configureSettingsSections() {
         settingsModel.append(SettingsModel(title: "Profile", icon: "person"))
         settingsModel.append(SettingsModel(title: "Lists", icon: "list.bullet.rectangle"))
@@ -63,11 +95,7 @@ final class SettingsViewController: UIViewController {
         settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
     }
     
-    private func configureHeaderView() {
-        headerView = SettingsHeaderView(frame: CGRect(x: 0, y: 0, width: view.width, height: 150))
-        settingsTableView.tableHeaderView = headerView
-        headerView?.delegate = self
-    }
+    
     
 //MARK: - Action Methods
     
@@ -135,21 +163,24 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension SettingsViewController: SettingsHeaderViewDelegate {
     func didTapAccountsButton() {
-        
-        //WIP
-        let actionSheet = UIAlertController(title: "Accounts", message: "Switch Accounts?", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Current User", style: .default, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Create Account", style: .default, handler: { _ in
-            //push account creation form
-            print("account creation form")
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Add an Existing Account", style: .default, handler: { _ in
-            //push existing account form
-            print("add existing account form")
-        }))
-        
-        present(actionSheet, animated: true, completion: nil)
+        print("did tap accounts button")
+        DispatchQueue.main.async { [weak self] in
+            //WIP
+            let actionSheet = UIAlertController(title: "Accounts", message: "Switch Accounts?", preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "Current User", style: .default, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "Create Account", style: .default, handler: { _ in
+                //push account creation form
+                print("account creation form")
+            }))
+            actionSheet.addAction(UIAlertAction(title: "Add an Existing Account", style: .default, handler: { _ in
+                //push existing account form
+                print("add existing account form")
+            }))
+            
+            self?.present(actionSheet, animated: true, completion: nil)
+            
+        }
         
     }
     
