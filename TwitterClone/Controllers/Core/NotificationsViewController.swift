@@ -20,6 +20,18 @@ final class NotificationsViewController: UIViewController {
         return tableView
     }()
     
+    private let addTweetButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
+        button.setImage(image, for: .normal)
+        button.backgroundColor = .systemCyan
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = K.addButtonSize/2
+        button.layer.masksToBounds = true
+        return button
+    }()
+    
     //emptyImageView and headerView need to start off as optional so that I can initialize it with a frame later to properly call the views with all their subviews
     private var emptyImageView: NotificationEmptyStateView?
     private var headerView: NotificationsHeaderView?
@@ -30,11 +42,13 @@ final class NotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        self.tabBarController?.tabBar.isTranslucent = false
+        configureNavbar()
         configureHeaderView()
         configureTableView()
         fetchData()
         configureEmptyStateView()
-        
+        configureAddTweetButton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -43,6 +57,11 @@ final class NotificationsViewController: UIViewController {
     }
    
 //MARK: - Configure Methods
+    
+    private func configureNavbar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .done, target: self, action: nil)
+    }
 
     private func configureHeaderView() {
         //With the way I'm doing things, I need to initialize the headerView with a frame (x,y are not super important because I'm using AutoLayout but I do need to set the width and height)
@@ -77,8 +96,6 @@ final class NotificationsViewController: UIViewController {
             notificationsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
         ]
         NSLayoutConstraint.activate(notificationsTableViewConstraints)
-        print("This is the bottom safeAreaInset \(view.safeAreaInsets.bottom)")
-        print("This is the top safeAreaInset \(view.safeAreaInsets.top)")
     }
     
     private func configureEmptyStateView() {
@@ -94,6 +111,18 @@ final class NotificationsViewController: UIViewController {
             notificationsTableView.isHidden = false
             emptyImageView.isHidden = true
         }
+    }
+    
+    private func configureAddTweetButton() {
+        view.addSubview(addTweetButton)
+        let addTweetButtonConstraints = [
+            addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+            addTweetButton.heightAnchor.constraint(equalToConstant: K.addButtonSize),
+            addTweetButton.widthAnchor.constraint(equalToConstant: K.addButtonSize)
+        ]
+        NSLayoutConstraint.activate(addTweetButtonConstraints)
+        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
     }
     
 
@@ -113,6 +142,12 @@ final class NotificationsViewController: UIViewController {
             models.append(NotificationsModel(userName: "@User \(i)", action: action, tweetBody: "Wow this is really cool!!!", profilePicture: nil, date: nil))
         }
         notificationsTableView.reloadData()
+    }
+    
+    @objc private func didTapAddTweetButton() {
+        let vc = AddTweetViewController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -143,12 +178,12 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 extension NotificationsViewController: NotificationsHeaderViewDelegate {
     func tappedAllButton() {
         // Show all notifications
-        print("All Notifications")
+        
     }
     
     func tappedMentionsButton() {
         // Show only mention notifications
-        print("Mentions Notifications")
+        
     }
     
     

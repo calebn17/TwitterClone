@@ -60,15 +60,9 @@ final class AddCommentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(userImageView)
-        view.addSubview(tweetTextField)
-        view.addSubview(replyButton)
-        view.addSubview(cancelButton)
-        
+        addSubViews()
         addConstraints()
-        
         tweetTextField.delegate = self
-        
         replyButton.addTarget(self, action: #selector(tappedReplyButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
@@ -99,6 +93,13 @@ final class AddCommentViewController: UIViewController {
         NSLayoutConstraint.activate(tweetTextFieldConstraints)
         NSLayoutConstraint.activate(replyButtonConstraints)
         NSLayoutConstraint.activate(cancelButtonConstraints)
+    }
+    
+    private func addSubViews() {
+        view.addSubview(userImageView)
+        view.addSubview(tweetTextField)
+        view.addSubview(replyButton)
+        view.addSubview(cancelButton)
     }
 
 //MARK: - Action Methods

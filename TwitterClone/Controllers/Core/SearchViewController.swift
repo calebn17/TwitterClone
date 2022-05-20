@@ -35,26 +35,37 @@ final class SearchViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    private let twitterIcon: UIImageView = {
+        let icon = UIImageView()
+        icon.image = UIImage(named: "twitterLogo")
+        icon.clipsToBounds = true
+        icon.contentMode = .scaleAspectFit
+        return icon
+    }()
+    
+    private let addTweetButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
+        button.setImage(image, for: .normal)
+        button.backgroundColor = .systemCyan
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = K.addButtonSize/2
+        button.layer.masksToBounds = true
+        return button
+    }()
 
 //MARK: - View Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
-        navigationItem.searchController = searchController
-        
-        view.addSubview(searchTableView)
-        searchTableView.delegate = self
-        searchTableView.dataSource = self
-        
+        self.tabBarController?.tabBar.isTranslucent = false
+        configureSearchBar()
+        configureSearchTableView()
         configureNavbar()
-        
-        if searchResultTweets.isEmpty {
-            view.addSubview(searchTableViewPlaceholderImage)
-            configurePlaceholderConstraints()
-        }
+        configureAddTweetButton()
+        configurePlaceholderImageView()
        
     }
     
@@ -66,13 +77,40 @@ final class SearchViewController: UIViewController {
 
 //MARK: - Configure Methods
     
-    private func configurePlaceholderConstraints() {
-        let searchTableViewPlacholderImageConstraints = [
-            searchTableViewPlaceholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            searchTableViewPlaceholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+    private func configureSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearchTableView() {
+        view.addSubview(searchTableView)
+        searchTableView.delegate = self
+        searchTableView.dataSource = self
+    }
+    
+    private func configurePlaceholderImageView() {
+        if searchResultTweets.isEmpty {
+            view.addSubview(searchTableViewPlaceholderImage)
+            
+            let searchTableViewPlacholderImageConstraints = [
+                searchTableViewPlaceholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                searchTableViewPlaceholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ]
+            NSLayoutConstraint.activate(searchTableViewPlacholderImageConstraints)
+        }
+    }
+    
+    private func configureAddTweetButton() {
+        view.addSubview(addTweetButton)
+        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
+        let addTweetButtonConstraints = [
+            addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+            addTweetButton.heightAnchor.constraint(equalToConstant: K.addButtonSize),
+            addTweetButton.widthAnchor.constraint(equalToConstant: K.addButtonSize)
         ]
-        
-        NSLayoutConstraint.activate(searchTableViewPlacholderImageConstraints)
+        NSLayoutConstraint.activate(addTweetButtonConstraints)
     }
     
     private func configureNavbar() {
@@ -81,15 +119,28 @@ final class SearchViewController: UIViewController {
         //forces xcode to use the original image (logo comes out as different color if this isnt done)
         image = image?.withRenderingMode(.alwaysOriginal)
         
-        navigationItem.leftBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
-            UIBarButtonItem(image: image, style: .done, target: self, action: nil),
-            ]
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
+                                                            style: .done,
+                                                            target: self,
+                                                           action: #selector(didTapProfileIcon))
+        navigationItem.titleView = twitterIcon
         navigationController?.navigationBar.tintColor = .white
         navigationItem.title = ""
     }
-
+    
+//MARK: - Action Methods
+    
+    @objc private func didTapProfileIcon() {
+        //navigates to profile feed
+    }
+    
+    @objc private func didTapAddTweetButton() {
+        //present the addTweetViewController
+        let vc = AddTweetViewController()
+        vc.modalPresentationStyle = .fullScreen
+        //navigationController?.pushViewController(vc, animated: true)
+        present(vc, animated: true, completion: nil)
+    }
 }
 
 //MARK: - TableView Methods

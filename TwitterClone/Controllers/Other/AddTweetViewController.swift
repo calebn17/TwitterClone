@@ -71,20 +71,12 @@ final class AddTweetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(userImageView)
-        view.addSubview(chooseAudienceButton)
-        view.addSubview(tweetTextField)
-        view.addSubview(tweetPublishButton)
-        view.addSubview(cancelButton)
-        
+        addSubViews()
         addConstraints()
-        
         tweetTextField.delegate = self
-        
         tweetPublishButton.addTarget(self, action: #selector(tappedTweetPublishButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         chooseAudienceButton.addTarget(self, action: #selector(didTapChooseAudienceButton), for: .touchUpInside)
-        
     }
  
 //MARK: - Configure Methods
@@ -119,6 +111,14 @@ final class AddTweetViewController: UIViewController {
         NSLayoutConstraint.activate(tweetTextFieldConstraints)
         NSLayoutConstraint.activate(tweetPublishButtonConstraints)
         NSLayoutConstraint.activate(cancelButtonConstraints)
+    }
+    
+    private func addSubViews() {
+        view.addSubview(userImageView)
+        view.addSubview(chooseAudienceButton)
+        view.addSubview(tweetTextField)
+        view.addSubview(tweetPublishButton)
+        view.addSubview(cancelButton)
     }
     
 //MARK: - Action Methods

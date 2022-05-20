@@ -23,10 +23,7 @@ class SearchResultsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addSubview(searchResultsTableView)
-        searchResultsTableView.delegate = self
-        searchResultsTableView.dataSource = self
+        configureSearchResultsTableView()
         view.backgroundColor = .clear
         
     }
@@ -36,11 +33,19 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.frame = view.bounds
     }
     
+    private func configureSearchResultsTableView() {
+        view.addSubview(searchResultsTableView)
+        searchResultsTableView.delegate = self
+        searchResultsTableView.dataSource = self
+    }
+    
     func update(with results: [Tweet]) {
         searchResultTweets = results
         searchResultsTableView.reloadData()
     }
 }
+
+//MARK: - TableView Methods
 
 extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSource {
     

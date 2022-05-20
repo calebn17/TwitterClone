@@ -14,4 +14,14 @@ struct K {
     static let bearerToken =  "AAAAAAAAAAAAAAAAAAAAAFgvcQEAAAAAamVnD%2F%2BquEtsJDgEvHXIUcuT7VA%3DefoIcmcEiubKHIHkppwq41fOY2lWMXtHyguAHMF142mM3EZvSh"
     static let baseURL = "https://api.twitter.com/2/"
     static let userImageSize: CGFloat = 40.0
+    static let addButtonSize: CGFloat = 60
+}
+
+struct SettingsAndPrivacyStrings {
+    static let yourAccount = "See information about your account, download an archive of your data, or learn about your account deactivation options."
+//    static let Security =
+//    static let Monetization =
+//    static let TwitterBlue =
+//    static let PrivacyAndSafety =
+//    static let Notifications =
 }

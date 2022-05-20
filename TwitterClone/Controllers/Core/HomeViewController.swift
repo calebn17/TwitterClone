@@ -12,10 +12,6 @@ final class HomeViewController: UIViewController {
 
 //MARK: - Setup
     
-    struct Constants {
-        static let addButtonSize: CGFloat = 60
-    }
-    
     private var tweets: [Tweet] = []
     
     private let twitterIcon: UIImageView = {
@@ -33,7 +29,7 @@ final class HomeViewController: UIViewController {
         button.backgroundColor = .systemCyan
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = Constants.addButtonSize/2
+        button.layer.cornerRadius = K.addButtonSize/2
         button.layer.masksToBounds = true
         return button
     }()
@@ -47,21 +43,13 @@ final class HomeViewController: UIViewController {
 //MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //let tabBarHeight = tabBarController?.tabBar.height
+        self.tabBarController?.tabBar.isTranslucent = false
         view.backgroundColor = .systemBackground
         configureNavbar()
-        title = nil
-        view.addSubview(homeFeedTableView)
-        view.addSubview(addTweetButton)
-        
-        homeFeedTableView.delegate = self
-        homeFeedTableView.dataSource = self
-        
+        configureHomeFeedTableView()
         fetchData()
-        configureConstraints()
-        
-        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
-        
+        configureAddTweetButton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,14 +75,22 @@ final class HomeViewController: UIViewController {
         navigationItem.title = ""
     }
     
-    private func configureConstraints() {
+    private func configureHomeFeedTableView() {
+        view.addSubview(homeFeedTableView)
+        homeFeedTableView.delegate = self
+        homeFeedTableView.dataSource = self
+    }
+    
+    private func configureAddTweetButton() {
+        view.addSubview(addTweetButton)
         let addTweetButtonConstraints = [
             addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
-            addTweetButton.heightAnchor.constraint(equalToConstant: Constants.addButtonSize),
-            addTweetButton.widthAnchor.constraint(equalToConstant: Constants.addButtonSize)
+            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+            addTweetButton.heightAnchor.constraint(equalToConstant: K.addButtonSize),
+            addTweetButton.widthAnchor.constraint(equalToConstant: K.addButtonSize)
         ]
         NSLayoutConstraint.activate(addTweetButtonConstraints)
+        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
     }
     
 //MARK: - Action Methods
@@ -175,7 +171,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
     }
     
     func didTapLikeButton(liked: Bool) {
-        //
+        //update like number
     }
     
     func didTapShareButton() {

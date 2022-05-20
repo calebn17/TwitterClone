@@ -32,16 +32,15 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.tabBar.isTranslucent = false
         title = nil
         configureHeaderView()
         configureTableView()
         configureSettingsSections()
-        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //settingsTableView.frame = view.bounds
     }
 
 //MARK: - Configure Methods

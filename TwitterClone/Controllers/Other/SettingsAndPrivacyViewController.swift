@@ -23,7 +23,6 @@ class SettingsAndPrivacyViewController: UIViewController {
         configureNavbar()
         configureTableView()
         configureModels()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -32,7 +31,7 @@ class SettingsAndPrivacyViewController: UIViewController {
     }
     
     private func configureNavbar() {
-        navigationItem.title = "Settings"
+        navigationItem.title = "Settings And Privacy"
     }
     
     private func configureTableView() {
@@ -43,7 +42,7 @@ class SettingsAndPrivacyViewController: UIViewController {
     }
     
     private func configureModels() {
-        models.append(SettingsAndPrivacyModel(title: "Your Account", icon: "person", description: "This is a mock description so that I can see how everything looks when put in this cell"))
+        models.append(SettingsAndPrivacyModel(title: "Your Account", icon: "person", description: SettingsAndPrivacyStrings.yourAccount))
         models.append(SettingsAndPrivacyModel(title: "Security and Account Access", icon: "lock", description: "This is a mock description so that I can see how everything looks when put in this cell"))
         models.append(SettingsAndPrivacyModel(title: "Monetization", icon: "dollarsign.square", description: "This is a mock description so that I can see how everything looks when put in this cell"))
         models.append(SettingsAndPrivacyModel(title: "Twitter Blue", icon: "b.square", description: "This is a mock description so that I can see how everything looks when put in this cell"))
@@ -52,8 +51,6 @@ class SettingsAndPrivacyViewController: UIViewController {
         models.append(SettingsAndPrivacyModel(title: "Accessibility, display, and languages", icon: "figure.stand", description: "This is a mock description so that I can see how everything looks when put in this cell"))
         models.append(SettingsAndPrivacyModel(title: "Additional Resources", icon: "ellipsis.circle", description: "This is a mock description so that I can see how everything looks when put in this cell"))
     }
-    
-    
 }
 
 extension SettingsAndPrivacyViewController: UITableViewDelegate, UITableViewDataSource {
@@ -75,5 +72,16 @@ extension SettingsAndPrivacyViewController: UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        switch indexPath.row {
+        case 0: break
+        case 1: break
+        case 2: break
+        case 3: break
+        case 4: break
+        case 5: break
+        case 6: break
+        case 7: break
+        default: break
+        }
     }
 }
