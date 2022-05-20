@@ -28,6 +28,7 @@ public enum NotificationActions {
 struct NotificationsModel {
     let userName: String
     let action: NotificationActions
+    let tweetBody: String
     let profilePicture: String?
     let date: Date?
 }

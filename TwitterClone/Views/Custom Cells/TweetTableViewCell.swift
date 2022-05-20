@@ -39,6 +39,7 @@ class TweetTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 25
         imageView.layer.masksToBounds = true
+        imageView.tintColor = .label
         return imageView
     }()
     

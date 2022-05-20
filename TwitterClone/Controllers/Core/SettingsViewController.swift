@@ -52,8 +52,9 @@ final class SettingsViewController: UIViewController {
         guard let headerView = headerView else {return}
         view.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
+        
         let headerViewConstraints = [
-            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 70),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 150),
@@ -67,12 +68,13 @@ final class SettingsViewController: UIViewController {
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         settingsTableView.separatorColor = UIColor.clear
+        guard let headerView = headerView else {return}
         
         let settingsTableViewConstraints = [
-            settingsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 230),
+            settingsTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
         ]
         NSLayoutConstraint.activate(settingsTableViewConstraints)
         

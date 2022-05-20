@@ -14,7 +14,7 @@ final class NotificationsViewController: UIViewController {
     
     private let notificationsTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(Notifications_All_TableViewCell.self, forCellReuseIdentifier: Notifications_All_TableViewCell.identifier)
         tableView.isHidden = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -52,8 +52,9 @@ final class NotificationsViewController: UIViewController {
         view.addSubview(headerView)
         headerView.delegate = self
         headerView.translatesAutoresizingMaskIntoConstraints = false
+        
         let headerViewConstraints = [
-            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant:  100),
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 100),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 50),
@@ -66,15 +67,18 @@ final class NotificationsViewController: UIViewController {
         view.addSubview(notificationsTableView)
         notificationsTableView.delegate = self
         notificationsTableView.dataSource = self
+        guard let headerView = headerView else {return}
         
-
+        //Seems like in order to keep the tableView from overlapping the tabbar, I need to include a safeAreaInset value to either the top or bottom anchor constraint (in the constant)
         let notificationsTableViewConstraints = [
-            notificationsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
+            notificationsTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             notificationsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             notificationsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             notificationsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
         ]
         NSLayoutConstraint.activate(notificationsTableViewConstraints)
+        print("This is the bottom safeAreaInset \(view.safeAreaInsets.bottom)")
+        print("This is the top safeAreaInset \(view.safeAreaInsets.top)")
     }
     
     private func configureEmptyStateView() {
@@ -101,12 +105,15 @@ final class NotificationsViewController: UIViewController {
         //Mock Data
         
         for x in 0...30 {
-            models.append(NotificationsModel(userName: "@User \(x)", action: .liked, profilePicture: nil, date: nil))
+            let action: NotificationActions
+            let i = x*Int.random(in: 0...20)
+            if i % 2 == 0 {action = .followed}
+            else {action = .liked}
+            
+            models.append(NotificationsModel(userName: "@User \(i)", action: action, tweetBody: "Wow this is really cool!!!", profilePicture: nil, date: nil))
         }
         notificationsTableView.reloadData()
-        
     }
-
 }
 
 //MARK: - TableView Methods
@@ -119,11 +126,16 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Notifications_All_TableViewCell.identifier, for: indexPath) as? Notifications_All_TableViewCell
+        else {return UITableViewCell()}
         
         let model = models[indexPath.row]
-        cell.textLabel?.text = "\(model.userName) \(model.action) your tweet"
+        cell.configure(with: model)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
