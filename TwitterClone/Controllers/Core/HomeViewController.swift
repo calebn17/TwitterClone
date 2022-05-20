@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 ///Home Screen
 final class HomeViewController: UIViewController {
@@ -57,6 +58,11 @@ final class HomeViewController: UIViewController {
         homeFeedTableView.frame = view.bounds
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+           super.viewDidAppear(animated)
+           handleNotAuthenticated()
+       }
+
 //MARK: - Configure Methods
     
     private func configureNavbar() {
@@ -94,6 +100,17 @@ final class HomeViewController: UIViewController {
     }
     
 //MARK: - Action Methods
+    
+    private func handleNotAuthenticated() {
+        //check Auth status
+        if Auth.auth().currentUser == nil {
+            //Show Login
+            let loginVC = LoginViewController()
+            loginVC.modalPresentationStyle = .fullScreen
+            present(loginVC, animated: false)
+        }
+        
+    }
     
     private func fetchData() {
         APICaller.shared.getSearch(with: "bitcoin") { [weak self] results in
