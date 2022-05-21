@@ -29,14 +29,14 @@ class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
-        textField.placeholder = "Enter your email address..."
+        textField.placeholder = "  Enter your email address...  "
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
     private let passwordField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Enter your password..."
+        textField.placeholder = "  Enter your password...  "
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -45,19 +45,19 @@ class LoginViewController: UIViewController {
     
     private let loginButton: UIButton = {
         let button = UIButton()
-        button.titleLabel?.text = "Login"
-        button.tintColor = .label
+        button.setTitle("Login", for: UIControl.State.normal)
+        button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 1
-        button.backgroundColor = .systemBackground
+        //button.backgroundColor = .systemBackground
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private let registerButton: UIButton = {
         let button = UIButton()
-        button.titleLabel?.text = "Register"
-        button.tintColor = .label
+        button.setTitle("Register", for: UIControl.State.normal)
+        button.setTitleColor(.label, for: .normal)
         button.backgroundColor = .systemBackground
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
@@ -84,14 +84,15 @@ class LoginViewController: UIViewController {
     }
     
     private func addConstraints() {
-        let size: CGFloat = 100
+        let size: CGFloat = 120
         let emailLabelConstraints = [
             emailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emailLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 300)
         ]
         let emailFieldConstraints = [
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 15)
+            emailField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 15),
+            emailField.heightAnchor.constraint(equalToConstant: 35)
         ]
         let passwordLabelConstraints = [
             passwordLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -99,7 +100,8 @@ class LoginViewController: UIViewController {
         ]
         let passwordFieldConstraints = [
             passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 15)
+            passwordField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 15),
+            passwordField.heightAnchor.constraint(equalToConstant: 35)
         ]
         let loginButtonConstraints = [
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
