@@ -30,6 +30,7 @@ class LoginViewController: UIViewController {
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
         textField.placeholder = "  Enter your email address...  "
+        textField.textAlignment = .center
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -37,6 +38,7 @@ class LoginViewController: UIViewController {
     private let passwordField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "  Enter your password...  "
+        textField.textAlignment = .center
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +51,7 @@ class LoginViewController: UIViewController {
         button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 1
-        //button.backgroundColor = .systemBackground
+        button.backgroundColor = .systemBackground
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -84,7 +86,7 @@ class LoginViewController: UIViewController {
     }
     
     private func addConstraints() {
-        let size: CGFloat = 120
+        let size: CGFloat = 200
         let emailLabelConstraints = [
             emailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emailLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 300)
@@ -92,7 +94,9 @@ class LoginViewController: UIViewController {
         let emailFieldConstraints = [
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emailField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 15),
-            emailField.heightAnchor.constraint(equalToConstant: 35)
+            emailField.heightAnchor.constraint(equalToConstant: 35),
+            emailField.widthAnchor.constraint(equalToConstant: 300)
+            
         ]
         let passwordLabelConstraints = [
             passwordLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -101,7 +105,8 @@ class LoginViewController: UIViewController {
         let passwordFieldConstraints = [
             passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             passwordField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 15),
-            passwordField.heightAnchor.constraint(equalToConstant: 35)
+            passwordField.heightAnchor.constraint(equalToConstant: 35),
+            passwordField.widthAnchor.constraint(equalToConstant: 300)
         ]
         let loginButtonConstraints = [
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
