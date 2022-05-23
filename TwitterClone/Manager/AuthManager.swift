@@ -26,15 +26,19 @@ public class AuthManager {
                         completion(false)
                         return
                     }
+                    print("new user is successfully created")
+               
                     //insert account to db
                     DatabaseManager.shared.insertNewUser(with: email, username: username) { inserted in
                         if inserted {
                             //successfully inserted to DB
+                            print("successfully inserted new user to DB")
                             completion(true)
                             return
                         }
                         else {
                             //failed to insert to DB
+                            print("failed to insert new user to DB")
                             completion(false)
                             return
                         }

@@ -43,6 +43,7 @@ class LoginViewController: UIViewController {
         textField.textAlignment = .left
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
+        textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -191,6 +192,7 @@ class LoginViewController: UIViewController {
     
     @objc private func didTapRegisterButton() {
         let vc = RegisterViewController()
+        vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
 }
@@ -209,4 +211,12 @@ extension LoginViewController: UITextFieldDelegate {
         
         return true
     }
+}
+
+extension LoginViewController: RegisterViewControllerDelegate {
+    func didRegisterSuccessfully() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
 }

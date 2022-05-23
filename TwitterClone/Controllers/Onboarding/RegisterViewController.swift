@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol RegisterViewControllerDelegate: AnyObject {
+    func didRegisterSuccessfully()
+}
+
 class RegisterViewController: UIViewController {
+    
+    weak var delegate: RegisterViewControllerDelegate?
 
     private let emailLabel: UILabel = {
         let label = UILabel()
@@ -58,6 +64,7 @@ class RegisterViewController: UIViewController {
         textField.textAlignment = .center
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
+        textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -150,16 +157,17 @@ class RegisterViewController: UIViewController {
               let username = usernameField.text, !username.isEmpty
         else {return}
             
-        AuthManager.shared.registerNewUser(username: username, email: email, password: password) { registered in
+        AuthManager.shared.registerNewUser(username: username, email: email, password: password) {[weak self] registered in
             DispatchQueue.main.async {
                 if registered {
-                    
+                    self?.dismiss(animated: true)
+                    self?.delegate?.didRegisterSuccessfully()
                 }
                 else {
                     //something failed
+                    print("failed to register")
                 }
             }
-            
         }
     }
 }
