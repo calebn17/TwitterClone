@@ -40,6 +40,9 @@
 		AFDBA2312824B98B00085DDC /* TwitterClone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */; };
 		AFDBA2332824B98D00085DDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFDBA2322824B98D00085DDC /* Assets.xcassets */; };
 		AFDBA2362824B98D00085DDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFDBA2342824B98D00085DDC /* LaunchScreen.storyboard */; };
+		AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC41E283BBA7B00F4ED7D /* AuthManager.swift */; };
+		AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */; };
+		AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC422283BBAB700F4ED7D /* StorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +81,9 @@
 		AFDBA2322824B98D00085DDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFDBA2352824B98D00085DDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFDBA2372824B98D00085DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AFDBC41E283BBA7B00F4ED7D /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		AFDBC422283BBAB700F4ED7D /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		BECF0032A00C884C702B85E0 /* Pods-TwitterClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterClone.release.xcconfig"; path = "Target Support Files/Pods-TwitterClone/Pods-TwitterClone.release.xcconfig"; sourceTree = "<group>"; };
 		C92ABDF50BBD7E6E608563E6 /* Pods_TwitterClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -240,6 +246,7 @@
 		AFDBA2252824B98B00085DDC /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
+				AFDBC41D283BBA6A00F4ED7D /* Manager */,
 				3BC26E03282949BA00A56D5C /* Resources */,
 				AFD853C428257D7A00D080D4 /* ViewModels */,
 				AFD853BF282577C400D080D4 /* Views */,
@@ -254,6 +261,16 @@
 				AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */,
 			);
 			path = TwitterClone;
+			sourceTree = "<group>";
+		};
+		AFDBC41D283BBA6A00F4ED7D /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				AFDBC41E283BBA7B00F4ED7D /* AuthManager.swift */,
+				AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */,
+				AFDBC422283BBAB700F4ED7D /* StorageManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		BF372C8DE1911D07955B9D60 /* Pods */ = {
@@ -399,6 +416,7 @@
 				AFD853C628257D9500D080D4 /* HomeTweetViewCellViewModel.swift in Sources */,
 				AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */,
 				3BC26E0B282970C400A56D5C /* Model.swift in Sources */,
+				AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
@@ -406,9 +424,11 @@
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
+				AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */,
 				AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */,
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
 				AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */,
+				AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

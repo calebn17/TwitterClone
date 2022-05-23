@@ -58,6 +58,7 @@ final class AddTweetViewController: UIViewController {
         icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
     }()
+    
     private let cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
