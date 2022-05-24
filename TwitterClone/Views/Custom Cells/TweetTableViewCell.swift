@@ -183,7 +183,8 @@ class TweetTableViewCell: UITableViewCell {
     
     public func configure(with model: HomeTweetViewCellViewModel){
         tweetModel = model
-        //userNameLabel.text = model.userName
+        userHandleLabel.text = "@\(model.userName)"
+        userNameLabel.text = model.userName
         twitterTextLabel.text = model.tweetBody
     }
  

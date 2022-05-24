@@ -84,4 +84,26 @@ public class AuthManager {
             return
         }
     }
+    
+//    public func getCurrentUser() {
+//        var email: String = ""
+//        var username: String = ""
+//        guard let user = Auth.auth().currentUser
+//        else {
+//            print("User is not signed in")
+//            return
+//        }
+//        email = user.email ?? "no email"
+//        DatabaseManager.shared.getUsername(email: email, completion: { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let db_username):
+//                    username = db_username
+//                    print("username: \(username)")
+//                case .failure(let error):
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        })
+//    }
 }

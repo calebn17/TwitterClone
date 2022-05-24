@@ -46,6 +46,23 @@ public class DatabaseManager {
         }
     }
     
+    public func getUsername(email: String, completion: @escaping (Result<String, Error>) -> Void){
+        var username: String = ""
+        let key = email.safeDatabaseKey()
+        //let key = "Joe-gmail-com"
+        database.child(key).child("username").getData { error, snapshot in
+            guard error == nil else {
+                completion(.failure(APIError.failedtoGetData))
+                return;
+            }
+            
+            username = snapshot.value as? String ?? "unknown username"
+            completion(.success(username))
+            print(username)
+            print(email.safeDatabaseKey())
+        }
+    }
+    
 //MARK: - Private Methods
     
   

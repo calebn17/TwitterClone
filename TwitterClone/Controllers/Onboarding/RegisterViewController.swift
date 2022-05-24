@@ -157,7 +157,7 @@ class RegisterViewController: UIViewController {
               let username = usernameField.text, !username.isEmpty
         else {return}
             
-        AuthManager.shared.registerNewUser(username: username, email: email, password: password) {[weak self] registered in
+        AuthManager.shared.registerNewUser(username: username.lowercased(), email: email.lowercased(), password: password) {[weak self] registered in
             DispatchQueue.main.async {
                 if registered {
                     self?.dismiss(animated: true)

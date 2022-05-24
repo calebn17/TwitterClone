@@ -138,7 +138,7 @@ final class SearchViewController: UIViewController {
         //present the addTweetViewController
         let vc = AddTweetViewController()
         vc.modalPresentationStyle = .fullScreen
-        //navigationController?.pushViewController(vc, animated: true)
+        //vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
 }
@@ -199,5 +199,13 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         else {return}
         resultsController.update(with: [])
     }
-
 }
+
+//extension SearchViewController: AddTweetViewControllerDelegate {
+//    func didTapTweetPublishButton(tweetBody: String) {
+//        let addedTweet = Tweet(id: nil, text: tweetBody, likes: 0)
+//        let vc = HomeViewController()
+//        navigationController?.pushViewController(vc, animated: true)
+//
+//    }
+//}

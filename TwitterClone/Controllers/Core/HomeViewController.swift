@@ -13,7 +13,8 @@ final class HomeViewController: UIViewController {
 
 //MARK: - Setup
     
-    private var tweets: [Tweet] = []
+    public var tweets: [Tweet] = []
+    public var user = UserModel(id: nil, userName: "", userEmail: "")
     
     private let twitterIcon: UIImageView = {
         let icon = UIImageView()
@@ -35,7 +36,7 @@ final class HomeViewController: UIViewController {
         return button
     }()
     
-    private let homeFeedTableView: UITableView = {
+    public let homeFeedTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TweetTableViewCell.self, forCellReuseIdentifier: TweetTableViewCell.identifier)
         return tableView
@@ -50,6 +51,7 @@ final class HomeViewController: UIViewController {
         configureNavbar()
         configureHomeFeedTableView()
         fetchData()
+        fetchUserData()
         configureAddTweetButton()
     }
     
@@ -126,11 +128,32 @@ final class HomeViewController: UIViewController {
         }
     }
     
+    private func fetchUserData() {
+    
+        guard let user = Auth.auth().currentUser
+        else {
+            print("User is not signed in")
+            return
+        }
+        self.user.userEmail = user.email ?? "no email"
+        DatabaseManager.shared.getUsername(email: user.email ?? "No email", completion: {[weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let db_username):
+                    self?.user.userName = db_username
+                    print(db_username)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        })
+    }
+    
     @objc private func didTapAddTweetButton() {
         //present the addTweetViewController
         let vc = AddTweetViewController()
         vc.modalPresentationStyle = .fullScreen
-        //navigationController?.pushViewController(vc, animated: true)
+        vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
 }
@@ -150,9 +173,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         let id = tweets[indexPath.row].id ?? "unknown user"
         let text = tweets[indexPath.row].text ?? "missing body"
+        let username = tweets[indexPath.row].username ?? "username"
         
         cell.delegate = self
-        cell.configure(with: HomeTweetViewCellViewModel(id: nil, userName: id, userAvatar: nil, tweetBody: text, url_link: nil))
+        cell.configure(with: HomeTweetViewCellViewModel(id: id, userName: username , userAvatar: nil, tweetBody: text, url_link: nil))
         
         return cell
     }
@@ -196,6 +220,16 @@ extension HomeViewController: TweetTableViewCellDelegate {
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true
         present(shareAction, animated: true, completion: nil)
+    }
+}
+
+extension HomeViewController: AddTweetViewControllerDelegate {
+    
+    func didTapTweetPublishButton(tweetBody: String) {
+        let addedTweet = Tweet(username: user.userName, id: nil, text: tweetBody, likes: 0)
+        print(user.userName)
+        tweets.insert(addedTweet, at: 0)
+        homeFeedTableView.reloadData()
     }
     
     

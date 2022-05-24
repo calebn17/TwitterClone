@@ -168,9 +168,9 @@ class LoginViewController: UIViewController {
         var email: String?
         
         if usernameEmail.contains("@"), usernameEmail.contains(".") {
-            email = usernameEmail
+            email = usernameEmail.lowercased()
         } else {
-            username = usernameEmail
+            username = usernameEmail.lowercased()
         }
         
         AuthManager.shared.loginUser(username: username, email: email, password: password) {[weak self] success in

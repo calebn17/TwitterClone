@@ -12,8 +12,7 @@ struct SearchResponse: Codable {
 }
 
 struct Tweet: Codable {
-    //let author_id: String?
-    //let created_at: String?
+    let username: String?
     let id: String?
     let text: String?
     let likes: Int?

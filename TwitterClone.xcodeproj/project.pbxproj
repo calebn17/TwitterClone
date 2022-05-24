@@ -185,6 +185,9 @@
 		AFD853B82825631C00D080D4 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				AFDBC422283BBAB700F4ED7D /* StorageManager.swift */,
+				AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */,
+				AFDBC41E283BBA7B00F4ED7D /* AuthManager.swift */,
 				AFD853B92825632E00D080D4 /* APICaller.swift */,
 			);
 			path = Managers;
@@ -246,7 +249,6 @@
 		AFDBA2252824B98B00085DDC /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
-				AFDBC41D283BBA6A00F4ED7D /* Manager */,
 				3BC26E03282949BA00A56D5C /* Resources */,
 				AFD853C428257D7A00D080D4 /* ViewModels */,
 				AFD853BF282577C400D080D4 /* Views */,
@@ -261,16 +263,6 @@
 				AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */,
 			);
 			path = TwitterClone;
-			sourceTree = "<group>";
-		};
-		AFDBC41D283BBA6A00F4ED7D /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				AFDBC41E283BBA7B00F4ED7D /* AuthManager.swift */,
-				AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */,
-				AFDBC422283BBAB700F4ED7D /* StorageManager.swift */,
-			);
-			path = Manager;
 			sourceTree = "<group>";
 		};
 		BF372C8DE1911D07955B9D60 /* Pods */ = {

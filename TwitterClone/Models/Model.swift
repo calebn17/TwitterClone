@@ -32,3 +32,9 @@ struct NotificationsModel {
     let profilePicture: String?
     let date: Date?
 }
+
+struct UserModel {
+    var id: Int?
+    var userName: String
+    var userEmail: String
+}
