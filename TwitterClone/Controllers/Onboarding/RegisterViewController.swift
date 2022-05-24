@@ -58,6 +58,16 @@ class RegisterViewController: UIViewController {
         return textField
     }()
     
+    private let userHandleField: UITextField = {
+        let textField = UITextField()
+        textField.layer.borderColor = UIColor.label.cgColor
+        textField.layer.borderWidth = 1
+        textField.placeholder = "  Enter your user handle...  "
+        textField.textAlignment = .center
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
     private let passwordField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "  Enter your password...  "
@@ -76,6 +86,8 @@ class RegisterViewController: UIViewController {
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = .systemBackground
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -96,6 +108,7 @@ class RegisterViewController: UIViewController {
         view.addSubview(passwordField)
         view.addSubview(registerButton)
         view.addSubview(usernameLabel)
+        view.addSubview(userHandleField)
     }
     
     private func addConstraints() {
@@ -111,9 +124,15 @@ class RegisterViewController: UIViewController {
             usernameField.heightAnchor.constraint(equalToConstant: 40),
             usernameField.widthAnchor.constraint(equalToConstant: 300)
         ]
+        let userHandleFieldConstraints = [
+            userHandleField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            userHandleField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 10),
+            userHandleField.heightAnchor.constraint(equalToConstant: 40),
+            userHandleField.widthAnchor.constraint(equalToConstant: 300)
+        ]
         let emailLabelConstraints = [
             emailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailLabel.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 30)
+            emailLabel.topAnchor.constraint(equalTo: userHandleField.bottomAnchor, constant: 30)
         ]
         let emailFieldConstraints = [
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -140,6 +159,7 @@ class RegisterViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(usernameLabelConstraints)
         NSLayoutConstraint.activate(usernameFieldConstraints)
+        NSLayoutConstraint.activate(userHandleFieldConstraints)
         NSLayoutConstraint.activate(emailLabelConstraints)
         NSLayoutConstraint.activate(emailFieldConstraints)
         NSLayoutConstraint.activate(passwordLabelConstraints)
@@ -154,10 +174,11 @@ class RegisterViewController: UIViewController {
         
         guard let email = emailField.text, !email.isEmpty,
               let password = passwordField.text, !password.isEmpty, password.count >= 8,
-              let username = usernameField.text, !username.isEmpty
+              let username = usernameField.text, !username.isEmpty,
+              let userHandle = userHandleField.text, !userHandle.isEmpty
         else {return}
             
-        AuthManager.shared.registerNewUser(username: username.lowercased(), email: email.lowercased(), password: password) {[weak self] registered in
+        AuthManager.shared.registerNewUser(username: username.lowercased(), userHandle: userHandle.lowercased(), email: email.lowercased(), password: password) {[weak self] registered in
             DispatchQueue.main.async {
                 if registered {
                     self?.dismiss(animated: true)
@@ -176,6 +197,9 @@ extension RegisterViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameField {
+            userHandleField.becomeFirstResponder()
+        }
+        else if textField == userHandleField {
             emailField.becomeFirstResponder()
         }
         else if textField == emailField {

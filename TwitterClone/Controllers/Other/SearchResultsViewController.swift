@@ -11,7 +11,7 @@ class SearchResultsViewController: UIViewController {
 
 //MARK: - Setup
     
-    private var searchResultTweets: [Tweet] = []
+    private var searchResultTweets: [TweetModel] = []
     
     private let searchResultsTableView: UITableView = {
         let tableView = UITableView()
@@ -30,7 +30,7 @@ class SearchResultsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        searchResultsTableView.frame = view.bounds
+        searchResultsTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 30)
     }
     
     private func configureSearchResultsTableView() {
@@ -39,7 +39,7 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.dataSource = self
     }
     
-    func update(with results: [Tweet]) {
+    func update(with results: [TweetModel]) {
         searchResultTweets = results
         searchResultsTableView.reloadData()
     }
@@ -57,10 +57,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell
         else {return UITableViewCell()}
         
-        let userName = searchResultTweets[indexPath.row].id ?? ""
-        let tweetBody = searchResultTweets[indexPath.row].text ?? ""
-        
-        cell.configure(with: HomeTweetViewCellViewModel(id: nil ,userName: userName, userAvatar: nil, tweetBody: tweetBody, url_link: nil))
+        cell.configure(with: searchResultTweets[indexPath.row])
         
         
         return cell
@@ -69,4 +66,6 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+   
 }

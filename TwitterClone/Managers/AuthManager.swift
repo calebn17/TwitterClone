@@ -14,10 +14,10 @@ public class AuthManager {
     
 //MARK: - Public Methods
     
-    public func registerNewUser(username: String, email: String, password: String, completion: @escaping (Bool) -> Void) {
+    public func registerNewUser(username: String, userHandle: String, email: String, password: String, completion: @escaping (Bool) -> Void) {
         //check if username is available
         //check if email is available
-        DatabaseManager.shared.canCreateNewUser(with: email, username: username) { canCreate in
+        DatabaseManager.shared.canCreateNewUser(with: email, username: username, userHandle: userHandle) { canCreate in
             if canCreate {
                 //create account
                 Auth.auth().createUser(withEmail: email, password: password) { result, error in
@@ -29,7 +29,7 @@ public class AuthManager {
                     print("new user is successfully created")
                
                     //insert account to db
-                    DatabaseManager.shared.insertNewUser(with: email, username: username) { inserted in
+                    DatabaseManager.shared.insertNewUser(with: email, username: username, userHandle: userHandle) { inserted in
                         if inserted {
                             //successfully inserted to DB
                             print("successfully inserted new user to DB")

@@ -60,6 +60,7 @@ final class SettingsViewController: UIViewController {
             headerView.widthAnchor.constraint(equalToConstant: view.width)
         ]
         NSLayoutConstraint.activate(headerViewConstraints)
+        
     }
     
     private func configureTableView() {

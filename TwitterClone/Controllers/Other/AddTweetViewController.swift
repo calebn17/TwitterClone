@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddTweetViewControllerDelegate: AnyObject {
-    func didTapTweetPublishButton(tweetBody: String)
+    func didTapTweetPublishButton(tweet: TweetModel)
 }
 
 final class AddTweetViewController: UIViewController {
@@ -43,6 +43,7 @@ final class AddTweetViewController: UIViewController {
     private let tweetTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "What's happening?"
+        field.backgroundColor = .systemBackground
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -74,6 +75,7 @@ final class AddTweetViewController: UIViewController {
         view.backgroundColor = .systemBackground
         addSubViews()
         addConstraints()
+        tweetTextField.becomeFirstResponder()
         tweetTextField.delegate = self
         tweetPublishButton.addTarget(self, action: #selector(tappedTweetPublishButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
@@ -96,7 +98,8 @@ final class AddTweetViewController: UIViewController {
         ]
         let tweetTextFieldConstraints = [
             tweetTextField.leadingAnchor.constraint(equalTo: chooseAudienceButton.leadingAnchor),
-            tweetTextField.topAnchor.constraint(equalTo: chooseAudienceButton.bottomAnchor, constant: 10)
+            tweetTextField.topAnchor.constraint(equalTo: chooseAudienceButton.bottomAnchor, constant: 10),
+            tweetTextField.widthAnchor.constraint(equalToConstant: 350)
         ]
         let tweetPublishButtonConstraints = [
             tweetPublishButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
@@ -127,8 +130,11 @@ final class AddTweetViewController: UIViewController {
     @objc private func tappedTweetPublishButton() {
         dismiss(animated: true) {[weak self] in
             //passing tweet body through
+            self?.tweetBody = self?.tweetTextField.text
             guard let tweetBody = self?.tweetBody else {return}
-            self?.delegate?.didTapTweetPublishButton(tweetBody: tweetBody)
+            //Username will be updated in the Home VC
+            let addedTweet = TweetModel(id: nil, username: nil, userHandle: nil, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, comments: nil, dateCreated: Date())
+            self?.delegate?.didTapTweetPublishButton(tweet: addedTweet)
         }
     }
     
@@ -159,6 +165,20 @@ extension AddTweetViewController: UITextFieldDelegate {
         tweetPublishButton.isEnabled = true
         tweetBody = textField.text
         tweetTextField.resignFirstResponder()
+        tappedTweetPublishButton()
         return true
     }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text, !text.isEmpty else {
+            tweetPublishButton.backgroundColor = .systemGray
+            tweetPublishButton.isEnabled = false
+            return
+        }
+        tweetPublishButton.backgroundColor = .systemCyan
+        tweetPublishButton.isEnabled = true
+    }
+    
+    
+    
 }

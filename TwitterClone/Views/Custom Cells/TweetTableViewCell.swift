@@ -9,7 +9,7 @@ import UIKit
 
 protocol TweetTableViewCellDelegate: AnyObject {
     func didTapCommentButton()
-    func didTapRetweet(with model: HomeTweetViewCellViewModel, completion: @escaping (Bool) -> Void)
+    func didTapRetweet(with model: TweetModel, completion: @escaping (Bool) -> Void)
     func didTapLikeButton(liked: Bool)
     func didTapShareButton()
 }
@@ -22,7 +22,7 @@ class TweetTableViewCell: UITableViewCell {
     
     public weak var delegate: TweetTableViewCellDelegate?
     
-    private var tweetModel: HomeTweetViewCellViewModel?
+    private var tweetModel: TweetModel?
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
@@ -181,11 +181,11 @@ class TweetTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(shareButtonConstraints)
     }
     
-    public func configure(with model: HomeTweetViewCellViewModel){
+    public func configure(with model: TweetModel){
         tweetModel = model
-        userHandleLabel.text = "@\(model.userName)"
-        userNameLabel.text = model.userName
-        twitterTextLabel.text = model.tweetBody
+        userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
+        userNameLabel.text = model.username ?? "Unknown"
+        twitterTextLabel.text = model.text
     }
  
 //MARK: - Action Methods
@@ -223,11 +223,12 @@ class TweetTableViewCell: UITableViewCell {
             //undo retweet state
         }
         else {
-            guard let tweetModel = tweetModel else {return}
+            guard var tweetModel = tweetModel else {return}
             delegate?.didTapRetweet(with: tweetModel, completion: {[weak self] result in
                 DispatchQueue.main.async {
                     if result {
                         self?.retweetButton.tintColor = .systemGreen
+                        tweetModel.isRetweetedByUser = true
                     }
                 }
             })

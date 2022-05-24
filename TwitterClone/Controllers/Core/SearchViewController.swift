@@ -11,7 +11,7 @@ final class SearchViewController: UIViewController {
 
 //MARK: - Setup
     
-    private let searchResultTweets: [Tweet] = []
+    private let searchResultTweets: [TweetModel] = []
     
     let searchController: UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
@@ -19,12 +19,6 @@ final class SearchViewController: UIViewController {
         vc.searchBar.searchBarStyle = .default
         vc.definesPresentationContext = true
         return vc
-    }()
-    
-    private let searchTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        return tableView
     }()
     
     private let searchTableViewPlaceholderImage: UIImageView = {
@@ -62,7 +56,6 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         self.tabBarController?.tabBar.isTranslucent = false
         configureSearchBar()
-        configureSearchTableView()
         configureNavbar()
         configureAddTweetButton()
         configurePlaceholderImageView()
@@ -71,8 +64,6 @@ final class SearchViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        searchTableView.frame = view.bounds
     }
 
 //MARK: - Configure Methods
@@ -81,12 +72,6 @@ final class SearchViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
-    }
-    
-    private func configureSearchTableView() {
-        view.addSubview(searchTableView)
-        searchTableView.delegate = self
-        searchTableView.dataSource = self
     }
     
     private func configurePlaceholderImageView() {
@@ -141,23 +126,6 @@ final class SearchViewController: UIViewController {
         //vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
-}
-
-//MARK: - TableView Methods
-
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResultTweets.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        
-        return cell
-    }
-    
 }
 
 //MARK: - SearchBar Methods

@@ -13,8 +13,8 @@ final class HomeViewController: UIViewController {
 
 //MARK: - Setup
     
-    public var tweets: [Tweet] = []
-    public var user = UserModel(id: nil, userName: "", userEmail: "")
+    public var tweetResponses: [TweetModel] = []
+    public var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
     
     private let twitterIcon: UIImageView = {
         let icon = UIImageView()
@@ -51,19 +51,21 @@ final class HomeViewController: UIViewController {
         configureNavbar()
         configureHomeFeedTableView()
         fetchData()
-        fetchUserData()
+        //fetchUserData()
         configureAddTweetButton()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTableView.frame = view.bounds
+        homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 30)
     }
     
+    //Whenever this screen comes into view
     override func viewDidAppear(_ animated: Bool) {
-           super.viewDidAppear(animated)
-           handleNotAuthenticated()
-       }
+        super.viewDidAppear(animated)
+        handleNotAuthenticated()
+        fetchUserData()
+    }
 
 //MARK: - Configure Methods
     
@@ -101,6 +103,56 @@ final class HomeViewController: UIViewController {
         addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
     }
     
+//MARK: - Fetch Methods
+    
+    private func fetchData() {
+        APICaller.shared.getSearch(with: "bitcoin") { [weak self] results in
+            switch results {
+            case .success(let tweets):
+                DispatchQueue.main.async {
+                    self?.tweetResponses = tweets
+                    self?.homeFeedTableView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func fetchUserData() {
+        //fetching the user's email
+        guard let user = Auth.auth().currentUser
+        else {
+            print("User is not signed in")
+            return
+        }
+        self.user.userEmail = user.email ?? "no email"
+        
+        //fetching the user's username
+        let email = user.email ?? "No email"
+        DatabaseManager.shared.getUsername(email: email, completion: {[weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let db_username):
+                    self?.user.userName = db_username
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        })
+        //fetching the user's handle
+        DatabaseManager.shared.getUserHandle(email: email, completion: {[weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let handle):
+                    self?.user.userHandle = handle
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        })
+    }
+    
 //MARK: - Action Methods
     
     private func handleNotAuthenticated() {
@@ -111,42 +163,6 @@ final class HomeViewController: UIViewController {
             loginVC.modalPresentationStyle = .fullScreen
             present(loginVC, animated: false)
         }
-        
-    }
-    
-    private func fetchData() {
-        APICaller.shared.getSearch(with: "bitcoin") { [weak self] results in
-            switch results {
-            case .success(let tweets):
-                DispatchQueue.main.async {
-                    self?.tweets = tweets
-                    self?.homeFeedTableView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func fetchUserData() {
-    
-        guard let user = Auth.auth().currentUser
-        else {
-            print("User is not signed in")
-            return
-        }
-        self.user.userEmail = user.email ?? "no email"
-        DatabaseManager.shared.getUsername(email: user.email ?? "No email", completion: {[weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let db_username):
-                    self?.user.userName = db_username
-                    print(db_username)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        })
     }
     
     @objc private func didTapAddTweetButton() {
@@ -163,26 +179,31 @@ final class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweets.count
+        return tweetResponses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell
         else {return UITableViewCell()}
-        
-        let id = tweets[indexPath.row].id ?? "unknown user"
-        let text = tweets[indexPath.row].text ?? "missing body"
-        let username = tweets[indexPath.row].username ?? "username"
-        
+                
         cell.delegate = self
-        cell.configure(with: HomeTweetViewCellViewModel(id: id, userName: username , userAvatar: nil, tweetBody: text, url_link: nil))
+        cell.configure(with: tweetResponses[indexPath.row])
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    //Hides the navBar as the user scrolls down (navigates down the page)
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //let defaultOffset = view.safeAreaInsets.top
+        let defaultOffset: CGFloat = -100
+        let offset = scrollView.contentOffset.y + defaultOffset
+
+        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
     }
 }
 
@@ -195,7 +216,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(with model: HomeTweetViewCellViewModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweet(with model: TweetModel, completion: @escaping (Bool) -> Void) {
         
         let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -225,10 +246,12 @@ extension HomeViewController: TweetTableViewCellDelegate {
 
 extension HomeViewController: AddTweetViewControllerDelegate {
     
-    func didTapTweetPublishButton(tweetBody: String) {
-        let addedTweet = Tweet(username: user.userName, id: nil, text: tweetBody, likes: 0)
-        print(user.userName)
-        tweets.insert(addedTweet, at: 0)
+    func didTapTweetPublishButton(tweet: TweetModel) {
+        //setting addedTweet as a var so I can update the username values
+        var addedTweet = tweet
+        addedTweet.username = user.userName
+        addedTweet.userHandle = user.userHandle
+        tweetResponses.insert(addedTweet, at: 0)
         homeFeedTableView.reloadData()
     }
     

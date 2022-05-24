@@ -55,28 +55,21 @@ class LoginViewController: UIViewController {
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = .systemBackground
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private let registerButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Register", for: UIControl.State.normal)
+        button.setTitle("Don't have an account? Register here!", for: UIControl.State.normal)
         button.setTitleColor(.label, for: .normal)
         button.backgroundColor = .systemBackground
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.secondaryLabel.cgColor
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
-    }()
-    
-    private let registerLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Don't have an account? Register here!"
-        label.numberOfLines = 1
-        label.tintColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
 //MARK: - View Methods
@@ -98,7 +91,6 @@ class LoginViewController: UIViewController {
         view.addSubview(passwordField)
         view.addSubview(loginButton)
         view.addSubview(registerButton)
-        view.addSubview(registerLabel)
     }
  
 //MARK: - Configure Methods
@@ -131,15 +123,11 @@ class LoginViewController: UIViewController {
             loginButton.widthAnchor.constraint(equalToConstant: size),
             loginButton.heightAnchor.constraint(equalToConstant: 40)
         ]
-        let registerLabelConstraints = [
-            registerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerLabel.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 60)
-        ]
         let registerButtonConstraints = [
             registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerButton.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 20),
+            registerButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 60),
             registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20),
-            registerButton.widthAnchor.constraint(equalToConstant: size),
+            //registerButton.widthAnchor.constraint(equalToConstant: size),
             registerButton.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(emailLabelConstraints)
@@ -147,7 +135,6 @@ class LoginViewController: UIViewController {
         NSLayoutConstraint.activate(passwordLabelConstraints)
         NSLayoutConstraint.activate(passwordFieldConstraints)
         NSLayoutConstraint.activate(loginButtonConstraints)
-        NSLayoutConstraint.activate(registerLabelConstraints)
         NSLayoutConstraint.activate(registerButtonConstraints)
     }
   
