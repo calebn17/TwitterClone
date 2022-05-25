@@ -64,11 +64,11 @@ struct TweetModel: Codable {
 }
 
 struct CommentsModel: Codable {
-    let id: String?
+    let commentId: Int?
     let username: String?
     let userHandle: String?
     let userAvatar: String?
-    let tweetBody: String?
+    let text: String?
     var isLikedByUser: Bool?
     var isRetweetedByUser: Bool?
     var likes: Int?

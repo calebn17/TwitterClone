@@ -221,6 +221,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
     func didTapCommentButton() {
         let vc = AddCommentViewController()
         vc.modalPresentationStyle = .fullScreen
+        vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
@@ -241,13 +242,13 @@ extension HomeViewController: TweetTableViewCellDelegate {
     
     func didTapLikeButton(liked: Bool, model: TweetModel) {
         if liked {
-            //like the tweet and add 1 to the count
-            let likedTweets = tweetResponses.filter {$0.tweetId == model.tweetId}
-            guard var likedTweet = likedTweets.first else {return}
-            var likesCount = likedTweet.likes ?? 0
-            likesCount += 1
-            likedTweet.likes = likesCount
-            homeFeedTableView.reloadData()
+//            //like the tweet and add 1 to the count
+//            let likedTweets = tweetResponses.filter {$0.tweetId == model.tweetId}
+//            guard var likedTweet = likedTweets.first else {return}
+//            var likesCount = likedTweet.likes ?? 0
+//            likesCount += 1
+//            likedTweet.likes = likesCount
+//            homeFeedTableView.reloadData()
         }
         else {
             //unlike tweet and subtract 1 from the count
@@ -273,6 +274,23 @@ extension HomeViewController: AddTweetViewControllerDelegate {
         tweetResponses.insert(addedTweet, at: 0)
         homeFeedTableView.reloadData()
     }
+}
+
+//MARK: - AddCommentViewControllerDelegate Methods
+extension HomeViewController: AddCommentViewControllerDelegate {
+    func didTapReplyButton(tweetBody: String) {
+        let commentID = Int.random(in: 0...100)
+        let addedComment = CommentsModel(commentId: commentID, username: user.userName, userHandle: user.userHandle, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, dateCreated: Date())
+        //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
+        
+        //For now I will insert this in the first tweet in the Home Screen
+        tweetResponses[0].comments?.append(addedComment)
+        print(tweetResponses[1].comments?.count)
+        homeFeedTableView.reloadData()
+        print(tweetResponses[0].comments?.count)
+    }
+    
+    
 }
 
 //MARK: - DataSource

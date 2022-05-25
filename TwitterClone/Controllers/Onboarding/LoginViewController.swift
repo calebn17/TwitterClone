@@ -127,7 +127,6 @@ class LoginViewController: UIViewController {
             registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             registerButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 60),
             registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20),
-            //registerButton.widthAnchor.constraint(equalToConstant: size),
             registerButton.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(emailLabelConstraints)

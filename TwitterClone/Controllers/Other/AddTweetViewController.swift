@@ -132,8 +132,10 @@ final class AddTweetViewController: UIViewController {
             //passing tweet body through
             self?.tweetBody = self?.tweetTextField.text
             guard let tweetBody = self?.tweetBody else {return}
-            //Username will be updated in the Home VC
-            let addedTweet = TweetModel(tweetId: Int.random(in: 0...100), username: nil, userHandle: nil, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, comments: nil, dateCreated: Date())
+            
+            //Username and handle will be updated in the Home VC
+            let addedTweetID = Int.random(in: 0...100)
+            let addedTweet = TweetModel(tweetId: addedTweetID, username: nil, userHandle: nil, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, comments: nil, dateCreated: Date())
             self?.delegate?.didTapTweetPublishButton(tweet: addedTweet)
         }
     }

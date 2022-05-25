@@ -63,6 +63,7 @@ final class AddCommentViewController: UIViewController {
         addSubViews()
         addConstraints()
         tweetTextField.delegate = self
+        tweetTextField.becomeFirstResponder()
         replyButton.addTarget(self, action: #selector(tappedReplyButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
@@ -138,6 +139,18 @@ extension AddCommentViewController: UITextFieldDelegate {
         replyButton.isEnabled = true
         tweetBody = textField.text
         tweetTextField.resignFirstResponder()
+        tappedReplyButton()
         return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text, !text.isEmpty else {
+            replyButton.backgroundColor = .systemGray
+            replyButton.isEnabled = false
+            return
+        }
+        replyButton.backgroundColor = .systemCyan
+        replyButton.isEnabled = true
+        tweetBody = textField.text
     }
 }
