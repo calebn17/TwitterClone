@@ -20,6 +20,10 @@ final class HomeViewController: UIViewController {
     public var tweetResponses: [TweetModel] = []
     private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
     
+    //Temporary collection to hold added comments
+    //Just to demonstrate functionality
+    private var addedComments = [CommentsModel]()
+    
     private let twitterIcon: UIImageView = {
         let icon = UIImageView()
         icon.image = UIImage(named: "twitterLogo")
@@ -203,6 +207,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        //push a new VC and pass the tweet that was selected and it's comments
+        let vc = SelectedTweetViewController()
+        navigationController?.pushViewController(UINavigationController(rootViewController: vc), animated: true)
     }
     
     //Hides the navBar as the user scrolls down (navigates down the page)
@@ -283,11 +291,9 @@ extension HomeViewController: AddCommentViewControllerDelegate {
         let addedComment = CommentsModel(commentId: commentID, username: user.userName, userHandle: user.userHandle, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, dateCreated: Date())
         //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
         
-        //For now I will insert this in the first tweet in the Home Screen
-        tweetResponses[0].comments?.append(addedComment)
-        print(tweetResponses[1].comments?.count)
+        //for now, will add the new comment to this collection to demonstrate functionality
+        addedComments.append(addedComment)
         homeFeedTableView.reloadData()
-        print(tweetResponses[0].comments?.count)
     }
     
     

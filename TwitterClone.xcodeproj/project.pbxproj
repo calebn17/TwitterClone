@@ -18,6 +18,8 @@
 		708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F32831A0E200978DD6 /* AddCommentViewController.swift */; };
 		AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */; };
 		AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */; };
+		AF1B4C1A283EE93100AC2510 /* SelectedTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */; };
+		AF1B4C1C283EEBEB00AC2510 /* SelectedTweetHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderView.swift */; };
 		AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED752824BCCF002E9264 /* TabBarViewController.swift */; };
 		AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED772824BD4A002E9264 /* HomeViewController.swift */; };
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
@@ -56,6 +58,8 @@
 		708C50F32831A0E200978DD6 /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_All_TableViewCell.swift; sourceTree = "<group>"; };
 		AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_Mentions_TableViewCell.swift; sourceTree = "<group>"; };
+		AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTweetViewController.swift; sourceTree = "<group>"; };
+		AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTweetHeaderView.swift; sourceTree = "<group>"; };
 		AF2DED752824BCCF002E9264 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		AF2DED772824BD4A002E9264 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 				708C50F128317A2200978DD6 /* AddTweetViewController.swift */,
 				708C50F32831A0E200978DD6 /* AddCommentViewController.swift */,
 				AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */,
+				AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -155,6 +160,7 @@
 			children = (
 				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
 				AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */,
+				AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderView.swift */,
 			);
 			path = "Header Views";
 			sourceTree = "<group>";
@@ -393,6 +399,7 @@
 				AFDBA22B2824B98B00085DDC /* ViewController.swift in Sources */,
 				AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */,
 				AFDBA2312824B98B00085DDC /* TwitterClone.xcdatamodeld in Sources */,
+				AF1B4C1A283EE93100AC2510 /* SelectedTweetViewController.swift in Sources */,
 				7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */,
 				3BC26E092829528C00A56D5C /* SearchResultsViewController.swift in Sources */,
 				7038FEAA2830597200715D54 /* SettingsHeaderView.swift in Sources */,
@@ -412,6 +419,7 @@
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
+				AF1B4C1C283EEBEB00AC2510 /* SelectedTweetHeaderView.swift in Sources */,
 				AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */,
 				AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */,
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
