@@ -10,7 +10,7 @@ import UIKit
 protocol TweetTableViewCellDelegate: AnyObject {
     func didTapCommentButton()
     func didTapRetweet(with model: TweetModel, completion: @escaping (Bool) -> Void)
-    func didTapLikeButton(liked: Bool)
+    func didTapLikeButton(liked: Bool, model: TweetModel)
     func didTapShareButton()
 }
 ///Individual Tweet Cell
@@ -19,10 +19,11 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Setup
     
     static let identifier = "HomeTweetTableViewCell"
-    
     public weak var delegate: TweetTableViewCellDelegate?
-    
     private var tweetModel: TweetModel?
+    private var likesCount = 0
+    private var commentsCount = 0
+    private var retweetsCount = 0
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
@@ -96,20 +97,38 @@ class TweetTableViewCell: UITableViewCell {
         button.tintColor = .label
         return button
     }()
+    
+    private let commentCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "10"
+        label.textColor = .secondaryLabel
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let likesCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "12"
+        label.textColor = .secondaryLabel
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let retweetsCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "14"
+        label.textColor = .secondaryLabel
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
   
 //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        //add contentView here so that autolayout constraints work and automatically resize
-        contentView.addSubview(userNameLabel)
-        contentView.addSubview(userImage)
-        contentView.addSubview(twitterTextLabel)
-        contentView.addSubview(userHandleLabel)
-        contentView.addSubview(commentButton)
-        contentView.addSubview(likeButton)
-        contentView.addSubview(retweetButton)
-        contentView.addSubview(shareButton)
+        addSubViews()
         configureConstraints()
         addActions()
     }
@@ -119,6 +138,22 @@ class TweetTableViewCell: UITableViewCell {
     }
     
 //MARK: - Configure
+    
+    private func addSubViews() {
+        //add contentView here so that autolayout constraints work and automatically resize
+        contentView.addSubview(userNameLabel)
+        contentView.addSubview(userImage)
+        contentView.addSubview(twitterTextLabel)
+        contentView.addSubview(userHandleLabel)
+        contentView.addSubview(commentButton)
+        contentView.addSubview(likeButton)
+        contentView.addSubview(retweetButton)
+        contentView.addSubview(shareButton)
+        contentView.addSubview(commentCountLabel)
+        contentView.addSubview(likesCountLabel)
+        contentView.addSubview(retweetsCountLabel)
+    }
+    
     private func configureConstraints() {
         
         let userImageConstraints = [
@@ -129,18 +164,15 @@ class TweetTableViewCell: UITableViewCell {
         ]
         let userNameLabelConstraints = [
             userNameLabel.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 20),
-            //userNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
         ]
         let twitterTextLabelConstraints = [
             twitterTextLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 20),
             twitterTextLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
             twitterTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
-            //twitterTextLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ]
         let userHandleLabelConstraints = [
             userHandleLabel.leadingAnchor.constraint(equalTo: userNameLabel.trailingAnchor, constant: 5),
-            //userHandleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             userHandleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
         ]
         let commentButtonConstraints = [
@@ -171,6 +203,24 @@ class TweetTableViewCell: UITableViewCell {
             shareButton.widthAnchor.constraint(equalToConstant: 20),
             shareButton.heightAnchor.constraint(equalToConstant: 20)
         ]
+        let commentCountLabelConstraints = [
+            commentCountLabel.topAnchor.constraint(equalTo: commentButton.topAnchor),
+            commentCountLabel.bottomAnchor.constraint(equalTo: commentButton.bottomAnchor),
+            commentCountLabel.leadingAnchor.constraint(equalTo: commentButton.trailingAnchor, constant: 10),
+            commentCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: likeButton.leadingAnchor)
+        ]
+        let likeCountLabelConstraints = [
+            likesCountLabel.topAnchor.constraint(equalTo: likeButton.topAnchor),
+            likesCountLabel.bottomAnchor.constraint(equalTo: likeButton.bottomAnchor),
+            likesCountLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 10),
+            likesCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: retweetButton.leadingAnchor)
+        ]
+        let retweetCountLabelConstraints = [
+            retweetsCountLabel.topAnchor.constraint(equalTo: retweetButton.topAnchor),
+            retweetsCountLabel.bottomAnchor.constraint(equalTo: retweetButton.bottomAnchor),
+            retweetsCountLabel.leadingAnchor.constraint(equalTo: retweetButton.trailingAnchor, constant: 10),
+            retweetsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: shareButton.leadingAnchor)
+        ]
         NSLayoutConstraint.activate(userImageConstraints)
         NSLayoutConstraint.activate(userNameLabelConstraints)
         NSLayoutConstraint.activate(twitterTextLabelConstraints)
@@ -179,6 +229,9 @@ class TweetTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(likeButtonConstraints)
         NSLayoutConstraint.activate(retweetButtonConstraints)
         NSLayoutConstraint.activate(shareButtonConstraints)
+        NSLayoutConstraint.activate(commentCountLabelConstraints)
+        NSLayoutConstraint.activate(likeCountLabelConstraints)
+        NSLayoutConstraint.activate(retweetCountLabelConstraints)
     }
     
     public func configure(with model: TweetModel){
@@ -186,6 +239,15 @@ class TweetTableViewCell: UITableViewCell {
         userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
         userNameLabel.text = model.username ?? "Unknown"
         twitterTextLabel.text = model.text
+        
+        commentsCount = model.comments?.count ?? 0
+        commentCountLabel.text = String(commentsCount)
+        
+        likesCount = model.likes ?? 0
+        likesCountLabel.text = String(likesCount)
+        
+        retweetsCount = model.retweets ?? 0
+        retweetsCountLabel.text = String(retweetsCount)
     }
  
 //MARK: - Action Methods
@@ -203,17 +265,19 @@ class TweetTableViewCell: UITableViewCell {
     
     @objc private func tappedLikeButton() {
         
+        guard let tweetModel = tweetModel else {return}
+
         if likeButton.tintColor == .red {
             let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .label
-            delegate?.didTapLikeButton(liked: false)
+            delegate?.didTapLikeButton(liked: false, model: tweetModel)
         }
         else {
             let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .red
-            delegate?.didTapLikeButton(liked: true)
+            delegate?.didTapLikeButton(liked: true, model: tweetModel)
         }
     }
     

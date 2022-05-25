@@ -229,7 +229,6 @@ extension HomeViewController: TweetTableViewCellDelegate {
         let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-            print("retweet")
             completion(true)
         }))
         actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
@@ -240,8 +239,19 @@ extension HomeViewController: TweetTableViewCellDelegate {
         present(actionSheet, animated: true, completion: nil)
     }
     
-    func didTapLikeButton(liked: Bool) {
-        //update like number
+    func didTapLikeButton(liked: Bool, model: TweetModel) {
+        if liked {
+            //like the tweet and add 1 to the count
+            let likedTweets = tweetResponses.filter {$0.tweetId == model.tweetId}
+            guard var likedTweet = likedTweets.first else {return}
+            var likesCount = likedTweet.likes ?? 0
+            likesCount += 1
+            likedTweet.likes = likesCount
+            homeFeedTableView.reloadData()
+        }
+        else {
+            //unlike tweet and subtract 1 from the count
+        }
     }
     
     func didTapShareButton() {

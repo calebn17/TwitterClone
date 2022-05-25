@@ -20,7 +20,6 @@ public class DatabaseManager {
     /// - email: String representing email
     /// - username: String representing username
     public func canCreateNewUser(with email: String, username: String, userHandle: String, completion: (Bool) -> Void) {
-        
         completion(true)
     }
     
@@ -46,6 +45,10 @@ public class DatabaseManager {
         }
     }
     
+    ///Fetches a User's username from the DB
+    ///- Parameters
+    ///- email
+    ///- completion: Async callback for result as a Result
     public func getUsername(email: String, completion: @escaping (Result<String, Error>) -> Void){
         var username: String = ""
         let key = email.safeDatabaseKey()
@@ -59,6 +62,10 @@ public class DatabaseManager {
         }
     }
     
+    ///Fetches a User's handle from the DB
+    ///- Parameters
+    ///- email
+    ///- completion: Async callback for result as a Result
     public func getUserHandle(email: String, completion: @escaping (Result<String, Error>) -> Void){
         var userHandle: String = ""
         let key = email.safeDatabaseKey()

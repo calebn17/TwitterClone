@@ -76,8 +76,14 @@ class SettingsHeaderView: UIView {
         backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
+        
         fetchUserData()
-        //configure()
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("Logged In"), object: nil, queue: nil) { [weak self] _ in
+            self?.fetchUserData()
+        }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("registered"), object: nil, queue: nil) { [weak self] _ in
+            self?.fetchUserData()
+        }
         
         accountsButton.addTarget(self, action: #selector(didTapAccountsButton), for: .touchUpInside)
     }
@@ -140,11 +146,6 @@ class SettingsHeaderView: UIView {
         NSLayoutConstraint.activate(followingButtonConstraints)
         NSLayoutConstraint.activate(followersButtonConstraints)
         NSLayoutConstraint.activate(accountsButtonConstraints)
-    }
-    
-    private func configure() {
-        userNameButton.setTitle(user.userName, for: .normal)
-        userHandleButton.setTitle(user.userHandle, for: .normal)
     }
     
     private func fetchUserData() {

@@ -50,7 +50,7 @@ struct HomeTweetViewCellViewModel {
 }
 
 struct TweetModel: Codable {
-    let id: String?
+    let tweetId: Int?
     var username: String?
     var userHandle: String?
     let userAvatar: String?

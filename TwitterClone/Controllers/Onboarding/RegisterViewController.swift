@@ -183,6 +183,7 @@ class RegisterViewController: UIViewController {
                 if registered {
                     self?.dismiss(animated: true)
                     self?.delegate?.didRegisterSuccessfully()
+                    NotificationCenter.default.post(name: NSNotification.Name("registered"), object: nil)
                 }
                 else {
                     //something failed

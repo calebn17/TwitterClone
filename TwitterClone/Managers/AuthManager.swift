@@ -26,13 +26,10 @@ public class AuthManager {
                         completion(false)
                         return
                     }
-                    print("new user is successfully created")
-               
                     //insert account to db
                     DatabaseManager.shared.insertNewUser(with: email, username: username, userHandle: userHandle) { inserted in
                         if inserted {
                             //successfully inserted to DB
-                            print("successfully inserted new user to DB")
                             completion(true)
                             return
                         }
@@ -84,26 +81,4 @@ public class AuthManager {
             return
         }
     }
-    
-//    public func getCurrentUser() {
-//        var email: String = ""
-//        var username: String = ""
-//        guard let user = Auth.auth().currentUser
-//        else {
-//            print("User is not signed in")
-//            return
-//        }
-//        email = user.email ?? "no email"
-//        DatabaseManager.shared.getUsername(email: email, completion: { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let db_username):
-//                    username = db_username
-//                    print("username: \(username)")
-//                case .failure(let error):
-//                    print(error.localizedDescription)
-//                }
-//            }
-//        })
-//    }
 }

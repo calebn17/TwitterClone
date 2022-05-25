@@ -166,6 +166,7 @@ class LoginViewController: UIViewController {
                     //user logged in
                     //dismisses the LoginVC so the HomeVC will be shown
                     self?.dismiss(animated: true, completion: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name("Logged In"), object: nil)
                 }
                 else {
                     //error occured
