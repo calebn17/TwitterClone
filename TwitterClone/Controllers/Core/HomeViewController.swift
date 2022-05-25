@@ -8,13 +8,17 @@
 import UIKit
 import FirebaseAuth
 
+protocol UserDataSource: AnyObject {
+    var userModel: UserModel? {get}
+}
+
 ///Home Screen
 final class HomeViewController: UIViewController {
 
 //MARK: - Setup
-    
+    static let shared = HomeViewController()
     public var tweetResponses: [TweetModel] = []
-    public var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
+    private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
     
     private let twitterIcon: UIImageView = {
         let icon = UIImageView()
@@ -119,7 +123,7 @@ final class HomeViewController: UIViewController {
         }
     }
     
-    private func fetchUserData() {
+    public func fetchUserData() {
         //fetching the user's email
         guard let user = Auth.auth().currentUser
         else {
@@ -146,11 +150,15 @@ final class HomeViewController: UIViewController {
                 switch result {
                 case .success(let handle):
                     self?.user.userHandle = handle
+                    let view = SettingsHeaderView()
+                    view.datasource = self
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         })
+        
+        
     }
     
 //MARK: - Action Methods
@@ -244,6 +252,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
     }
 }
 
+//MARK: - AddTweetViewControllerDelegate Methods
 extension HomeViewController: AddTweetViewControllerDelegate {
     
     func didTapTweetPublishButton(tweet: TweetModel) {
@@ -254,6 +263,11 @@ extension HomeViewController: AddTweetViewControllerDelegate {
         tweetResponses.insert(addedTweet, at: 0)
         homeFeedTableView.reloadData()
     }
-    
-    
+}
+
+//MARK: - DataSource
+extension HomeViewController: UserDataSource {
+    var userModel: UserModel? {
+        return self.user
+    }
 }
