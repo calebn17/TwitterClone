@@ -7,7 +7,9 @@
 
 import UIKit
 
-class SelectedTweetHeaderView: UIView {
+class SelectedTweetHeaderTableViewCell: UITableViewCell {
+    
+    static let identifier = "SelectedTweetHeaderTableViewCell"
     
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -25,9 +27,8 @@ class SelectedTweetHeaderView: UIView {
         let label = UILabel()
         label.text = "Username"
         label.numberOfLines = 1
-        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.tintColor = .label
-        label.backgroundColor = .red
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -37,8 +38,8 @@ class SelectedTweetHeaderView: UIView {
         let label = UILabel()
         label.text = "@userhandle"
         label.numberOfLines = 1
-        label.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        label.tintColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.textColor = .systemGray
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -48,7 +49,8 @@ class SelectedTweetHeaderView: UIView {
         let label = UILabel()
         label.text = "Text Body of the tweet"
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 25, weight: .regular)
+        label.clipsToBounds = true
+        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.tintColor = .label
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +96,7 @@ class SelectedTweetHeaderView: UIView {
     private let dateCreatedLabel: UILabel = {
         let label = UILabel()
         label.text = "Date Value"
-        label.tintColor = .systemGray
+        label.textColor = .systemGray
         label.numberOfLines = 1
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -104,9 +106,9 @@ class SelectedTweetHeaderView: UIView {
     
     private var tweet: TweetModel?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .red
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .systemBackground
         addSubViews()
         addConstraints()
     }
@@ -116,26 +118,26 @@ class SelectedTweetHeaderView: UIView {
     }
     
     private func addSubViews() {
-        addSubview(profileImageView)
-        addSubview(usernameLabel)
-        addSubview(userHandleLabel)
-        addSubview(tweetBodyLabel)
-        addSubview(commentButton)
-        addSubview(likeButton)
-        addSubview(retweetButton)
-        addSubview(shareButton)
-        addSubview(dateCreatedLabel)
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(userHandleLabel)
+        contentView.addSubview(tweetBodyLabel)
+        contentView.addSubview(commentButton)
+        contentView.addSubview(likeButton)
+        contentView.addSubview(retweetButton)
+        contentView.addSubview(shareButton)
+        contentView.addSubview(dateCreatedLabel)
     }
     
     private func addConstraints() {
         let profileImageViewConstraints = [
-            profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             profileImageView.heightAnchor.constraint(equalToConstant: K.userImageSize),
             profileImageView.widthAnchor.constraint(equalToConstant: K.userImageSize)
         ]
         let usernameLabelConstraints = [
-            usernameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10)
         ]
         let userHandleLabelConstraints = [
@@ -144,29 +146,33 @@ class SelectedTweetHeaderView: UIView {
         ]
         let tweetBodyLabelConstraints = [
             tweetBodyLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20),
-            tweetBodyLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            tweetBodyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 20)
+            tweetBodyLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            tweetBodyLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
         ]
         let dateCreatedLabelConstraints = [
             dateCreatedLabel.topAnchor.constraint(equalTo: tweetBodyLabel.bottomAnchor, constant: 30),
-            dateCreatedLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
+            dateCreatedLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ]
-        let spaceBetweenButtons = (width - 20*4)/5
+        let spaceBetweenButtons = (contentView.width - shareButton.width*4)/5
         let commentButtonConstraints = [
-            commentButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: spaceBetweenButtons),
-            commentButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30)
+            commentButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: spaceBetweenButtons),
+            commentButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30),
+            commentButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ]
         let retweetButtonConstraints = [
             retweetButton.leadingAnchor.constraint(equalTo: commentButton.trailingAnchor, constant: spaceBetweenButtons),
-            retweetButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30)
+            retweetButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30),
+            retweetButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ]
         let likeButtonConstraints = [
             likeButton.leadingAnchor.constraint(equalTo: retweetButton.trailingAnchor, constant: spaceBetweenButtons),
-            likeButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30)
+            likeButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30),
+            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ]
         let shareButtonConstraints = [
             shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: spaceBetweenButtons),
-            shareButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30)
+            shareButton.topAnchor.constraint(equalTo: dateCreatedLabel.bottomAnchor, constant: 30),
+            shareButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ]
         NSLayoutConstraint.activate(profileImageViewConstraints)
         NSLayoutConstraint.activate(usernameLabelConstraints)
@@ -182,6 +188,8 @@ class SelectedTweetHeaderView: UIView {
     public func configure(with tweet: TweetModel) {
         self.tweet = tweet
         tweetBodyLabel.text = tweet.text
+        usernameLabel.text = tweet.username ?? "UserName"
+        userHandleLabel.text = "@\(tweet.userHandle ?? "userhandle")"
     }
     
 }

@@ -21,6 +21,7 @@ class TweetTableViewCell: UITableViewCell {
     static let identifier = "HomeTweetTableViewCell"
     public weak var delegate: TweetTableViewCellDelegate?
     private var tweetModel: TweetModel?
+    private var commentModel: CommentsModel?
     private var likesCount = 0
     private var commentsCount = 0
     private var retweetsCount = 0
@@ -128,6 +129,7 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        //contentView.backgroundColor = .systemBackground
         addSubViews()
         configureConstraints()
         addActions()
@@ -249,6 +251,19 @@ class TweetTableViewCell: UITableViewCell {
         retweetsCount = model.retweets ?? 0
         retweetsCountLabel.text = String(retweetsCount)
     }
+    
+    public func configureComment(with model: CommentsModel){
+        commentModel = model
+        userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
+        userNameLabel.text = model.username ?? "Unknown"
+        twitterTextLabel.text = model.text
+    
+        likesCount = model.likes ?? 0
+        likesCountLabel.text = String(likesCount)
+        
+        retweetsCount = model.retweets ?? 0
+        retweetsCountLabel.text = String(retweetsCount)
+    }
  
 //MARK: - Action Methods
     
@@ -265,19 +280,17 @@ class TweetTableViewCell: UITableViewCell {
     
     @objc private func tappedLikeButton() {
         
-        guard let tweetModel = tweetModel else {return}
-
         if likeButton.tintColor == .red {
             let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .label
-            delegate?.didTapLikeButton(liked: false, model: tweetModel)
+            //delegate?.didTapLikeButton(liked: false, model: tweetModel)
         }
         else {
             let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .red
-            delegate?.didTapLikeButton(liked: true, model: tweetModel)
+            //delegate?.didTapLikeButton(liked: true, model: tweetModel)
         }
     }
     
