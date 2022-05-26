@@ -209,18 +209,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         //push a new VC and pass the tweet that was selected and it's comments
-        let vc = SelectedTweetViewController()
-        navigationController?.pushViewController(UINavigationController(rootViewController: vc), animated: true)
+        let vc = SelectedTweetViewController(with: tweetResponses[indexPath.row])
+        vc.title = "Tweet"
+        //dont make the root controller the "vc". it will inherit the nav bar from the parent
+        navigationController?.pushViewController(vc, animated: true)
+        //show(vc, sender: self)
     }
     
-    //Hides the navBar as the user scrolls down (navigates down the page)
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //let defaultOffset = view.safeAreaInsets.top
-        let defaultOffset: CGFloat = -100
-        let offset = scrollView.contentOffset.y + defaultOffset
-
-        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
-    }
+//    //Hides the navBar as the user scrolls down (navigates down the page)
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        //let defaultOffset = view.safeAreaInsets.top
+//        let defaultOffset: CGFloat = -100
+//        let offset = scrollView.contentOffset.y + defaultOffset
+//
+//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
+//    }
 }
 
 //MARK: - TweetTableViewCellDelegate Methods

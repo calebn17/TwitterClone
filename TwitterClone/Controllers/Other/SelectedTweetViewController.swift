@@ -15,15 +15,42 @@ class SelectedTweetViewController: UIViewController {
         return tableView
     }()
     
-    private let headerUIView: SelectedTweetHeaderView? = nil
+    private var tweet: TweetModel?
+    private var headerView: SelectedTweetHeaderView?
+    
+    init(with tweet: TweetModel){
+        self.tweet = tweet
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        selectedTweetTableView.tableHeaderView = headerUIView
-        
+        title = "Tweet"
+        configureHeaderView()
     }
     
+    private func configureHeaderView() {
+        headerView = SelectedTweetHeaderView(frame: CGRect(x: 0, y: 0, width: view.width, height: 0))
+        selectedTweetTableView.tableHeaderView = headerView
+        guard let headerView = headerView, let tweet = self.tweet else {return}
+        view.addSubview(headerView)
+        headerView.configure(with: tweet)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let headerViewConstraints = [
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 120),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.widthAnchor.constraint(equalToConstant: view.width)
+        ]
+        NSLayoutConstraint.activate(headerViewConstraints)
+    }
+    
+   
 
    
 
