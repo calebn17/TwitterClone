@@ -244,6 +244,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
             completion(true)
         }))
         actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
+            //need to pass in the text body here
             let vc = AddTweetViewController()
             vc.modalPresentationStyle = .fullScreen
             self?.present(vc, animated: true, completion: nil)
@@ -271,6 +272,18 @@ extension HomeViewController: TweetTableViewCellDelegate {
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true
         present(shareAction, animated: true, completion: nil)
+    }
+    
+    func didTapLikeButtonInComment(liked: Bool, model: CommentsModel) {
+        //For SelectedTweetVC
+        //have this stubbed out to just simply conform to the delegate
+        //not looking to do anything here
+    }
+    
+    func didTapRetweetInComment(with model: CommentsModel, completion: @escaping (Bool) -> Void) {
+        //For SelectedTweetVC
+        //have this stubbed out to just simply conform to the delegate
+        //not looking to do anything here
     }
 }
 

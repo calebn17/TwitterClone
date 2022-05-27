@@ -16,9 +16,7 @@ final class SettingsViewController: UIViewController {
     struct Constants {
         static let rowHeight: CGFloat = 70
     }
-    
     private var settingsModel: [SettingsModel] = []
-    
     private var headerView: SettingsHeaderView?
     
     private let settingsTableView: UITableView = {
@@ -60,7 +58,6 @@ final class SettingsViewController: UIViewController {
             headerView.widthAnchor.constraint(equalToConstant: view.width)
         ]
         NSLayoutConstraint.activate(headerViewConstraints)
-        
     }
     
     private func configureTableView() {
@@ -77,7 +74,6 @@ final class SettingsViewController: UIViewController {
             settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
         ]
         NSLayoutConstraint.activate(settingsTableViewConstraints)
-        
     }
     
     private func configureSettingsSections() {
@@ -89,15 +85,11 @@ final class SettingsViewController: UIViewController {
         settingsModel.append(SettingsModel(title: "Moments", icon: "bolt"))
         settingsModel.append(SettingsModel(title: "Purchases", icon: "cart"))
         settingsModel.append(SettingsModel(title: "Monetization", icon: "dollarsign.square"))
-        
         settingsModel.append(SettingsModel(title: "Twitter for Professionals", icon: "airplane"))
-        
         settingsModel.append(SettingsModel(title: "Settings and privacy", icon: nil))
         settingsModel.append(SettingsModel(title: "Help Center", icon: nil))
         settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
     }
-    
-    
     
 //MARK: - Action Methods
     
@@ -137,7 +129,6 @@ final class SettingsViewController: UIViewController {
                 }
             }
         }))
-        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
