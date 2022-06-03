@@ -17,7 +17,6 @@ class SettingsHeaderView: UIView {
 //MARK: - Setup
     
     public weak var delegate: SettingsHeaderViewDelegate?
-    public weak var datasource: UserDataSource?
     private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
     
     private let userImageView: UIImageView = {
@@ -44,7 +43,7 @@ class SettingsHeaderView: UIView {
         return button
     }()
     
-    private let userNameButton: UIButton = {
+    public let userNameButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("User Name", for: .normal)
@@ -52,7 +51,7 @@ class SettingsHeaderView: UIView {
         return button
     }()
     
-    private let userHandleButton: UIButton = {
+    public let userHandleButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("@userHandle", for: .normal)
@@ -76,21 +75,15 @@ class SettingsHeaderView: UIView {
         backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
-        
-        fetchUserData()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("Logged In"), object: nil, queue: nil) { [weak self] _ in
-            self?.fetchUserData()
-        }
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("registered"), object: nil, queue: nil) { [weak self] _ in
-            self?.fetchUserData()
-        }
-        
+        userNameButton.setTitle(UserDefaults.standard.string(forKey: "username"), for: .normal)
+        userHandleButton.setTitle(UserDefaults.standard.string(forKey: "userHandle"), for: .normal)
         accountsButton.addTarget(self, action: #selector(didTapAccountsButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -148,41 +141,41 @@ class SettingsHeaderView: UIView {
         NSLayoutConstraint.activate(accountsButtonConstraints)
     }
     
-    private func fetchUserData() {
-        //fetching the user's email
-        guard let user = Auth.auth().currentUser
-        else {
-            print("User is not signed in")
-            return
-        }
-        self.user.userEmail = user.email ?? "no email"
-        
-        //fetching the user's username
-        let email = user.email ?? "No email"
-        DatabaseManager.shared.getUsername(email: email, completion: {[weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let db_username):
-                    self?.user.userName = db_username
-                    self?.userNameButton.setTitle(db_username, for: .normal)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        })
-        //fetching the user's handle
-        DatabaseManager.shared.getUserHandle(email: email, completion: {[weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let handle):
-                    self?.user.userHandle = handle
-                    self?.userHandleButton.setTitle(handle, for: .normal)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        })
-    }
+//    private func fetchUserData() {
+//        //fetching the user's email
+//        guard let user = Auth.auth().currentUser
+//        else {
+//            print("User is not signed in")
+//            return
+//        }
+//        self.user.userEmail = user.email ?? "no email"
+//
+//        //fetching the user's username
+//        let email = user.email ?? "No email"
+//        DatabaseManager.shared.getUsername(email: email, completion: {[weak self] result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let db_username):
+//                    self?.user.userName = db_username
+//                    self?.userNameButton.setTitle(db_username, for: .normal)
+//                case .failure(let error):
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        })
+//        //fetching the user's handle
+//        DatabaseManager.shared.getUserHandle(email: email, completion: {[weak self] result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let handle):
+//                    self?.user.userHandle = handle
+//                    self?.userHandleButton.setTitle(handle, for: .normal)
+//                case .failure(let error):
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        })
+//    }
     
 //MARK: - Action Methods
     

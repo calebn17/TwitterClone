@@ -45,6 +45,27 @@ public class DatabaseManager {
         }
     }
     
+    func postTweet(with model: TweetModel, completion: @escaping (Bool) -> Void) {
+        database.child("tweets").child("tweet").setValue([
+            "tweetId": model.tweetId ?? 0,
+            "username": model.username ?? "",
+            "userHandle": model.userHandle ?? "",
+            "text": model.text ?? ""
+        ]) { error, _ in
+                
+            if error == nil {
+                //succeeded
+                completion(true)
+                return
+            }
+            else {
+                //failed
+                completion(false)
+                return
+            }
+        }
+    }
+    
     ///Fetches a User's username from the DB
     ///- Parameters
     ///- email

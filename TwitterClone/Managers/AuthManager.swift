@@ -59,6 +59,7 @@ public class AuthManager {
                     return
                 }
                 //successfully logged in
+                UserDefaults.standard.set(username, forKey: "username")
                 completion(true)
             }
         }

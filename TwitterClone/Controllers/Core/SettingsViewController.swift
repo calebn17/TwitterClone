@@ -40,6 +40,12 @@ final class SettingsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        headerView?.userHandleButton.setTitle(UserDefaults.standard.string(forKey: "userHandle"), for: .normal)
+        headerView?.userNameButton.setTitle(UserDefaults.standard.string(forKey: "username"), for: .normal)
+    }
 
 //MARK: - Configure Methods
     

@@ -8,10 +8,6 @@
 import UIKit
 import FirebaseAuth
 
-protocol UserDataSource: AnyObject {
-    var userModel: UserModel? {get}
-}
-
 ///Home Screen
 final class HomeViewController: UIViewController {
 
@@ -59,7 +55,6 @@ final class HomeViewController: UIViewController {
         configureNavbar()
         configureHomeFeedTableView()
         fetchData()
-        //fetchUserData()
         configureAddTweetButton()
     }
     
@@ -143,6 +138,7 @@ final class HomeViewController: UIViewController {
                 switch result {
                 case .success(let db_username):
                     self?.user.userName = db_username
+                    UserDefaults.standard.set(db_username, forKey: "username")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -154,15 +150,12 @@ final class HomeViewController: UIViewController {
                 switch result {
                 case .success(let handle):
                     self?.user.userHandle = handle
-                    let view = SettingsHeaderView()
-                    view.datasource = self
+                    UserDefaults.standard.set(handle, forKey: "userHandle")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         })
-        
-        
     }
     
 //MARK: - Action Methods
@@ -296,6 +289,14 @@ extension HomeViewController: AddTweetViewControllerDelegate {
         addedTweet.username = user.userName
         addedTweet.userHandle = user.userHandle
         tweetResponses.insert(addedTweet, at: 0)
+        DatabaseManager.shared.postTweet(with: addedTweet) { success in
+            if success {
+                print("Tweet saved")
+            }
+            else {
+                print("Tweet was not saved: error")
+            }
+        }
         homeFeedTableView.reloadData()
     }
 }
@@ -313,11 +314,4 @@ extension HomeViewController: AddCommentViewControllerDelegate {
     }
     
     
-}
-
-//MARK: - DataSource
-extension HomeViewController: UserDataSource {
-    var userModel: UserModel? {
-        return self.user
-    }
 }
