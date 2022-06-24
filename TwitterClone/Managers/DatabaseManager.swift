@@ -7,11 +7,13 @@
 
 import Foundation
 import FirebaseDatabase
+import UIKit
 
 public class DatabaseManager {
     
     static let shared = DatabaseManager()
     private let database = Database.database().reference()
+    private init() {}
     
 //MARK: - Public Methods
     
@@ -23,31 +25,60 @@ public class DatabaseManager {
         completion(true)
     }
     
-    /// Inserts new user to DB
+    /// Inserts user to DB
     /// - Parameters
     /// - email: String representing email
     /// - username: String representing username
     /// - completion: Async callback for result if database entry succeeded
-    public func insertNewUser(with email: String, username: String, userHandle: String, completion: @escaping (Bool) -> Void) {
+    public func insertUser(with email: String, username: String, userHandle: String, completion: @escaping (Bool) -> Void) {
         //The DB doesnt like "." or "@" in key values so we have to replace those with "-" in the String extension
-        let key = email.safeDatabaseKey()
-        database.child(key).setValue(["username": username, "userHandle": userHandle]) { error, _ in
-            if error == nil {
-                //succeeded
-                completion(true)
+        let userEmail = email.safeDatabaseKey()
+        
+        database.child("users").observeSingleEvent(of: .value) { [weak self] snapshot in
+            guard var usersDictionary = snapshot.value as? [String: Any] else {
+                //There are no users yet so we can just set the value
+                let newUserDictionary =
+                    [
+                        userEmail: [
+                            "username": username,
+                            "userHandle": userHandle
+                        ]
+                    ]
+                self?.database.child("users").setValue(newUserDictionary) { error, _ in
+                    completion(error == nil)
+                }
                 return
             }
-            else {
-                //failed
-                completion(false)
-                return
-            }
+            //user collection already exists so lets add a new key:value into it
+            usersDictionary[userEmail] = ["username": username, "userHandle": userHandle]
+            self?.database.child("users").setValue(usersDictionary, withCompletionBlock: { error, _ in
+                completion(error == nil)
+            })
         }
     }
     
-    func postTweet(with model: TweetModel, completion: @escaping (Bool) -> Void) {
+    func insertTweet(with model: TweetModel, completion: @escaping (Bool) -> Void) {
+        
+        //inserting tweet id in the tweet's user's metadata
+        guard let userEmail = UserDefaults.standard.string(forKey: "username") else {return}
+        database.child("users").child(userEmail).child("tweetIds").observeSingleEvent(of: .value) { snapshot in
+            guard var tweetIdDictionary = snapshot.value as? [String: [String]] else {
+                let tweetIdDictionary = ["tweetIds": [model.tweetId]]
+                self.database.child("users").setValue(tweetIdDictionary) { error, _ in
+                    completion(error == nil)
+                }
+                return
+            }
+            tweetIdDictionary["tweetIds"]?.append(model.tweetId ?? "")
+            self.database.child("users").child("tweetIds").setValue(tweetIdDictionary) { error, _ in
+                completion(error == nil)
+            }
+            
+        }
+        
+        //inserting tweet in the tweet collection
         database.child("tweets").child("tweet").setValue([
-            "tweetId": model.tweetId ?? 0,
+            "tweetId": model.tweetId,
             "username": model.username ?? "",
             "userHandle": model.userHandle ?? "",
             "text": model.text ?? ""

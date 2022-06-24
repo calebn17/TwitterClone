@@ -283,13 +283,25 @@ extension HomeViewController: TweetTableViewCellDelegate {
 //MARK: - AddTweetViewControllerDelegate Methods
 extension HomeViewController: AddTweetViewControllerDelegate {
     
-    func didTapTweetPublishButton(tweet: TweetModel) {
+    func didTapTweetPublishButton(tweetBody: String) {
         //setting addedTweet as a var so I can update the username values
-        var addedTweet = tweet
-        addedTweet.username = user.userName
-        addedTweet.userHandle = user.userHandle
+        let addedTweet = TweetModel(
+            tweetId: UUID().uuidString,
+            username: user.userName,
+            userHandle: user.userHandle,
+            userEmail: user.userEmail,
+            userAvatar: nil,
+            text: tweetBody,
+            isLikedByUser: false,
+            isRetweetedByUser: false,
+            likes: 0,
+            retweets: 0,
+            comments: nil,
+            dateCreated: Date()
+        )
+        
         tweetResponses.insert(addedTweet, at: 0)
-        DatabaseManager.shared.postTweet(with: addedTweet) { success in
+        DatabaseManager.shared.insertTweet(with: addedTweet) { success in
             if success {
                 print("Tweet saved")
             }
