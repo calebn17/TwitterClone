@@ -17,8 +17,7 @@ final class APICaller {
     private init() {}
     
     public func getSearch(with query: String, completion: @escaping (Result<[TweetModel], Error>) -> Void) {
-        createRequest(with:
-                        URL(string: "\(K.baseURL)tweets/search/recent?query=\(query)&max_results=30"), type: .GET) { request in
+        createRequest(with:URL(string: "\(K.baseURL)tweets/search/recent?query=\(query)&max_results=30"), type: .GET) { request in
             
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {

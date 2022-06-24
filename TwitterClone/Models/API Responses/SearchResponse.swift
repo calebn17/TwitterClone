@@ -11,19 +11,10 @@ struct SearchResponse: Codable {
     let data: [TweetModel]
 }
 
-//struct TweetResponse: Codable {
-//    let username: String?
-//    let id: String?
-//    let text: String?
-//    let likes: Int?
-//    let userHandle: String?
-//    let userAvatar: String?
-//    let isLikedByUser: Bool?
-//    let isRetweetedByUser: Bool?
-//    let retweets: Int?
-//    let comments: [CommentsModel]?
-//    let dateCreated: Date?
-//}
+struct TweetResponse: Codable {
+    let id: String?
+    let text: String?
+}
 
 
 //let id: String?

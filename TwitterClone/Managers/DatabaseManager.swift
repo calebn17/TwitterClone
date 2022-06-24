@@ -138,6 +138,32 @@ public class DatabaseManager {
         }
     }
     
+    func getTweets(completion: @escaping (Result<[TweetModel], Error>) -> Void) {
+        database.child("tweets").observeSingleEvent(of: .value) { snapshot in
+            guard let tweets = snapshot.value as? [String: [String: Any]] else {
+                completion(.failure(APIError.failedtoGetData))
+                return
+            }
+            let tweetModels: [TweetModel] = tweets.compactMap({
+                return TweetModel(
+                    tweetId: $0.key,
+                    username: $0.value["username"] as? String ,
+                    userHandle: $0.value["userHandle"] as? String,
+                    userEmail: nil,
+                    userAvatar: nil,
+                    text: $0.value["text"] as? String,
+                    isLikedByUser: nil,
+                    isRetweetedByUser: nil,
+                    likes: nil,
+                    retweets: nil,
+                    comments: nil ,
+                    dateCreated: nil
+                )
+            })
+            completion(.success(tweetModels))
+        }
+    }
+    
 //MARK: - Private Methods
     
   

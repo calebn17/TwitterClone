@@ -14,7 +14,6 @@ final class HomeViewController: UIViewController {
 //MARK: - Setup
     static let shared = HomeViewController()
     public var tweetResponses: [TweetModel] = []
-    //private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
     
     //Temporary collection to hold added comments
     //Just to demonstrate functionality
