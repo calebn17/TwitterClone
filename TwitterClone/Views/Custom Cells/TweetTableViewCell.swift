@@ -340,7 +340,6 @@ class TweetTableViewCell: UITableViewCell {
                         if result {
                             self?.retweetButton.tintColor = .systemGreen
                             tweetModel.isRetweetedByUser = true
-                            print(tweetModel.isRetweetedByUser)
                         }
                     }
                 })

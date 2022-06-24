@@ -65,7 +65,7 @@ struct TweetModel: Codable {
 }
 
 struct CommentsModel: Codable {
-    let commentId: Int?
+    let commentId: String?
     let username: String?
     let userHandle: String?
     let userAvatar: String?

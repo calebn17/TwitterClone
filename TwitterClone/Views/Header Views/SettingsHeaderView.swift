@@ -75,8 +75,8 @@ class SettingsHeaderView: UIView {
         backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
-        userNameButton.setTitle(UserDefaults.standard.string(forKey: "username"), for: .normal)
-        userHandleButton.setTitle(UserDefaults.standard.string(forKey: "userHandle"), for: .normal)
+        userNameButton.setTitle(UserDefaults.standard.string(forKey: Cache.username), for: .normal)
+        userHandleButton.setTitle(UserDefaults.standard.string(forKey: Cache.userHandle), for: .normal)
         accountsButton.addTarget(self, action: #selector(didTapAccountsButton), for: .touchUpInside)
     }
     

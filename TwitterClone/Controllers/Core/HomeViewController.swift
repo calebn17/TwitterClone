@@ -14,7 +14,7 @@ final class HomeViewController: UIViewController {
 //MARK: - Setup
     static let shared = HomeViewController()
     public var tweetResponses: [TweetModel] = []
-    private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
+    //private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
     
     //Temporary collection to hold added comments
     //Just to demonstrate functionality
@@ -67,7 +67,6 @@ final class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         handleNotAuthenticated()
-        fetchUserData()
     }
 
 //MARK: - Configure Methods
@@ -122,42 +121,6 @@ final class HomeViewController: UIViewController {
         }
     }
     
-    public func fetchUserData() {
-        //fetching the user's email
-        guard let user = Auth.auth().currentUser
-        else {
-            print("User is not signed in")
-            return
-        }
-        self.user.userEmail = user.email ?? "no email"
-        
-        //fetching the user's username
-        let email = user.email ?? "No email"
-        DatabaseManager.shared.getUsername(email: email, completion: {[weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let db_username):
-                    self?.user.userName = db_username
-                    UserDefaults.standard.set(db_username, forKey: "username")
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        })
-        //fetching the user's handle
-        DatabaseManager.shared.getUserHandle(email: email, completion: {[weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let handle):
-                    self?.user.userHandle = handle
-                    UserDefaults.standard.set(handle, forKey: "userHandle")
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        })
-    }
-    
 //MARK: - Action Methods
     
     private func handleNotAuthenticated() {
@@ -208,15 +171,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(vc, animated: true)
         //show(vc, sender: self)
     }
-    
-//    //Hides the navBar as the user scrolls down (navigates down the page)
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        //let defaultOffset = view.safeAreaInsets.top
-//        let defaultOffset: CGFloat = -100
-//        let offset = scrollView.contentOffset.y + defaultOffset
-//
-//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
-//    }
 }
 
 //MARK: - TweetTableViewCellDelegate Methods
@@ -284,12 +238,17 @@ extension HomeViewController: TweetTableViewCellDelegate {
 extension HomeViewController: AddTweetViewControllerDelegate {
     
     func didTapTweetPublishButton(tweetBody: String) {
+        guard let username = UserDefaults.standard.string(forKey: "username"),
+              let userHandle = UserDefaults.standard.string(forKey: "userHandle"),
+              let email = UserDefaults.standard.string(forKey: "email")
+        else {return}
+        
         //setting addedTweet as a var so I can update the username values
         let addedTweet = TweetModel(
             tweetId: UUID().uuidString,
-            username: user.userName,
-            userHandle: user.userHandle,
-            userEmail: user.userEmail,
+            username: username,
+            userHandle: userHandle,
+            userEmail: email,
             userAvatar: nil,
             text: tweetBody,
             isLikedByUser: false,
@@ -316,8 +275,12 @@ extension HomeViewController: AddTweetViewControllerDelegate {
 //MARK: - AddCommentViewControllerDelegate Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
     func didTapReplyButton(tweetBody: String) {
-        let commentID = Int.random(in: 0...100)
-        let addedComment = CommentsModel(commentId: commentID, username: user.userName, userHandle: user.userHandle, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, dateCreated: Date())
+        guard let username = UserDefaults.standard.string(forKey: "username"),
+              let userHandle = UserDefaults.standard.string(forKey: "userHandle")
+        else {return}
+        
+        let commentID = UUID().uuidString
+        let addedComment = CommentsModel(commentId: commentID, username: username, userHandle: userHandle, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, dateCreated: Date())
         //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
         
         //for now, will add the new comment to this collection to demonstrate functionality

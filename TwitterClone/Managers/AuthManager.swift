@@ -30,6 +30,9 @@ public class AuthManager {
                     DatabaseManager.shared.insertUser(with: email, username: username, userHandle: userHandle) { inserted in
                         if inserted {
                             //successfully inserted to DB
+                            UserDefaults.standard.set(email, forKey: Cache.email)
+                            UserDefaults.standard.set(username, forKey: Cache.username)
+                            UserDefaults.standard.set(userHandle, forKey: Cache.userHandle)
                             completion(true)
                             return
                         }
@@ -49,23 +52,33 @@ public class AuthManager {
         }
     }
     
-    public func loginUser(username: String?, email: String?, password: String, completion: @escaping ((Bool) -> Void)) {
-        if let email = email {
-            //email login
-            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-                guard authResult != nil, error == nil else {
-                    //failed to login
-                    completion(false)
-                    return
-                }
-                //successfully logged in
-                UserDefaults.standard.set(username, forKey: "username")
-                completion(true)
+    public func loginUser(email: String, password: String, completion: @escaping ((Bool) -> Void)) {
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            guard authResult != nil, error == nil else {
+                //failed to login
+                completion(false)
+                return
             }
-        }
-        else if let username = username {
-            //username login
-            print(username)
+            //successfully logged in
+            //fetching username and handle
+            DatabaseManager.shared.getUsername(email: email) { result in
+                switch result {
+                case .success(let username):
+                    UserDefaults.standard.set(username, forKey: Cache.username)
+                case.failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            DatabaseManager.shared.getUserHandle(email: email) { result in
+                switch result {
+                case .success(let handle):
+                    UserDefaults.standard.set(handle, forKey: Cache.userHandle)
+                case.failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            UserDefaults.standard.set(email, forKey: Cache.email)
+            completion(true)
         }
     }
     

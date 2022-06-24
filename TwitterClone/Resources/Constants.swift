@@ -25,3 +25,9 @@ struct SettingsAndPrivacyStrings {
 //    static let PrivacyAndSafety =
 //    static let Notifications =
 }
+
+struct Cache {
+    static let username = "username"
+    static let email = "email"
+    static let userHandle = "userHandle"
+}

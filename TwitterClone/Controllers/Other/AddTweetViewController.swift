@@ -135,7 +135,6 @@ final class AddTweetViewController: UIViewController {
             
             self?.delegate?.didTapTweetPublishButton(tweetBody: tweetBody)
             
-            //insert added Tweet to DB
         }
     }
     

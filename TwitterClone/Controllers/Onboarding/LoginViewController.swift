@@ -27,11 +27,11 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    private let usernameEmailField: UITextField = {
+    private let emailField: UITextField = {
         let textField = UITextField()
         textField.layer.borderColor = UIColor.label.cgColor
         textField.layer.borderWidth = 1
-        textField.placeholder = "  Enter your email address or username...  "
+        textField.placeholder = "  Enter your email address...  "
         textField.textAlignment = .left
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -87,7 +87,7 @@ class LoginViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(emailLabel)
         view.addSubview(passwordLabel)
-        view.addSubview(usernameEmailField)
+        view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(loginButton)
         view.addSubview(registerButton)
@@ -102,14 +102,14 @@ class LoginViewController: UIViewController {
             emailLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 300)
         ]
         let emailFieldConstraints = [
-            usernameEmailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            usernameEmailField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 15),
-            usernameEmailField.heightAnchor.constraint(equalToConstant: 40),
-            usernameEmailField.widthAnchor.constraint(equalToConstant: 300)
+            emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emailField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 15),
+            emailField.heightAnchor.constraint(equalToConstant: 40),
+            emailField.widthAnchor.constraint(equalToConstant: 300)
         ]
         let passwordLabelConstraints = [
             passwordLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordLabel.topAnchor.constraint(equalTo: usernameEmailField.bottomAnchor, constant: 30)
+            passwordLabel.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 30)
         ]
         let passwordFieldConstraints = [
             passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -143,29 +143,23 @@ class LoginViewController: UIViewController {
         
         //dissmiss the keyboard. making sure both fields are not focused on with the cursor
         passwordField.resignFirstResponder()
-        usernameEmailField.resignFirstResponder()
+        emailField.resignFirstResponder()
         
-        guard let usernameEmail = usernameEmailField.text, !usernameEmail.isEmpty,
-              let password = passwordField.text, !password.isEmpty,
-              password.count >= 8 else {return}
+        guard let email = emailField.text,
+              !email.isEmpty,
+              email.contains("@"),
+              email.contains("."),
+              let password = passwordField.text,
+              !password.isEmpty,
+              password.count >= 6 else {return}
         
         //login functionality
-        var username: String?
-        var email: String?
-        
-        if usernameEmail.contains("@"), usernameEmail.contains(".") {
-            email = usernameEmail.lowercased()
-        } else {
-            username = usernameEmail.lowercased()
-        }
-        
-        AuthManager.shared.loginUser(username: username, email: email, password: password) {[weak self] success in
+        AuthManager.shared.loginUser(email: email.lowercased(), password: password) {[weak self] success in
             DispatchQueue.main.async {
                 if success {
                     //user logged in
                     //dismisses the LoginVC so the HomeVC will be shown
                     self?.dismiss(animated: true, completion: nil)
-                    NotificationCenter.default.post(name: NSNotification.Name("Logged In"), object: nil)
                 }
                 else {
                     //error occured
@@ -188,14 +182,13 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == usernameEmailField {
+        if textField == emailField {
             //puts the password field in focus when the user hits 'Return'
             passwordField.becomeFirstResponder()
         }
         else if textField == passwordField {
             didTapLoginButton()
         }
-        
         return true
     }
 }
@@ -204,6 +197,4 @@ extension LoginViewController: RegisterViewControllerDelegate {
     func didRegisterSuccessfully() {
         dismiss(animated: true, completion: nil)
     }
-    
-    
 }

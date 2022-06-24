@@ -58,42 +58,49 @@ public class DatabaseManager {
     }
     
     func insertTweet(with model: TweetModel, completion: @escaping (Bool) -> Void) {
+        guard let userEmail = UserDefaults.standard.string(forKey: Cache.email)?.safeDatabaseKey() else {return}
         
         //inserting tweet id in the tweet's user's metadata
-        guard let userEmail = UserDefaults.standard.string(forKey: "username") else {return}
-        database.child("users").child(userEmail).child("tweetIds").observeSingleEvent(of: .value) { snapshot in
-            guard var tweetIdDictionary = snapshot.value as? [String: [String]] else {
-                let tweetIdDictionary = ["tweetIds": [model.tweetId]]
-                self.database.child("users").setValue(tweetIdDictionary) { error, _ in
+        database.child("users").child(userEmail).child("tweetIds").observeSingleEvent(of: .value) {[weak self] snapshot in
+            guard var tweetIds = snapshot.value as? [String] else {
+                let tweetIds = [model.tweetId]
+                self?.database.child("users").child(userEmail).child("tweetIds").setValue(tweetIds) { error, _ in
                     completion(error == nil)
                 }
                 return
             }
-            tweetIdDictionary["tweetIds"]?.append(model.tweetId ?? "")
-            self.database.child("users").child("tweetIds").setValue(tweetIdDictionary) { error, _ in
+            tweetIds.append(model.tweetId ?? "")
+            self?.database.child("users").child(userEmail).child("tweetIds").setValue(tweetIds) { error, _ in
                 completion(error == nil)
             }
-            
         }
         
         //inserting tweet in the tweet collection
-        database.child("tweets").child("tweet").setValue([
-            "tweetId": model.tweetId,
-            "username": model.username ?? "",
-            "userHandle": model.userHandle ?? "",
-            "text": model.text ?? ""
-        ]) { error, _ in
-                
-            if error == nil {
-                //succeeded
-                completion(true)
+        database.child("tweets").observeSingleEvent(of: .value) { [weak self] snapshot in
+            guard var tweetDictionary = snapshot.value as? [String: Any] else {
+                let tweetDictionary =
+                    [
+                        model.tweetId:
+                            [
+                                "username": model.username,
+                                "userHandle": model.userHandle,
+                                "text": model.text
+                            ]
+                    ]
+                self?.database.child("tweets").setValue(tweetDictionary) { error, _ in
+                    completion(error == nil)
+                }
                 return
             }
-            else {
-                //failed
-                completion(false)
-                return
-            }
+            tweetDictionary[model.tweetId ?? ""] =
+                [
+                    "username": model.username,
+                    "userHandle": model.userHandle,
+                    "text": model.text
+                ]
+            self?.database.child("tweets").setValue(tweetDictionary, withCompletionBlock: { error, _ in
+                completion(error == nil)
+            })
         }
     }
     
@@ -104,7 +111,7 @@ public class DatabaseManager {
     public func getUsername(email: String, completion: @escaping (Result<String, Error>) -> Void){
         var username: String = ""
         let key = email.safeDatabaseKey()
-        database.child(key).child("username").getData { error, snapshot in
+        database.child("users").child(key).child("username").getData { error, snapshot in
             guard error == nil else {
                 completion(.failure(APIError.failedtoGetData))
                 return;
@@ -121,7 +128,7 @@ public class DatabaseManager {
     public func getUserHandle(email: String, completion: @escaping (Result<String, Error>) -> Void){
         var userHandle: String = ""
         let key = email.safeDatabaseKey()
-        database.child(key).child("userHandle").getData { error, snapshot in
+        database.child("users").child(key).child("userHandle").getData { error, snapshot in
             guard error == nil else {
                 completion(.failure(APIError.failedtoGetData))
                 return;
