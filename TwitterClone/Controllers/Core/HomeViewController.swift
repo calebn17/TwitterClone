@@ -53,8 +53,8 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         configureNavbar()
         configureHomeFeedTableView()
-        fetchData()
         configureAddTweetButton()
+        fetchData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -107,15 +107,42 @@ final class HomeViewController: UIViewController {
 //MARK: - Fetch Methods
     
     private func fetchData() {
-        APICaller.shared.getSearch(with: "bitcoin") { [weak self] results in
+        
+        var apiTweets = [TweetModel]()
+        var dbTweets = [TweetModel]()
+        
+        let group = DispatchGroup()
+        
+        group.enter()
+        APICaller.shared.getSearch(with: "bitcoin") {results in
             switch results {
             case .success(let tweets):
                 DispatchQueue.main.async {
-                    self?.tweetResponses = tweets
-                    self?.homeFeedTableView.reloadData()
+                    apiTweets = tweets
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+            group.leave()
+        }
+        group.enter()
+        DatabaseManager.shared.getTweets { results in
+            DispatchQueue.main.async {
+                switch results {
+                case .success(let tweets):
+                    dbTweets = tweets
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {[weak self] in
+            DispatchQueue.main.async {
+                print("done fetching tweets from API and DB")
+                self?.tweetResponses = dbTweets + apiTweets
+                self?.homeFeedTableView.reloadData()
             }
         }
     }
