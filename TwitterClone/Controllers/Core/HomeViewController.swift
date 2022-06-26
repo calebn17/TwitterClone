@@ -55,6 +55,9 @@ final class HomeViewController: UIViewController {
         configureHomeFeedTableView()
         configureAddTweetButton()
         fetchData()
+        
+        let searchVC = SearchViewController()
+        searchVC.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -261,7 +264,11 @@ extension HomeViewController: TweetTableViewCellDelegate {
 }
 
 //MARK: - AddTweetViewControllerDelegate Methods
-extension HomeViewController: AddTweetViewControllerDelegate {
+extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControllerDelegate {
+    
+    func didTapPublishTweet(tweetBody: String, publishedFromSearchVC sender: SearchViewController) {
+        didTapTweetPublishButton(tweetBody: tweetBody)
+    }
     
     func didTapTweetPublishButton(tweetBody: String) {
         guard let username = UserDefaults.standard.string(forKey: "username"),

@@ -6,11 +6,17 @@
 //
 
 import UIKit
+
+protocol SearchViewControllerDelegate: AnyObject {
+    func didTapPublishTweet(tweetBody: String, publishedFromSearchVC sender: SearchViewController)
+}
+
 ///Search Screen
 final class SearchViewController: UIViewController {
 
 //MARK: - Setup
     
+    weak var delegate: SearchViewControllerDelegate?
     private let searchResultTweets: [TweetModel] = []
     
     let searchController: UISearchController = {
@@ -123,7 +129,7 @@ final class SearchViewController: UIViewController {
         //present the addTweetViewController
         let vc = AddTweetViewController()
         vc.modalPresentationStyle = .fullScreen
-        //vc.delegate = self
+        vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
 }
@@ -169,11 +175,12 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
 }
 
-//extension SearchViewController: AddTweetViewControllerDelegate {
-//    func didTapTweetPublishButton(tweetBody: String) {
-//        let addedTweet = Tweet(id: nil, text: tweetBody, likes: 0)
-//        let vc = HomeViewController()
-//        navigationController?.pushViewController(vc, animated: true)
-//
-//    }
-//}
+extension SearchViewController: AddTweetViewControllerDelegate {
+    func didTapTweetPublishButton(tweetBody: String) {
+        
+        delegate?.didTapPublishTweet(tweetBody: tweetBody, publishedFromSearchVC: self)
+        navigationController?.popToRootViewController(animated: true)
+        tabBarController?.selectedIndex = 0
+
+    }
+}
