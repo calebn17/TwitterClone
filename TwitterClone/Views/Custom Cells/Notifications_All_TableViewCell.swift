@@ -102,7 +102,7 @@ class Notifications_All_TableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(actionImageViewConstraints)
     }
     
-    func configure(with model: NotificationsModel) {
+    func configure(with model: NotificationsVCViewModel) {
         titleLabel.text = "\(model.userName) \(model.action) your tweet!"
         subtitleLabel.text = model.tweetBody
         

@@ -11,6 +11,7 @@ import FirebaseAuth
 public class AuthManager {
     
     static let shared = AuthManager()
+    private init() {}
     
 //MARK: - Public Methods
     

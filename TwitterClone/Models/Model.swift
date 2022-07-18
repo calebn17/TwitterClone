@@ -18,13 +18,6 @@ struct SettingsAndPrivacyModel {
     let description: String
 }
 
-public enum NotificationActions {
-    case liked
-    case reply
-    case retweet
-    case followed
-}
-
 struct NotificationsModel {
     let userName: String
     let action: NotificationActions

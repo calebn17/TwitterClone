@@ -35,7 +35,7 @@ final class NotificationsViewController: UIViewController {
     //emptyImageView and headerView need to start off as optional so that I can initialize it with a frame later to properly call the views with all their subviews
     private var emptyImageView: NotificationEmptyStateView?
     private var headerView: NotificationsHeaderView?
-    private var models = [NotificationsModel]()
+    private var models = [NotificationsVCViewModel]()
 
 //MARK: - View Methods
     
@@ -130,17 +130,8 @@ final class NotificationsViewController: UIViewController {
     
     private func fetchData() {
         //API Call
-        
         //Mock Data
-        
-        for x in 0...30 {
-            let action: NotificationActions
-            let i = x*Int.random(in: 0...20)
-            if i % 2 == 0 {action = .followed}
-            else {action = .liked}
-            
-            models.append(NotificationsModel(userName: "@User \(i)", action: action, tweetBody: "Wow this is really cool!!!", profilePicture: nil, date: nil))
-        }
+        models = NotificationsVCViewModel.mockNotifications()
         notificationsTableView.reloadData()
     }
     

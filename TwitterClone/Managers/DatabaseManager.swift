@@ -164,7 +164,30 @@ public class DatabaseManager {
         }
     }
     
-//MARK: - Private Methods
-    
-  
+    func getTweets() async throws -> [TweetModel] {
+        let resultTweets: [TweetModel] = try await withCheckedThrowingContinuation({ continuation in
+            database.child("tweets").observeSingleEvent(of: .value) { snapshot in
+                guard let tweets = snapshot.value as? [String: [String: Any]] else {return}
+                let tweetModels: [TweetModel] = tweets.compactMap({
+                    return TweetModel(
+                        tweetId: $0.key,
+                        username: $0.value["username"] as? String ,
+                        userHandle: $0.value["userHandle"] as? String,
+                        userEmail: nil,
+                        userAvatar: nil,
+                        text: $0.value["text"] as? String,
+                        isLikedByUser: nil,
+                        isRetweetedByUser: nil,
+                        likes: nil,
+                        retweets: nil,
+                        comments: nil ,
+                        dateCreated: nil
+                    )
+                })
+                continuation.resume(returning: tweetModels)
+            }
+        })
+        
+        return resultTweets
+    }
 }

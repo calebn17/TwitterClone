@@ -110,10 +110,12 @@ final class SearchViewController: UIViewController {
         //forces xcode to use the original image (logo comes out as different color if this isnt done)
         image = image?.withRenderingMode(.alwaysOriginal)
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
-                                                            style: .done,
-                                                            target: self,
-                                                           action: #selector(didTapProfileIcon))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "person"),
+            style: .done,
+            target: self,
+            action: #selector(didTapProfileIcon)
+        )
         navigationItem.titleView = twitterIcon
         navigationController?.navigationBar.tintColor = .white
         navigationItem.title = ""
@@ -150,9 +152,6 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
                 !query.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
-        
-//        //Using a delegate to push the search results view onto the SearchViewController
-//        resultsController.delegate = self
         
         //Fetching the Search Results data
         APICaller.shared.getSearch(with: query) { result in

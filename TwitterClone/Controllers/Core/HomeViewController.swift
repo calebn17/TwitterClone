@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
         configureNavbar()
         configureHomeFeedTableView()
         configureAddTweetButton()
-        fetchData()
+        fetchDataAsync()
         
         let searchVC = SearchViewController()
         searchVC.delegate = self
@@ -108,46 +108,23 @@ final class HomeViewController: UIViewController {
     }
     
 //MARK: - Fetch Methods
+    private func fetchDataAsync() {
+        Task {
+            do {
+                let apiTweets = try await APICaller.shared.getSearch(with: "bitcoin")
+                let dbTweets = try await DatabaseManager.shared.getTweets()
+                updateTweetCollection(apiTweets: apiTweets, dbTweets: dbTweets)
+            }
+            catch {
+                print("Request failed with error")
+            }
+        }
+    }
     
-    private func fetchData() {
-        
-        var apiTweets = [TweetModel]()
-        var dbTweets = [TweetModel]()
-        
-        let group = DispatchGroup()
-        
-        group.enter()
-        APICaller.shared.getSearch(with: "bitcoin") {results in
-            switch results {
-            case .success(let tweets):
-                DispatchQueue.main.async {
-                    apiTweets = tweets
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-            group.leave()
-        }
-        group.enter()
-        DatabaseManager.shared.getTweets { results in
-            DispatchQueue.main.async {
-                switch results {
-                case .success(let tweets):
-                    dbTweets = tweets
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-                group.leave()
-            }
-        }
-        
-        group.notify(queue: .main) {[weak self] in
-            DispatchQueue.main.async {
-                print("done fetching tweets from API and DB")
-                self?.tweetResponses = dbTweets + apiTweets
-                self?.homeFeedTableView.reloadData()
-            }
-        }
+    private func updateTweetCollection(apiTweets: [TweetModel], dbTweets: [TweetModel]) {
+        print("done fetching tweets from API and DB")
+        self.tweetResponses = dbTweets + apiTweets
+        self.homeFeedTableView.reloadData()
     }
     
 //MARK: - Action Methods
@@ -230,13 +207,6 @@ extension HomeViewController: TweetTableViewCellDelegate {
     
     func didTapLikeButton(liked: Bool, model: TweetModel) {
         if liked {
-//            //like the tweet and add 1 to the count
-//            let likedTweets = tweetResponses.filter {$0.tweetId == model.tweetId}
-//            guard var likedTweet = likedTweets.first else {return}
-//            var likesCount = likedTweet.likes ?? 0
-//            likesCount += 1
-//            likedTweet.likes = likesCount
-//            homeFeedTableView.reloadData()
         }
         else {
             //unlike tweet and subtract 1 from the count

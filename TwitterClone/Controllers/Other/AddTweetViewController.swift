@@ -134,7 +134,6 @@ final class AddTweetViewController: UIViewController {
             guard let tweetBody = self?.tweetBody else {return}
             
             self?.delegate?.didTapTweetPublishButton(tweetBody: tweetBody)
-            
         }
     }
     
