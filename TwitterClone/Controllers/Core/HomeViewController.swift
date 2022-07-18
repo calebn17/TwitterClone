@@ -113,7 +113,9 @@ final class HomeViewController: UIViewController {
             do {
                 let apiTweets = try await APICaller.shared.getSearch(with: "bitcoin")
                 let dbTweets = try await DatabaseManager.shared.getTweets()
-                updateTweetCollection(apiTweets: apiTweets, dbTweets: dbTweets)
+                //updateTweetCollection(apiTweets: apiTweets, dbTweets: dbTweets)
+                tweetResponses = dbTweets + apiTweets
+                homeFeedTableView.reloadData()
             }
             catch {
                 print("Request failed with error")

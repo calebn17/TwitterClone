@@ -148,21 +148,19 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         //Setting the searchResultsController (built-in) as our custom SearchResultsViewController
         guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,
               //Making sure there is text, and that the input isn't just empty white spaces
-                let query = searchBar.text,
-                !query.trimmingCharacters(in: .whitespaces).isEmpty else {
-            return
-        }
+              let query = searchBar.text,
+              !query.trimmingCharacters(in: .whitespaces).isEmpty else {
+                  return
+              }
         
         //Fetching the Search Results data
-        APICaller.shared.getSearch(with: query) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let results):
-                    //updating the resultsController(SearchResultsViewController) with the data
-                    resultsController.update(with: results)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
+        Task{
+            do {
+                let results = try await APICaller.shared.getSearch(with: query)
+                resultsController.update(with: results)
+            }
+            catch {
+                print("Request to search failed")
             }
         }
     }

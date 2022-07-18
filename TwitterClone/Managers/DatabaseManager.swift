@@ -107,63 +107,37 @@ public class DatabaseManager {
     ///Fetches a User's username from the DB
     ///- Parameters
     ///- email
-    ///- completion: Async callback for result as a Result
-    public func getUsername(email: String, completion: @escaping (Result<String, Error>) -> Void){
-        var username: String = ""
+    public func getUsername(email: String) async throws -> String {
         let key = email.safeDatabaseKey()
-        database.child("users").child(key).child("username").getData { error, snapshot in
-            guard error == nil else {
-                completion(.failure(APIError.failedtoGetData))
-                return;
+        
+        let username: String = try await withCheckedThrowingContinuation({ continuation in
+            database.child("users").child(key).child("username").getData { error, snapshot in
+                guard error == nil else {return}
+                
+                let username = snapshot.value as? String ?? "unknown username"
+                continuation.resume(returning: username)
             }
-            username = snapshot.value as? String ?? "unknown username"
-            completion(.success(username))
-        }
+        })
+        return username
     }
     
     ///Fetches a User's handle from the DB
     ///- Parameters
     ///- email
-    ///- completion: Async callback for result as a Result
-    public func getUserHandle(email: String, completion: @escaping (Result<String, Error>) -> Void){
-        var userHandle: String = ""
+    public func getUserHandle(email: String) async throws -> String {
         let key = email.safeDatabaseKey()
-        database.child("users").child(key).child("userHandle").getData { error, snapshot in
-            guard error == nil else {
-                completion(.failure(APIError.failedtoGetData))
-                return;
+        
+        let userHandle: String = try await withCheckedThrowingContinuation({ continuation in
+            database.child("users").child(key).child("userHandle").getData { error, snapshot in
+                guard error == nil else {return}
+                let result = snapshot.value as? String ?? "unknown user handle"
+                continuation.resume(returning: result)
             }
-            userHandle = snapshot.value as? String ?? "unknown user handle"
-            completion(.success(userHandle))
-        }
+        })
+        return userHandle
     }
     
-    func getTweets(completion: @escaping (Result<[TweetModel], Error>) -> Void) {
-        database.child("tweets").observeSingleEvent(of: .value) { snapshot in
-            guard let tweets = snapshot.value as? [String: [String: Any]] else {
-                completion(.failure(APIError.failedtoGetData))
-                return
-            }
-            let tweetModels: [TweetModel] = tweets.compactMap({
-                return TweetModel(
-                    tweetId: $0.key,
-                    username: $0.value["username"] as? String ,
-                    userHandle: $0.value["userHandle"] as? String,
-                    userEmail: nil,
-                    userAvatar: nil,
-                    text: $0.value["text"] as? String,
-                    isLikedByUser: nil,
-                    isRetweetedByUser: nil,
-                    likes: nil,
-                    retweets: nil,
-                    comments: nil ,
-                    dateCreated: nil
-                )
-            })
-            completion(.success(tweetModels))
-        }
-    }
-    
+    ///Fetches Tweets from DB
     func getTweets() async throws -> [TweetModel] {
         let resultTweets: [TweetModel] = try await withCheckedThrowingContinuation({ continuation in
             database.child("tweets").observeSingleEvent(of: .value) { snapshot in
@@ -187,7 +161,6 @@ public class DatabaseManager {
                 continuation.resume(returning: tweetModels)
             }
         })
-        
         return resultTweets
     }
 }

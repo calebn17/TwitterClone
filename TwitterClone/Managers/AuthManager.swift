@@ -60,26 +60,19 @@ public class AuthManager {
                 completion(false)
                 return
             }
-            //successfully logged in
-            //fetching username and handle
-            DatabaseManager.shared.getUsername(email: email) { result in
-                switch result {
-                case .success(let username):
+            Task {
+                do {
+                    let username = try await DatabaseManager.shared.getUsername(email: email)
+                    let userHandle = try await DatabaseManager.shared.getUserHandle(email: email)
                     UserDefaults.standard.set(username, forKey: Cache.username)
-                case.failure(let error):
-                    print(error.localizedDescription)
+                    UserDefaults.standard.set(userHandle, forKey: Cache.userHandle)
+                    UserDefaults.standard.set(email, forKey: Cache.email)
+                    completion(true)
+                }
+                catch {
+                    print("Error when retrieving username and handle")
                 }
             }
-            DatabaseManager.shared.getUserHandle(email: email) { result in
-                switch result {
-                case .success(let handle):
-                    UserDefaults.standard.set(handle, forKey: Cache.userHandle)
-                case.failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-            UserDefaults.standard.set(email, forKey: Cache.email)
-            completion(true)
         }
     }
     
