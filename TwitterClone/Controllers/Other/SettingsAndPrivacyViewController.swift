@@ -8,15 +8,18 @@
 import UIKit
 
 class SettingsAndPrivacyViewController: UIViewController {
-
+    
+//MARK: - Properties
+    private var models = [SettingsAndPrivacyModel]()
+    
+//MARK: - SubViews
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(SettingsAndPrivacyTableViewCell.self, forCellReuseIdentifier: SettingsAndPrivacyTableViewCell.identifier)
         return tableView
     }()
     
-    private var models = [SettingsAndPrivacyModel]()
-    
+//MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -30,6 +33,7 @@ class SettingsAndPrivacyViewController: UIViewController {
         tableView.frame = view.bounds
     }
     
+//MARK: - Configure
     private func configureNavbar() {
         navigationItem.title = "Settings And Privacy"
     }
@@ -53,6 +57,7 @@ class SettingsAndPrivacyViewController: UIViewController {
     }
 }
 
+//MARK: - TableView Methods
 extension SettingsAndPrivacyViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

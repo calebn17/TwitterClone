@@ -11,7 +11,7 @@ protocol RegisterViewControllerDelegate: AnyObject {
     func didRegisterSuccessfully()
 }
 
-class RegisterViewController: UIViewController {
+final class RegisterViewController: UIViewController {
     
     weak var delegate: RegisterViewControllerDelegate?
 

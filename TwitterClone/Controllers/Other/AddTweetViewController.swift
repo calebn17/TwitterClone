@@ -12,12 +12,12 @@ protocol AddTweetViewControllerDelegate: AnyObject {
 }
 
 final class AddTweetViewController: UIViewController {
-//MARK: - Setup
     
+//MARK: - Properties
     public weak var delegate: AddTweetViewControllerDelegate?
-    
     private var tweetBody: String?
-    
+
+//MARK: - SubViews
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.fill")
@@ -68,7 +68,7 @@ final class AddTweetViewController: UIViewController {
         return button
     }()
 
-//MARK: - View Methods
+//MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,8 +82,7 @@ final class AddTweetViewController: UIViewController {
         chooseAudienceButton.addTarget(self, action: #selector(didTapChooseAudienceButton), for: .touchUpInside)
     }
  
-//MARK: - Configure Methods
-    
+//MARK: - Configure
     private func addConstraints() {
         let userImageViewConstraints = [
             userImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -125,8 +124,7 @@ final class AddTweetViewController: UIViewController {
         view.addSubview(cancelButton)
     }
     
-//MARK: - Action Methods
-    
+//MARK: - Actions
     @objc private func tappedTweetPublishButton() {
         dismiss(animated: true) {[weak self] in
             //passing tweet body through

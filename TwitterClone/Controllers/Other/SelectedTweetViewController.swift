@@ -8,7 +8,13 @@
 import UIKit
 
 class SelectedTweetViewController: UIViewController {
-//MARK: - Setup
+    
+//MARK: - Properties
+    private var tweet: TweetModel?
+    private var comments: [CommentsModel]?
+    private var headerView: SelectedTweetHeaderTableViewCell?
+    
+//MARK: - SubViews
     
     private let selectedTweetTableView: UITableView = {
         let tableView = UITableView()
@@ -16,13 +22,8 @@ class SelectedTweetViewController: UIViewController {
         tableView.register(SelectedTweetHeaderTableViewCell.self, forCellReuseIdentifier: SelectedTweetHeaderTableViewCell.identifier)
         return tableView
     }()
-    
-    private var tweet: TweetModel?
-    private var comments: [CommentsModel]?
-    private var headerView: SelectedTweetHeaderTableViewCell?
 
-//MARK: - Init Methods
-    
+//MARK: - Init
     init(with tweet: TweetModel){
         self.tweet = tweet
         super.init(nibName: nil, bundle: nil)
@@ -32,7 +33,7 @@ class SelectedTweetViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-//MARK: - View Methods
+//MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Tweet"
@@ -45,7 +46,7 @@ class SelectedTweetViewController: UIViewController {
         selectedTweetTableView.frame = view.bounds
     }
     
-//MARK: - Configure Methods
+//MARK: - Configure
     private func configureTableView() {
         view.addSubview(selectedTweetTableView)
         selectedTweetTableView.delegate = self

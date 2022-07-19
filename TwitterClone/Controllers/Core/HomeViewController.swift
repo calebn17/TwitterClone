@@ -11,7 +11,7 @@ import FirebaseAuth
 ///Home Screen
 final class HomeViewController: UIViewController {
 
-//MARK: - Setup
+//MARK: - Properties
     static let shared = HomeViewController()
     public var tweetResponses: [TweetModel] = []
     
@@ -19,6 +19,7 @@ final class HomeViewController: UIViewController {
     //Just to demonstrate functionality
     private var addedComments = [CommentsModel]()
     
+//MARK: - SubViews
     private let twitterIcon: UIImageView = {
         let icon = UIImageView()
         icon.image = UIImage(named: "twitterLogo")
@@ -45,7 +46,7 @@ final class HomeViewController: UIViewController {
         return tableView
     }()
 
-//MARK: - View Methods
+//MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         //let tabBarHeight = tabBarController?.tabBar.height
@@ -71,7 +72,7 @@ final class HomeViewController: UIViewController {
         handleNotAuthenticated()
     }
 
-//MARK: - Configure Methods
+//MARK: - Configure
     
     private func configureNavbar() {
         var image = UIImage(named: "twitterLogo")
@@ -107,7 +108,7 @@ final class HomeViewController: UIViewController {
         addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
     }
     
-//MARK: - Fetch Methods
+//MARK: - Networking
     private func fetchData() {
         Task {
             do {
@@ -124,7 +125,6 @@ final class HomeViewController: UIViewController {
                         text: $0.text,
                         likers: [],
                         isRetweetedByUser: nil,
-                        likes: nil,
                         retweets: nil,
                         comments: nil,
                         dateCreated: nil
@@ -146,7 +146,7 @@ final class HomeViewController: UIViewController {
         self.homeFeedTableView.reloadData()
     }
     
-//MARK: - Action Methods
+//MARK: - Actions
     
     private func handleNotAuthenticated() {
         //check Auth status
@@ -224,12 +224,19 @@ extension HomeViewController: TweetTableViewCellDelegate {
         present(actionSheet, animated: true, completion: nil)
     }
     
+    
+    /// User tapped the like button on the tweet
+    /// - Parameters:
+    ///   - liked: user tapped on the button to like (was in the unlike state before being tapped)
+    ///   - model: TweetModel object
     func didTapLikeButton(liked: Bool, model: TweetModel) {
-        if liked {
+        // insert User into the likers collection in the TweetModel and update DB
+        DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model) { success in
+            if !success {
+                print("Error occured when updating like status")
+            }
         }
-        else {
-            //unlike tweet and subtract 1 from the count
-        }
+        
     }
     
     func didTapShareButton() {
@@ -275,7 +282,6 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
             text: tweetBody,
             likers: [],
             isRetweetedByUser: false,
-            likes: 0,
             retweets: 0,
             comments: nil,
             dateCreated: Date()

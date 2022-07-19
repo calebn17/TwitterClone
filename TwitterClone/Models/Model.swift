@@ -49,9 +49,8 @@ struct TweetModel: Codable {
     var userEmail: String?
     let userAvatar: String?
     let text: String?
-    var likers: [User]
+    var likers: [String]
     var isRetweetedByUser: Bool?
-    var likes: Int?
     var retweets: Int?
     var comments: [CommentsModel]?
     let dateCreated: Date?

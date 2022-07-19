@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MARK: - Protocol
 protocol SearchViewControllerDelegate: AnyObject {
     func didTapPublishTweet(tweetBody: String, publishedFromSearchVC sender: SearchViewController)
 }
@@ -14,11 +15,11 @@ protocol SearchViewControllerDelegate: AnyObject {
 ///Search Screen
 final class SearchViewController: UIViewController {
 
-//MARK: - Setup
-    
+//MARK: - Properties
     weak var delegate: SearchViewControllerDelegate?
     private let searchResultTweets: [TweetModel] = []
-    
+
+//MARK: - SubViews
     let searchController: UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
         vc.searchBar.placeholder = "Search Twitter"
@@ -56,7 +57,7 @@ final class SearchViewController: UIViewController {
         return button
     }()
 
-//MARK: - View Methods
+//MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +73,7 @@ final class SearchViewController: UIViewController {
         super.viewDidLayoutSubviews()
     }
 
-//MARK: - Configure Methods
+//MARK: - Configure
     
     private func configureSearchBar() {
         searchController.searchResultsUpdater = self
@@ -121,7 +122,7 @@ final class SearchViewController: UIViewController {
         navigationItem.title = ""
     }
     
-//MARK: - Action Methods
+//MARK: - Actions
     
     @objc private func didTapProfileIcon() {
         //navigates to profile feed
@@ -167,7 +168,6 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
                         text: $0.text,
                         likers: [],
                         isRetweetedByUser: nil,
-                        likes: nil,
                         retweets: nil,
                         comments: nil,
                         dateCreated: nil

@@ -10,8 +10,14 @@ import UIKit
 ///Notification Screen
 final class NotificationsViewController: UIViewController {
     
-//MARK: - Setup
+//MARK: - Properties
+    // emptyImageView and headerView need to start off as optional so that I can initialize it with a
+    // frame later to properly call the views with all their subviews
+    private var emptyImageView: NotificationEmptyStateView?
+    private var headerView: NotificationsHeaderView?
+    private var models = [NotificationsVCViewModel]()
     
+//MARK: - SubViews
     private let notificationsTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(Notifications_All_TableViewCell.self, forCellReuseIdentifier: Notifications_All_TableViewCell.identifier)
@@ -32,12 +38,9 @@ final class NotificationsViewController: UIViewController {
         return button
     }()
     
-    //emptyImageView and headerView need to start off as optional so that I can initialize it with a frame later to properly call the views with all their subviews
-    private var emptyImageView: NotificationEmptyStateView?
-    private var headerView: NotificationsHeaderView?
-    private var models = [NotificationsVCViewModel]()
+    
 
-//MARK: - View Methods
+//MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +59,7 @@ final class NotificationsViewController: UIViewController {
         
     }
    
-//MARK: - Configure Methods
+//MARK: - Configure
     
     private func configureNavbar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
@@ -126,15 +129,15 @@ final class NotificationsViewController: UIViewController {
     }
     
 
-//MARK: - Action Methods
-    
+//MARK: - Networking
     private func fetchData() {
         //API Call
         //Mock Data
         models = NotificationsVCViewModel.mockNotifications()
         notificationsTableView.reloadData()
     }
-    
+
+//MARK: - Actions
     @objc private func didTapAddTweetButton() {
         let vc = AddTweetViewController()
         vc.modalPresentationStyle = .fullScreen

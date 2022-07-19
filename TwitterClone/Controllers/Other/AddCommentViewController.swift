@@ -7,18 +7,18 @@
 
 import UIKit
 
+//MARK: - Protocol
 protocol AddCommentViewControllerDelegate: AnyObject {
     func didTapReplyButton(tweetBody: String)
 }
 
 final class AddCommentViewController: UIViewController {
     
-//MARK: - Setup
-    
+//MARK: - Properties
     public weak var delegate: AddCommentViewControllerDelegate?
-    
     private var tweetBody: String?
     
+//MARK: - SubViews
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.fill")
@@ -55,8 +55,7 @@ final class AddCommentViewController: UIViewController {
         return button
     }()
 
-//MARK: - View Methods
-    
+//MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -68,8 +67,7 @@ final class AddCommentViewController: UIViewController {
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
     
-//MARK: - Configure Methods
-    
+//MARK: - Configure
     private func addConstraints() {
         let userImageViewConstraints = [
             userImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -103,8 +101,7 @@ final class AddCommentViewController: UIViewController {
         view.addSubview(cancelButton)
     }
 
-//MARK: - Action Methods
-    
+//MARK: - Actions
     @objc private func tappedReplyButton() {
         dismiss(animated: true) {[weak self] in
             //passing tweet body through

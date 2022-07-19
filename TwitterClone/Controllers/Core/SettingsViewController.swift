@@ -11,12 +11,14 @@ import SafariServices
 ///Settings Screen
 final class SettingsViewController: UIViewController {
     
- //MARK: - Setup
+ //MARK: - Properties
     
     struct Constants {
         static let rowHeight: CGFloat = 70
     }
     private var settingsModel: [SettingsModel] = []
+    
+//MARK: - SubViews
     private var headerView: SettingsHeaderView?
     
     private let settingsTableView: UITableView = {
@@ -26,7 +28,7 @@ final class SettingsViewController: UIViewController {
         return tableView
     }()
 
-//MARK: - View Methods
+//MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +49,7 @@ final class SettingsViewController: UIViewController {
         headerView?.userNameButton.setTitle(UserDefaults.standard.string(forKey: "username"), for: .normal)
     }
 
-//MARK: - Configure Methods
-    
+//MARK: - Configure
     private func configureHeaderView() {
         headerView = SettingsHeaderView(frame: CGRect(x: 0, y: 0, width: view.width, height: 150))
         headerView?.delegate = self
@@ -97,7 +98,7 @@ final class SettingsViewController: UIViewController {
         settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
     }
     
-//MARK: - Action Methods
+//MARK: - Actions
     
     ///Called when user clicks on the help cell
     private func presentHelpPage(){

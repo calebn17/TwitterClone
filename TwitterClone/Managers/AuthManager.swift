@@ -15,7 +15,10 @@ public class AuthManager {
     
 //MARK: - Public Methods
     
-    func registerNewUser(newUser: User, password: String, completion: @escaping (Bool) -> Void) {
+    func registerNewUser(
+        newUser: User,
+        password: String,
+        completion: @escaping (Bool) -> Void) {
         //check if username is available
         //check if email is available
         DatabaseManager.shared.canCreateNewUser(with: newUser) { canCreate in
@@ -54,7 +57,11 @@ public class AuthManager {
         }
     }
     
-    public func loginUser(email: String, password: String, completion: @escaping ((Bool) -> Void)) {
+    public func loginUser(
+        email: String,
+        password: String,
+        completion: @escaping ((Bool) -> Void)) {
+            
         Auth.auth().signIn(withEmail: email, password: password) {
             
             authResult, error in

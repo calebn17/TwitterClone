@@ -6,32 +6,33 @@
 //
 
 import UIKit
+
 ///Search Results Screen
 class SearchResultsViewController: UIViewController {
 
-//MARK: - Setup
-    
+//MARK: - Properties
     private var searchResultTweets: [TweetModel] = []
     
+//MARK: - SubViews
     private let searchResultsTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TweetTableViewCell.self, forCellReuseIdentifier: TweetTableViewCell.identifier)
         return tableView
     }()
  
-//MARK: - View Methods
-    
+//MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchResultsTableView()
         view.backgroundColor = .clear
-        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         searchResultsTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 30)
     }
+
+//MARK: - Configure
     
     private func configureSearchResultsTableView() {
         view.addSubview(searchResultsTableView)

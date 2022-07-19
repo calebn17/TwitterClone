@@ -10,8 +10,9 @@ import FirebaseDatabase
 import FirebaseFirestore
 import UIKit
 
-public class DatabaseManager {
-    
+final class DatabaseManager {
+
+//MARK: - Properties
     static let shared = DatabaseManager()
     private let firestore = Firestore.firestore()
     
@@ -20,6 +21,14 @@ public class DatabaseManager {
     }
     private var tweetRef: CollectionReference {
         return firestore.collection("tweets")
+    }
+    public var currentUser: User {
+        return User(
+            id: nil,
+            userName: UserDefaults.standard.string(forKey: Cache.username) ?? "",
+            userHandle: UserDefaults.standard.string(forKey: Cache.userHandle) ?? "",
+            userEmail: UserDefaults.standard.string(forKey: Cache.email) ?? ""
+        )
     }
     
     private init() {}
@@ -37,7 +46,9 @@ public class DatabaseManager {
     /// Inserts user to DB
     /// - Parameters
     /// - newUser: new user's User object
-    func insertUser(newUser: User, completion: @escaping (Bool) -> Void) {
+    func insertUser(
+        newUser: User,
+        completion: @escaping (Bool) -> Void) {
         guard let data = newUser.asDictionary() else {
             completion(false)
             return
@@ -67,7 +78,9 @@ public class DatabaseManager {
     }
     
 //MARK: - Tweets
-    func insertTweet(with tweet: TweetModel, completion: @escaping (Bool) -> Void) {
+    func insertTweet(
+        with tweet: TweetModel,
+        completion: @escaping (Bool) -> Void) {
         guard let username = UserDefaults.standard.string(forKey: Cache.username) else {return}
         
         //inserting tweet id in the tweet's user's metadata
@@ -101,4 +114,58 @@ public class DatabaseManager {
         })
         return resultTweets
     }
+    
+    func getTweet(with id: String) async throws -> TweetModel? {
+        let resultTweet: TweetModel? = try await withCheckedThrowingContinuation({ continuation in
+            tweetRef.document(id).getDocument { snapshot, error in
+                guard let tweetData = snapshot?.data(),
+                      error == nil
+                else {
+                    continuation.resume(throwing: error!)
+                    return
+                }
+                continuation.resume(returning: TweetModel(with: tweetData))
+            }
+        })
+        return resultTweet
+    }
+
+//MARK: - Tweet Actions
+    
+    enum LikeStatus {
+        case liked
+        case unliked
+    }
+    
+    func updateLikeStatus(
+        type: LikeStatus,
+        tweet: TweetModel,
+        completion: @escaping (Bool) -> Void) {
+            
+            let ref = tweetRef.document(tweet.tweetId)
+            
+            Task {
+                do {
+                    guard var tweetModel = try await getTweet(with: tweet.tweetId) else {
+                        completion(false)
+                        return
+                    }
+                    switch type {
+                    case .liked:
+                        if !tweetModel.likers.contains(currentUser.userName) {
+                            tweetModel.likers.append(currentUser.userName)
+                        }
+                    case .unliked:
+                        if tweetModel.likers.contains(currentUser.userName) {
+                            tweetModel.likers.removeAll(where: {$0 == currentUser.userName})
+                        }
+                    }
+                    try await ref.setData(tweetModel.asDictionary() ?? [:] )
+                    completion(true)
+                }
+                catch {
+                    print("Could not update like status: \(error.localizedDescription)")
+                }
+            }
+        }
 }

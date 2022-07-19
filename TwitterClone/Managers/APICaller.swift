@@ -26,7 +26,6 @@ final class APICaller {
         return result.data
     }
     
-    
 //MARK: - Generate Request
     
     enum HTTPMethod: String {
