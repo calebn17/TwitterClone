@@ -50,8 +50,7 @@ struct TweetModel: Codable {
     let userAvatar: String?
     let text: String?
     var likers: [String]
-    var isRetweetedByUser: Bool?
-    var retweets: Int?
+    var retweeters: [String]
     var comments: [CommentsModel]?
     let dateCreated: Date?
 }
@@ -62,10 +61,8 @@ struct CommentsModel: Codable {
     let userHandle: String?
     let userAvatar: String?
     let text: String?
-    var isLikedByUser: Bool?
-    var isRetweetedByUser: Bool?
-    var likes: Int?
-    var retweets: Int?
+    var likers: [String]
+    var retweeters: [String]
     let dateCreated: Date?
 }
 

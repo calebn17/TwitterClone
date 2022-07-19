@@ -167,9 +167,8 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
                         userAvatar: nil,
                         text: $0.text,
                         likers: [],
-                        isRetweetedByUser: nil,
-                        retweets: nil,
-                        comments: nil,
+                        retweeters: [],
+                        comments: [],
                         dateCreated: nil
                     )
                 })

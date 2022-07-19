@@ -124,8 +124,7 @@ final class HomeViewController: UIViewController {
                         userAvatar: nil,
                         text: $0.text,
                         likers: [],
-                        isRetweetedByUser: nil,
-                        retweets: nil,
+                        retweeters: [],
                         comments: nil,
                         dateCreated: nil
                     )
@@ -208,13 +207,11 @@ extension HomeViewController: TweetTableViewCellDelegate {
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(with model: TweetModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweet(with model: TweetModel) {
         
         let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-            completion(true)
-        }))
+        actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: nil))
         actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
             //need to pass in the text body here
             let vc = AddTweetViewController()
@@ -252,7 +249,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
         //not looking to do anything here
     }
     
-    func didTapRetweetInComment(with model: CommentsModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweetInComment(with model: CommentsModel) {
         //For SelectedTweetVC
         //have this stubbed out to just simply conform to the delegate
         //not looking to do anything here
@@ -281,8 +278,7 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
             userAvatar: nil,
             text: tweetBody,
             likers: [],
-            isRetweetedByUser: false,
-            retweets: 0,
+            retweeters: [],
             comments: nil,
             dateCreated: Date()
         )
@@ -308,7 +304,16 @@ extension HomeViewController: AddCommentViewControllerDelegate {
         else {return}
         
         let commentID = UUID().uuidString
-        let addedComment = CommentsModel(commentId: commentID, username: username, userHandle: userHandle, userAvatar: nil, text: tweetBody, isLikedByUser: false, isRetweetedByUser: false, likes: 0, retweets: 0, dateCreated: Date())
+        let addedComment = CommentsModel(
+            commentId: commentID,
+            username: username,
+            userHandle: userHandle,
+            userAvatar: nil,
+            text: tweetBody,
+            likers: [],
+            retweeters: [],
+            dateCreated: Date()
+        )
         //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
         
         //for now, will add the new comment to this collection to demonstrate functionality

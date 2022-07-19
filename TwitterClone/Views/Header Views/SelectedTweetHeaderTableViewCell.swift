@@ -9,7 +9,7 @@ import UIKit
 
 protocol SelectedTweetHeaderTableViewCellDelegate: AnyObject {
     func didTapCommentButton()
-    func didTapRetweet(with model: TweetModel, completion: @escaping (Bool) -> Void)
+    func didTapRetweet(with model: TweetModel)
     func didTapLikeButton(liked: Bool, model: TweetModel)
     func didTapShareButton()
 }
@@ -225,15 +225,8 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
             //undo retweet state
         }
         else {
-            guard var tweetModel = tweet else {return}
-            delegate?.didTapRetweet(with: tweetModel, completion: {[weak self] result in
-                DispatchQueue.main.async {
-                    if result {
-                        self?.retweetButton.tintColor = .systemGreen
-                        tweetModel.isRetweetedByUser = true
-                    }
-                }
-            })
+            guard let tweetModel = tweet else {return}
+            delegate?.didTapRetweet(with: tweetModel)
         }
     }
     
