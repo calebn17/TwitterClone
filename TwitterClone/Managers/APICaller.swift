@@ -16,7 +16,7 @@ final class APICaller {
     static let shared = APICaller()
     private init() {}
     
-    public func getSearch(with query: String) async throws -> [TweetModel] {
+    public func getSearch(with query: String) async throws -> [TweetResponse] {
         guard let request = try await createRequest(with: URL(string: "\(K.baseURL)tweets/search/recent?query=\(query)&max_results=30"), type: .GET)
         else { return [] }
         

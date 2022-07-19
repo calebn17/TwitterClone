@@ -26,7 +26,7 @@ struct NotificationsModel {
     let date: Date?
 }
 
-struct UserModel {
+struct User: Codable {
     var id: Int?
     var userName: String
     var userHandle: String
@@ -43,13 +43,13 @@ struct HomeTweetViewCellViewModel {
 }
 
 struct TweetModel: Codable {
-    let tweetId: String?
+    let tweetId: String
     var username: String?
     var userHandle: String?
     var userEmail: String?
     let userAvatar: String?
     let text: String?
-    var isLikedByUser: Bool?
+    var likers: [User]
     var isRetweetedByUser: Bool?
     var likes: Int?
     var retweets: Int?

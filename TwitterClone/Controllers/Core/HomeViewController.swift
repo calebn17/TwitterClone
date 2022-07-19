@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
         configureNavbar()
         configureHomeFeedTableView()
         configureAddTweetButton()
-        fetchDataAsync()
+        fetchData()
         
         let searchVC = SearchViewController()
         searchVC.delegate = self
@@ -108,12 +108,29 @@ final class HomeViewController: UIViewController {
     }
     
 //MARK: - Fetch Methods
-    private func fetchDataAsync() {
+    private func fetchData() {
         Task {
             do {
-                let apiTweets = try await APICaller.shared.getSearch(with: "bitcoin")
+                let responseTweets = try await APICaller.shared.getSearch(with: "bitcoin")
                 let dbTweets = try await DatabaseManager.shared.getTweets()
-                //updateTweetCollection(apiTweets: apiTweets, dbTweets: dbTweets)
+                
+                let apiTweets = responseTweets.compactMap({
+                    TweetModel(
+                        tweetId: UUID().uuidString,
+                        username: nil,
+                        userHandle: nil,
+                        userEmail: nil,
+                        userAvatar: nil,
+                        text: $0.text,
+                        likers: [],
+                        isRetweetedByUser: nil,
+                        likes: nil,
+                        retweets: nil,
+                        comments: nil,
+                        dateCreated: nil
+                    )
+                })
+                
                 tweetResponses = dbTweets + apiTweets
                 homeFeedTableView.reloadData()
             }
@@ -256,7 +273,7 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
             userEmail: email,
             userAvatar: nil,
             text: tweetBody,
-            isLikedByUser: false,
+            likers: [],
             isRetweetedByUser: false,
             likes: 0,
             retweets: 0,

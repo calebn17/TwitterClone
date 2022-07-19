@@ -8,7 +8,7 @@
 import Foundation
 
 struct SearchResponse: Codable {
-    let data: [TweetModel]
+    let data: [TweetResponse]
 }
 
 struct TweetResponse: Codable {
@@ -17,14 +17,3 @@ struct TweetResponse: Codable {
 }
 
 
-//let id: String?
-//let userName: String?
-//let userHandle: String?
-//let userAvatar: String?
-//let tweetBody: String?
-//let isLikedByUser: Bool?
-//let isRetweetedByUser: Bool?
-//let likes: Int?
-//let retweets: Int?
-//let comments: [CommentsModel]?
-//let dateCreated: Date?

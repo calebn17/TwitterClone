@@ -15,25 +15,26 @@ public class AuthManager {
     
 //MARK: - Public Methods
     
-    public func registerNewUser(username: String, userHandle: String, email: String, password: String, completion: @escaping (Bool) -> Void) {
+    func registerNewUser(newUser: User, password: String, completion: @escaping (Bool) -> Void) {
         //check if username is available
         //check if email is available
-        DatabaseManager.shared.canCreateNewUser(with: email, username: username, userHandle: userHandle) { canCreate in
+        DatabaseManager.shared.canCreateNewUser(with: newUser) { canCreate in
             if canCreate {
                 //create account
-                Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                    guard error == nil, result != nil else {
+                Auth.auth().createUser(withEmail: newUser.userEmail, password: password) { result, error in
+                    guard error == nil, result != nil
+                    else {
                         //Firebase auth could not create account
                         completion(false)
                         return
                     }
                     //insert account to db
-                    DatabaseManager.shared.insertUser(with: email, username: username, userHandle: userHandle) { inserted in
+                    DatabaseManager.shared.insertUser(newUser: newUser) { inserted in
                         if inserted {
                             //successfully inserted to DB
-                            UserDefaults.standard.set(email, forKey: Cache.email)
-                            UserDefaults.standard.set(username, forKey: Cache.username)
-                            UserDefaults.standard.set(userHandle, forKey: Cache.userHandle)
+                            UserDefaults.standard.set(newUser.userEmail, forKey: Cache.email)
+                            UserDefaults.standard.set(newUser.userName, forKey: Cache.username)
+                            UserDefaults.standard.set(newUser.userHandle, forKey: Cache.userHandle)
                             completion(true)
                             return
                         }
@@ -54,7 +55,9 @@ public class AuthManager {
     }
     
     public func loginUser(email: String, password: String, completion: @escaping ((Bool) -> Void)) {
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+        Auth.auth().signIn(withEmail: email, password: password) {
+            
+            authResult, error in
             guard authResult != nil, error == nil else {
                 //failed to login
                 completion(false)
@@ -62,10 +65,9 @@ public class AuthManager {
             }
             Task {
                 do {
-                    let username = try await DatabaseManager.shared.getUsername(email: email)
-                    let userHandle = try await DatabaseManager.shared.getUserHandle(email: email)
-                    UserDefaults.standard.set(username, forKey: Cache.username)
-                    UserDefaults.standard.set(userHandle, forKey: Cache.userHandle)
+                    let user = try await DatabaseManager.shared.getUser(email: email)
+                    UserDefaults.standard.set(user?.userName, forKey: Cache.username)
+                    UserDefaults.standard.set(user?.userHandle, forKey: Cache.userHandle)
                     UserDefaults.standard.set(email, forKey: Cache.email)
                     completion(true)
                 }

@@ -17,7 +17,12 @@ class SettingsHeaderView: UIView {
 //MARK: - Setup
     
     public weak var delegate: SettingsHeaderViewDelegate?
-    private var user = UserModel(id: nil, userName: "", userHandle: "", userEmail: "")
+    private var user = User(
+        id: nil,
+        userName: "",
+        userHandle: "",
+        userEmail: ""
+    )
     
     private let userImageView: UIImageView = {
         let imageView = UIImageView()

@@ -156,7 +156,23 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         //Fetching the Search Results data
         Task{
             do {
-                let results = try await APICaller.shared.getSearch(with: query)
+                let response = try await APICaller.shared.getSearch(with: query)
+                let results = response.compactMap({
+                    TweetModel(
+                        tweetId: UUID().uuidString,
+                        username: nil,
+                        userHandle: nil,
+                        userEmail: nil,
+                        userAvatar: nil,
+                        text: $0.text,
+                        likers: [],
+                        isRetweetedByUser: nil,
+                        likes: nil,
+                        retweets: nil,
+                        comments: nil,
+                        dateCreated: nil
+                    )
+                })
                 resultsController.update(with: results)
             }
             catch {
