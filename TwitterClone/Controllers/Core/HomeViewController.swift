@@ -17,7 +17,7 @@ final class HomeViewController: UIViewController {
     
     //Temporary collection to hold added comments
     //Just to demonstrate functionality
-    private var addedComments = [CommentsModel]()
+    private var addedComments = [TweetModel]()
     
 //MARK: - SubViews
     private let twitterIcon: UIImageView = {
@@ -125,7 +125,7 @@ final class HomeViewController: UIViewController {
                         text: $0.text,
                         likers: [],
                         retweeters: [],
-                        comments: nil,
+                        comments: [],
                         dateCreated: nil
                     )
                 })
@@ -200,25 +200,43 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - TweetTableViewCellDelegate Methods
 extension HomeViewController: TweetTableViewCellDelegate {
     
-    func didTapCommentButton() {
-        let vc = AddCommentViewController()
+    func didTapCommentButton(owner: TweetModel) {
+        let vc = AddCommentViewController(with: owner)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(with model: TweetModel) {
+    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
         
-        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
-            //need to pass in the text body here
-            let vc = AddTweetViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self?.present(vc, animated: true, completion: nil)
-        }))
-        present(actionSheet, animated: true, completion: nil)
+        if retweeted {
+            let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
+                // add user to retweeter collection in TweetModel
+                DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model) { success in
+                    if !success {
+                        print("Something went wrong when retweeting")
+                    }
+                    completion(true)
+                }
+            }))
+            actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
+                //need to pass in the text body here
+                let vc = AddTweetViewController()
+                vc.modalPresentationStyle = .fullScreen
+                self?.present(vc, animated: true, completion: nil)
+                completion(false)
+            }))
+            present(actionSheet, animated: true, completion: nil)
+        }
+        else {
+            DatabaseManager.shared.updateRetweetStatus(type: .notRetweeted, tweet: model) { success in
+                if !success {
+                    print("Something went wrong when unretweeting")
+                }
+            }
+        }
     }
     
     
@@ -233,7 +251,6 @@ extension HomeViewController: TweetTableViewCellDelegate {
                 print("Error occured when updating like status")
             }
         }
-        
     }
     
     func didTapShareButton() {
@@ -241,18 +258,6 @@ extension HomeViewController: TweetTableViewCellDelegate {
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true
         present(shareAction, animated: true, completion: nil)
-    }
-    
-    func didTapLikeButtonInComment(liked: Bool, model: CommentsModel) {
-        //For SelectedTweetVC
-        //have this stubbed out to just simply conform to the delegate
-        //not looking to do anything here
-    }
-    
-    func didTapRetweetInComment(with model: CommentsModel) {
-        //For SelectedTweetVC
-        //have this stubbed out to just simply conform to the delegate
-        //not looking to do anything here
     }
 }
 
@@ -279,7 +284,7 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
             text: tweetBody,
             likers: [],
             retweeters: [],
-            comments: nil,
+            comments: [],
             dateCreated: Date()
         )
         
@@ -298,28 +303,33 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
 
 //MARK: - AddCommentViewControllerDelegate Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String) {
+    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
         guard let username = UserDefaults.standard.string(forKey: "username"),
               let userHandle = UserDefaults.standard.string(forKey: "userHandle")
         else {return}
         
         let commentID = UUID().uuidString
-        let addedComment = CommentsModel(
-            commentId: commentID,
+        let addedComment = TweetModel(
+            tweetId: commentID,
             username: username,
             userHandle: userHandle,
+            userEmail: nil,
             userAvatar: nil,
             text: tweetBody,
             likers: [],
             retweeters: [],
+            comments: [],
             dateCreated: Date()
         )
-        //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
-        
         //for now, will add the new comment to this collection to demonstrate functionality
         addedComments.append(addedComment)
-        homeFeedTableView.reloadData()
+        
+        //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
+        DatabaseManager.shared.insertComment(tweetId: owner.tweetId, text: tweetBody) { [weak self] success in
+            if !success {
+                print("Could not insert comment")
+            }
+            self?.homeFeedTableView.reloadData()
+        }
     }
-    
-    
 }

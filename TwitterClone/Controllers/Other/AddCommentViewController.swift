@@ -9,13 +9,14 @@ import UIKit
 
 //MARK: - Protocol
 protocol AddCommentViewControllerDelegate: AnyObject {
-    func didTapReplyButton(tweetBody: String)
+    func didTapReplyButton(tweetBody: String, owner: TweetModel)
 }
 
 final class AddCommentViewController: UIViewController {
     
 //MARK: - Properties
     public weak var delegate: AddCommentViewControllerDelegate?
+    private var tweet: TweetModel
     private var tweetBody: String?
     
 //MARK: - SubViews
@@ -54,7 +55,17 @@ final class AddCommentViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
+//MARK: - Init
+    init(with owner: TweetModel) {
+        self.tweet = owner
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,9 +115,12 @@ final class AddCommentViewController: UIViewController {
 //MARK: - Actions
     @objc private func tappedReplyButton() {
         dismiss(animated: true) {[weak self] in
-            //passing tweet body through
-            guard let tweetBody = self?.tweetBody else {return}
-            self?.delegate?.didTapReplyButton(tweetBody: tweetBody)
+            //passing tweet body and parent tweet through
+            guard let tweetBody = self?.tweetBody,
+                  let tweet = self?.tweet
+            else {return}
+            
+            self?.delegate?.didTapReplyButton(tweetBody: tweetBody, owner: tweet)
         }
     }
     

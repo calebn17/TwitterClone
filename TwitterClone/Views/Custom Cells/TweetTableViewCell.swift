@@ -9,12 +9,10 @@ import UIKit
 
 //MARK: - Protocol
 protocol TweetTableViewCellDelegate: AnyObject {
-    func didTapCommentButton()
-    func didTapRetweet(with model: TweetModel)
+    func didTapCommentButton(owner: TweetModel)
+    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void)
     func didTapLikeButton(liked: Bool, model: TweetModel)
     func didTapShareButton()
-    func didTapRetweetInComment(with model: CommentsModel)
-    func didTapLikeButtonInComment(liked: Bool, model: CommentsModel)
 }
 ///Individual Tweet Cell
 class TweetTableViewCell: UITableViewCell {
@@ -22,13 +20,12 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Properties
     static let identifier = "HomeTweetTableViewCell"
     public weak var delegate: TweetTableViewCellDelegate?
-    private var tweetModel: TweetModel?
-    private var commentModel: CommentsModel?
+    private var model: TweetModel?
     private var likesCount = 0
     private var commentsCount = 0
     private var retweetsCount = 0
     private var isCurrentlyLikedByCurrentUser = false
-    
+    private var isRetweetedByCurrentUser = false
     
 //MARK: - SubViews
     private let userNameLabel: UILabel = {
@@ -242,17 +239,16 @@ class TweetTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: TweetModel){
-        tweetModel = model
+        self.model = model
         userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
         userNameLabel.text = model.username ?? "Unknown"
         twitterTextLabel.text = model.text
         
-        commentsCount = model.comments?.count ?? 0
+        commentsCount = model.comments.count
         commentCountLabel.text = String(commentsCount)
         
         likesCount = model.likers.count
         likesCountLabel.text = String(likesCount)
-        
         if model.likers.contains(DatabaseManager.shared.currentUser.userName) {
             let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
@@ -262,32 +258,15 @@ class TweetTableViewCell: UITableViewCell {
         
         retweetsCount = model.retweeters.count
         retweetsCountLabel.text = String(retweetsCount)
-    }
-    
-    public func configureComment(with model: CommentsModel){
-        commentModel = model
-        userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
-        userNameLabel.text = model.username ?? "Unknown"
-        twitterTextLabel.text = model.text
-    
-        likesCount = model.likers.count
-        likesCountLabel.text = String(likesCount)
-        
-        if model.likers.contains(DatabaseManager.shared.currentUser.userName) {
-            let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
-            likeButton.setImage(image, for: .normal)
-            likeButton.tintColor = .red
-            isCurrentlyLikedByCurrentUser = true
+        if model.retweeters.contains(DatabaseManager.shared.currentUser.userName) {
+            retweetButton.tintColor = .systemGreen
+            isRetweetedByCurrentUser = true
         }
-        
-        retweetsCount = model.retweeters.count
-        retweetsCountLabel.text = String(retweetsCount)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        tweetModel = nil
-        commentModel = nil
+        model = nil
         userHandleLabel.text = ""
         userNameLabel.text = nil
         twitterTextLabel.text = nil
@@ -309,66 +288,60 @@ class TweetTableViewCell: UITableViewCell {
     }
     
     @objc private func tappedCommentButton() {
-        delegate?.didTapCommentButton()
+        guard let model = self.model else {return}
+        delegate?.didTapCommentButton(owner: model)
     }
     
     @objc private func tappedLikeButton() {
+        guard let model = self.model else {return}
         
-        if let tweetModel = tweetModel {
-            // tapping this button will unlike tweet
-            if isCurrentlyLikedByCurrentUser == true {
-                let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
-                likeButton.setImage(image, for: .normal)
-                likeButton.tintColor = .label
-                likesCount -= 1
-                likesCountLabel.text = String(likesCount)
-                delegate?.didTapLikeButton(liked: false, model: tweetModel)
-            }
-            // tapping this button will like tweet
-            else {
-                let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
-                likeButton.setImage(image, for: .normal)
-                likeButton.tintColor = .red
-                likesCount += 1
-                likesCountLabel.text = String(likesCount)
-                delegate?.didTapLikeButton(liked: true, model: tweetModel)
-            }
-            isCurrentlyLikedByCurrentUser = !isCurrentlyLikedByCurrentUser
+        // tapping this button will unlike tweet
+        if isCurrentlyLikedByCurrentUser == true {
+            let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
+            likeButton.setImage(image, for: .normal)
+            likeButton.tintColor = .label
+            likesCount -= 1
+            likesCountLabel.text = String(likesCount)
         }
-        else if let commentModel = commentModel {
-            if likeButton.tintColor == .red {
-                let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
-                likeButton.setImage(image, for: .normal)
-                likeButton.tintColor = .label
-                delegate?.didTapLikeButtonInComment(liked: false, model: commentModel)
-            }
-            else {
-                let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
-                likeButton.setImage(image, for: .normal)
-                likeButton.tintColor = .red
-                delegate?.didTapLikeButtonInComment(liked: true, model: commentModel)
-            }
+        // tapping this button will like tweet
+        else {
+            let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
+            likeButton.setImage(image, for: .normal)
+            likeButton.tintColor = .red
+            likesCount += 1
+            likesCountLabel.text = String(likesCount)
         }
-        else {return}
+        
+        delegate?.didTapLikeButton(liked: !isCurrentlyLikedByCurrentUser, model: model)
+        
+        isCurrentlyLikedByCurrentUser = !isCurrentlyLikedByCurrentUser
     }
     
     @objc private func tappedRetweetButton() {
-        if retweetButton.tintColor == .systemGreen {
+        guard let model = self.model else {return}
+        
+        // Un-retweet
+        if isRetweetedByCurrentUser {
+            delegate?.didTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: { _ in
+                // nothing should happen here
+            })
             retweetButton.tintColor = .label
-            //undo retweet state
+            retweetsCount -= 1
+            retweetsCountLabel.text = String(retweetsCount)
         }
+        //Retweet
         else {
-            if let tweetModel = tweetModel {
-                delegate?.didTapRetweet(with: tweetModel)
-                retweetButton.tintColor = .systemGreen
-            }
-            else if let commentModel = commentModel {
-                delegate?.didTapRetweetInComment(with: commentModel)
-                   
-                retweetButton.tintColor = .systemGreen
-            }
-            else {return}
+            delegate?.didTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: { [weak self] success in
+                DispatchQueue.main.async {
+                    if success {
+                        self?.retweetButton.tintColor = .systemGreen
+                        self?.retweetsCount += 1
+                        self?.retweetsCountLabel.text = String(self?.retweetsCount ?? 0)
+                    }
+                }
+            })
         }
+        isRetweetedByCurrentUser = !isRetweetedByCurrentUser
     }
     
     @objc private func tappedShareButton() {

@@ -33,7 +33,6 @@ struct User: Codable {
     var userEmail: String
 }
 
-
 struct HomeTweetViewCellViewModel {
     let id: String?
     let userName: String
@@ -51,18 +50,18 @@ struct TweetModel: Codable {
     let text: String?
     var likers: [String]
     var retweeters: [String]
-    var comments: [CommentsModel]?
+    var comments: [TweetModel]
     let dateCreated: Date?
 }
 
-struct CommentsModel: Codable {
-    let commentId: String?
-    let username: String?
-    let userHandle: String?
-    let userAvatar: String?
-    let text: String?
-    var likers: [String]
-    var retweeters: [String]
-    let dateCreated: Date?
-}
+//struct CommentsModel: Codable {
+//    let commentId: String?
+//    let username: String?
+//    let userHandle: String?
+//    let userAvatar: String?
+//    let text: String?
+//    var likers: [String]
+//    var retweeters: [String]
+//    let dateCreated: Date?
+//}
 

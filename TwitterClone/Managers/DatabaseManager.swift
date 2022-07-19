@@ -130,7 +130,7 @@ final class DatabaseManager {
         return resultTweet
     }
 
-//MARK: - Tweet Actions
+//MARK: - Like
     
     enum LikeStatus {
         case liked
@@ -168,4 +168,72 @@ final class DatabaseManager {
                 }
             }
         }
+
+//MARK: - Retweet
+    enum RetweetStatus {
+        case retweeted
+        case notRetweeted
+    }
+    
+    func updateRetweetStatus(
+        type: RetweetStatus,
+        tweet: TweetModel,
+        completion: @escaping (Bool) -> Void) {
+            
+            let ref = tweetRef.document(tweet.tweetId)
+            
+            Task {
+                do {
+                    guard var tweetModel = try await getTweet(with: tweet.tweetId) else {
+                        completion(false)
+                        return
+                    }
+                    switch type {
+                    case .retweeted:
+                        if !tweetModel.retweeters.contains(currentUser.userName) {
+                            tweetModel.retweeters.append(currentUser.userName)
+                        }
+                    case .notRetweeted:
+                        if tweetModel.retweeters.contains(currentUser.userName) {
+                            tweetModel.retweeters.removeAll(where: {$0 == currentUser.userName})
+                        }
+                    }
+                    try await ref.setData(tweetModel.asDictionary() ?? [:] )
+                    completion(true)
+                }
+                catch {
+                    print("Could not update retweet status: \(error.localizedDescription)")
+                }
+            }
+        }
+    
+//MARK: - Comment
+    func insertComment(tweetId: String, text: String, completion: @escaping (Bool) -> Void) {
+        let ref = tweetRef.document(tweetId)
+        ref.getDocument { [weak self] snapshot, error in
+            guard let data = snapshot?.data(),
+                  error == nil
+            else {
+                completion(false)
+                return
+            }
+            var tweet = TweetModel(with: data)
+            tweet?.comments.append(
+                TweetModel(
+                    tweetId: UUID().uuidString,
+                    username: self?.currentUser.userName,
+                    userHandle: self?.currentUser.userHandle,
+                    userEmail: self?.currentUser.userEmail,
+                    userAvatar: nil,
+                    text: text,
+                    likers: [],
+                    retweeters: [],
+                    comments: [],
+                    dateCreated: nil
+                )
+            )
+            ref.setData(tweet?.asDictionary() ?? [:])
+            completion(true)
+        }
+    }
 }

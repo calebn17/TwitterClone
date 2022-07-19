@@ -10,8 +10,8 @@ import UIKit
 class SelectedTweetViewController: UIViewController {
     
 //MARK: - Properties
-    private var tweet: TweetModel?
-    private var comments: [CommentsModel]?
+    private var tweet: TweetModel
+    private var comments: [TweetModel]
     private var headerView: SelectedTweetHeaderTableViewCell?
     
 //MARK: - SubViews
@@ -26,6 +26,7 @@ class SelectedTweetViewController: UIViewController {
 //MARK: - Init
     init(with tweet: TweetModel){
         self.tweet = tweet
+        self.comments = tweet.comments
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -57,16 +58,16 @@ class SelectedTweetViewController: UIViewController {
 //MARK: - TableView Methods
 extension SelectedTweetViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return comments?.count ?? 10
+        // Adding 1 here to account for the headerView
+        return comments.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.row == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SelectedTweetHeaderTableViewCell.identifier, for: indexPath) as? SelectedTweetHeaderTableViewCell,
-                  let tweet = self.tweet
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SelectedTweetHeaderTableViewCell.identifier, for: indexPath) as? SelectedTweetHeaderTableViewCell
             else {return UITableViewCell()}
-            cell.configure(with: tweet)
+            cell.configure(with: self.tweet)
             cell.selectionStyle = .none
             cell.delegate = self
             return cell
@@ -75,18 +76,9 @@ extension SelectedTweetViewController: UITableViewDelegate, UITableViewDataSourc
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell
             else {return UITableViewCell()}
             cell.delegate = self
-            cell.configureComment(
-                with: CommentsModel(
-                    commentId: nil,
-                    username: nil,
-                    userHandle: nil,
-                    userAvatar: nil,
-                    text: nil,
-                    likers: [],
-                    retweeters: [],
-                    dateCreated: nil
-                )
-            )
+            let model = comments[indexPath.row - 1]
+            print("This should be in the comments \(model.tweetId)")
+            cell.configure(with: model)
             return cell
         }
     }
@@ -96,29 +88,73 @@ extension SelectedTweetViewController: UITableViewDelegate, UITableViewDataSourc
     }
 }
 //MARK: - CellDelegate Methods
-extension SelectedTweetViewController: TweetTableViewCellDelegate, SelectedTweetHeaderTableViewCellDelegate {
-    func didTapCommentButton() {
-        let vc = AddCommentViewController()
+extension SelectedTweetViewController: SelectedTweetHeaderTableViewCellDelegate {
+    
+    func didTapHeaderCommentButton() {
+        
+    }
+    
+    func didTapHeaderLikeButton(liked: Bool, model: TweetModel) {
+        
+    }
+    
+    func didTapHeaderShareButton() {
+        
+    }
+}
+
+extension SelectedTweetViewController: TweetTableViewCellDelegate {
+   
+    func didTapCommentButton(owner: TweetModel) {
+        let vc = AddCommentViewController(with: owner)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(with model: TweetModel) {
-        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
-            //need to pass in the comment's text body here
-            let vc = AddTweetViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self?.present(vc, animated: true, completion: nil)
-        }))
-        present(actionSheet, animated: true, completion: nil)
+    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
+        
+        if retweeted {
+            let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+                completion(false)
+            }))
+            actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
+                DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model) { success in
+                    if !success {
+                        completion(false)
+                        print("Something went wrong when retweeting")
+                    }
+                    completion(true)
+                }
+            }))
+            actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
+                //need to pass in the comment's text body here
+                let vc = AddTweetViewController()
+                vc.modalPresentationStyle = .fullScreen
+                self?.present(vc, animated: true, completion: nil)
+                completion(false)
+            }))
+            present(actionSheet, animated: true, completion: nil)
+        }
+        else {
+            DatabaseManager.shared.updateRetweetStatus(type: .notRetweeted, tweet: model) { success in
+                if !success {
+                    completion(false)
+                    print("Something went wrong when unretweeting")
+                }
+                completion(true)
+            }
+        }
     }
     
     func didTapLikeButton(liked: Bool, model: TweetModel) {
-       //
+        // insert User into the likers collection in the TweetModel and update DB
+        DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model) { success in
+            if !success {
+                print("Error occured when updating like status")
+            }
+        }
     }
     
     func didTapShareButton() {
@@ -127,28 +163,11 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate, SelectedTweet
         shareAction.isModalInPresentation = true
         present(shareAction, animated: true, completion: nil)
     }
-    
-    func didTapLikeButtonInComment(liked: Bool, model: CommentsModel) {
-        //update the the likes and liked properties in the DB
-    }
-    
-    func didTapRetweetInComment(with model: CommentsModel) {
-        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
-            //need to pass in the comment's text body here
-            let vc = AddTweetViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self?.present(vc, animated: true, completion: nil)
-        }))
-        present(actionSheet, animated: true, completion: nil)
-    }
 }
 
 //MARK: - AddCommentViewControllerDelegate Methods
 extension SelectedTweetViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String) {
+    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
         //
     }
 }
