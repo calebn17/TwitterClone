@@ -10,7 +10,7 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
-//MARK: - Setup
+//MARK: - Subviews
     
     private let emailLabel: UILabel = {
         let label = UILabel()
@@ -27,23 +27,23 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    private let emailField: UITextField = {
-        let textField = UITextField()
-        textField.layer.borderColor = UIColor.label.cgColor
-        textField.layer.borderWidth = 1
+    private let emailField: ReusableTextField = {
+        let textField = ReusableTextField()
         textField.placeholder = "  Enter your email address...  "
         textField.textAlignment = .left
+        textField.returnKeyType = .next
+        textField.keyboardType = .emailAddress
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let passwordField: UITextField = {
-        let textField = UITextField()
+    private let passwordField: ReusableTextField = {
+        let textField = ReusableTextField()
         textField.placeholder = "  Enter your password...  "
         textField.textAlignment = .left
-        textField.layer.borderColor = UIColor.label.cgColor
-        textField.layer.borderWidth = 1
         textField.isSecureTextEntry = true
+        textField.keyboardType = .default
+        textField.returnKeyType = .done
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
         button.setTitle("Login", for: UIControl.State.normal)
         button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
-        button.layer.borderWidth = 1
+        button.layer.borderWidth = 2
         button.backgroundColor = .systemBackground
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
@@ -67,12 +67,12 @@ class LoginViewController: UIViewController {
         button.setTitleColor(.label, for: .normal)
         button.backgroundColor = .systemBackground
         button.layer.masksToBounds = true
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = UIColor.systemBackground.cgColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-//MARK: - View Methods
+//MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,59 +85,13 @@ class LoginViewController: UIViewController {
     }
     
     private func addSubviews() {
-        view.addSubview(emailLabel)
-        view.addSubview(passwordLabel)
         view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(loginButton)
         view.addSubview(registerButton)
     }
  
-//MARK: - Configure Methods
-    
-    private func addConstraints() {
-        let size: CGFloat = 200
-        let emailLabelConstraints = [
-            emailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 300)
-        ]
-        let emailFieldConstraints = [
-            emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 15),
-            emailField.heightAnchor.constraint(equalToConstant: 40),
-            emailField.widthAnchor.constraint(equalToConstant: 300)
-        ]
-        let passwordLabelConstraints = [
-            passwordLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordLabel.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 30)
-        ]
-        let passwordFieldConstraints = [
-            passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 15),
-            passwordField.heightAnchor.constraint(equalToConstant: 40),
-            passwordField.widthAnchor.constraint(equalToConstant: 300)
-        ]
-        let loginButtonConstraints = [
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 30),
-            loginButton.widthAnchor.constraint(equalToConstant: size),
-            loginButton.heightAnchor.constraint(equalToConstant: 40)
-        ]
-        let registerButtonConstraints = [
-            registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 60),
-            registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20),
-            registerButton.heightAnchor.constraint(equalToConstant: 40)
-        ]
-        NSLayoutConstraint.activate(emailLabelConstraints)
-        NSLayoutConstraint.activate(emailFieldConstraints)
-        NSLayoutConstraint.activate(passwordLabelConstraints)
-        NSLayoutConstraint.activate(passwordFieldConstraints)
-        NSLayoutConstraint.activate(loginButtonConstraints)
-        NSLayoutConstraint.activate(registerButtonConstraints)
-    }
-  
-//MARK: - Action Methods
+//MARK: - Actions
     
     @objc private func didTapLoginButton(){
         
@@ -159,6 +113,7 @@ class LoginViewController: UIViewController {
                 if success {
                     //user logged in
                     //dismisses the LoginVC so the HomeVC will be shown
+                    print("\nlogged in")
                     self?.dismiss(animated: true, completion: nil)
                 }
                 else {
@@ -166,6 +121,11 @@ class LoginViewController: UIViewController {
                     let alert = UIAlertController(title: "Log In Error", message: "We were unable to log you in.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
                     self?.present(alert, animated: true)
+                    AuthManager.shared.logOut { success in
+                        if !success {
+                            print("couldnt log out")
+                        }
+                    }
                 }
             }
         }
@@ -174,7 +134,8 @@ class LoginViewController: UIViewController {
     @objc private func didTapRegisterButton() {
         let vc = RegisterViewController()
         vc.delegate = self
-        present(vc, animated: true, completion: nil)
+        let navVC = UINavigationController(rootViewController: vc)
+        present(navVC, animated: true, completion: nil)
     }
 }
 
@@ -196,5 +157,41 @@ extension LoginViewController: UITextFieldDelegate {
 extension LoginViewController: RegisterViewControllerDelegate {
     func didRegisterSuccessfully() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - Configure Methods
+extension LoginViewController {
+    private func addConstraints() {
+        let size: CGFloat = 200
+        
+        let emailFieldConstraints = [
+            emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emailField.topAnchor.constraint(equalTo: view.topAnchor, constant: 320),
+            emailField.heightAnchor.constraint(equalToConstant: 40),
+            emailField.widthAnchor.constraint(equalToConstant: 300)
+        ]
+        let passwordFieldConstraints = [
+            passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 30),
+            passwordField.heightAnchor.constraint(equalToConstant: 40),
+            passwordField.widthAnchor.constraint(equalToConstant: 300)
+        ]
+        let loginButtonConstraints = [
+            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 30),
+            loginButton.widthAnchor.constraint(equalToConstant: size),
+            loginButton.heightAnchor.constraint(equalToConstant: 40)
+        ]
+        let registerButtonConstraints = [
+            registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            registerButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 60),
+            registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20),
+            registerButton.heightAnchor.constraint(equalToConstant: 40)
+        ]
+        NSLayoutConstraint.activate(emailFieldConstraints)
+        NSLayoutConstraint.activate(passwordFieldConstraints)
+        NSLayoutConstraint.activate(loginButtonConstraints)
+        NSLayoutConstraint.activate(registerButtonConstraints)
     }
 }

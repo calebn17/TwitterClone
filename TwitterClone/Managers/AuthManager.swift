@@ -72,10 +72,14 @@ public class AuthManager {
             }
             Task {
                 do {
-                    let user = try await DatabaseManager.shared.getUser(email: email)
-                    UserDefaults.standard.set(user?.userName, forKey: Cache.username)
-                    UserDefaults.standard.set(user?.userHandle, forKey: Cache.userHandle)
+                    guard let user = try await DatabaseManager.shared.getUser(email: email) else {
+                        completion(false)
+                        return
+                    }
+                    UserDefaults.standard.set(user.userName, forKey: Cache.username)
+                    UserDefaults.standard.set(user.userHandle, forKey: Cache.userHandle)
                     UserDefaults.standard.set(email, forKey: Cache.email)
+                    print("\nLogging in, saving credentials. username: \(user.userName)")
                     completion(true)
                 }
                 catch {

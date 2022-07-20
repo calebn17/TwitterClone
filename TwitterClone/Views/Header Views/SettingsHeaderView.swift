@@ -14,16 +14,11 @@ protocol SettingsHeaderViewDelegate: AnyObject {
 
 class SettingsHeaderView: UIView {
 
-//MARK: - Setup
+//MARK: - Properties
     
     public weak var delegate: SettingsHeaderViewDelegate?
-    private var user = User(
-        id: nil,
-        userName: "",
-        userHandle: "",
-        userEmail: ""
-    )
     
+//MARK: - Subviews
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.fill")
@@ -73,15 +68,15 @@ class SettingsHeaderView: UIView {
         return button
     }()
  
-//MARK: - Init and View Methods
+//MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
-        userNameButton.setTitle(UserDefaults.standard.string(forKey: Cache.username), for: .normal)
-        userHandleButton.setTitle(UserDefaults.standard.string(forKey: Cache.userHandle), for: .normal)
+        userNameButton.setTitle(DatabaseManager.shared.currentUser.userName, for: .normal)
+        userHandleButton.setTitle(DatabaseManager.shared.currentUser.userName, for: .normal)
         accountsButton.addTarget(self, action: #selector(didTapAccountsButton), for: .touchUpInside)
     }
     
@@ -89,7 +84,7 @@ class SettingsHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+//MARK: - Lifecycle
     override func layoutSubviews() {
         super.layoutSubviews()
     }
@@ -102,9 +97,15 @@ class SettingsHeaderView: UIView {
         addSubview(userHandleButton)
         addSubview(accountsButton)
     }
-  
-//MARK: - Configure Methods
     
+//MARK: - Action Methods
+    @objc private func didTapAccountsButton() {
+        delegate?.didTapAccountsButton()
+    }
+}
+
+//MARK: - Constraints
+extension SettingsHeaderView {
     private func configureConstraints() {
         let userImageViewConstraints = [
             userImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
@@ -144,47 +145,5 @@ class SettingsHeaderView: UIView {
         NSLayoutConstraint.activate(followingButtonConstraints)
         NSLayoutConstraint.activate(followersButtonConstraints)
         NSLayoutConstraint.activate(accountsButtonConstraints)
-    }
-    
-//    private func fetchUserData() {
-//        //fetching the user's email
-//        guard let user = Auth.auth().currentUser
-//        else {
-//            print("User is not signed in")
-//            return
-//        }
-//        self.user.userEmail = user.email ?? "no email"
-//
-//        //fetching the user's username
-//        let email = user.email ?? "No email"
-//        DatabaseManager.shared.getUsername(email: email, completion: {[weak self] result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let db_username):
-//                    self?.user.userName = db_username
-//                    self?.userNameButton.setTitle(db_username, for: .normal)
-//                case .failure(let error):
-//                    print(error.localizedDescription)
-//                }
-//            }
-//        })
-//        //fetching the user's handle
-//        DatabaseManager.shared.getUserHandle(email: email, completion: {[weak self] result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let handle):
-//                    self?.user.userHandle = handle
-//                    self?.userHandleButton.setTitle(handle, for: .normal)
-//                case .failure(let error):
-//                    print(error.localizedDescription)
-//                }
-//            }
-//        })
-//    }
-    
-//MARK: - Action Methods
-    
-    @objc private func didTapAccountsButton() {
-        delegate?.didTapAccountsButton()
     }
 }

@@ -30,6 +30,7 @@
 		AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
 		AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */; };
+		AFC809E82888263600B90540 /* ReusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC809E72888263600B90540 /* ReusableTextField.swift */; };
 		AFCC323428380F2700C0B01C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323328380F2600C0B01C /* LoginViewController.swift */; };
 		AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323528380F3600C0B01C /* RegisterViewController.swift */; };
 		AFD6123128380C5A002A297C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AFD6123028380C5A002A297C /* GoogleService-Info.plist */; };
@@ -71,6 +72,7 @@
 		AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEmptyStateView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
 		AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyTableViewCell.swift; sourceTree = "<group>"; };
+		AFC809E72888263600B90540 /* ReusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableTextField.swift; sourceTree = "<group>"; };
 		AFCC323328380F2600C0B01C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		AFCC323528380F3600C0B01C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		AFD6123028380C5A002A297C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				AF6A444428366B50001F0018 /* Header Views */,
 				AF8C41B8283581D00005E023 /* Custom Cells */,
 				AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */,
+				AFC809E72888263600B90540 /* ReusableTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
+				AFC809E82888263600B90540 /* ReusableTextField.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
 				AF1B4C1C283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift in Sources */,
 				AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */,

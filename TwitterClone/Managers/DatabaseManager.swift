@@ -69,7 +69,7 @@ final class DatabaseManager {
                 guard let users = snapshot?.documents.compactMap({ User(with: $0.data()) }),
                       error == nil
                 else {return continuation.resume(throwing: APIError.failedtoGetData)}
-                
+                print(email)
                 let user = users.first(where: {$0.userEmail == email})
                 continuation.resume(returning: user)
             }
@@ -112,7 +112,12 @@ final class DatabaseManager {
                 continuation.resume(returning: tweetModels)
             }
         })
-        return resultTweets
+        return resultTweets.sorted { tweet1, tweet2 in
+            guard let date1 = tweet1.dateCreated,
+                  let date2 = tweet2.dateCreated
+            else {return false}
+            return date1 > date2
+        }
     }
     
     func getTweet(with id: String) async throws -> TweetModel? {

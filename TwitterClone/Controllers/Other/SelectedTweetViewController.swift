@@ -75,9 +75,8 @@ extension SelectedTweetViewController: UITableViewDelegate, UITableViewDataSourc
         else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell
             else {return UITableViewCell()}
-            cell.delegate = self
+            //cell.delegate = self
             let model = comments[indexPath.row - 1]
-            print("This should be in the comments \(model.tweetId)")
             cell.configure(with: model)
             return cell
         }

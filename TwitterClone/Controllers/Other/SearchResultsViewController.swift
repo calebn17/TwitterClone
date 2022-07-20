@@ -59,7 +59,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         else {return UITableViewCell()}
         
         cell.configure(with: searchResultTweets[indexPath.row])
-        
+        cell.selectionStyle = .none
         
         return cell
     }

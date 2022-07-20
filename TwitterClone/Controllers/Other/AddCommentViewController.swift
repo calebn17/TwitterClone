@@ -78,40 +78,15 @@ final class AddCommentViewController: UIViewController {
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
     
-//MARK: - Configure
-    private func addConstraints() {
-        let userImageViewConstraints = [
-            userImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            userImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            userImageView.widthAnchor.constraint(equalToConstant: K.userImageSize),
-            userImageView.heightAnchor.constraint(equalToConstant: K.userImageSize)
-        ]
-        let tweetTextFieldConstraints = [
-            tweetTextField.leadingAnchor.constraint(equalTo: userImageView.trailingAnchor, constant: 10),
-            tweetTextField.topAnchor.constraint(equalTo: userImageView.topAnchor, constant: 10)
-        ]
-        let replyButtonConstraints = [
-            replyButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            replyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
-        ]
-        let cancelButtonConstraints = [
-            cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
-        ]
-        
-        NSLayoutConstraint.activate(userImageViewConstraints)
-        NSLayoutConstraint.activate(tweetTextFieldConstraints)
-        NSLayoutConstraint.activate(replyButtonConstraints)
-        NSLayoutConstraint.activate(cancelButtonConstraints)
-    }
-    
     private func addSubViews() {
         view.addSubview(userImageView)
         view.addSubview(tweetTextField)
         view.addSubview(replyButton)
         view.addSubview(cancelButton)
     }
+    
 
+    
 //MARK: - Actions
     @objc private func tappedReplyButton() {
         dismiss(animated: true) {[weak self] in
@@ -165,3 +140,34 @@ extension AddCommentViewController: UITextFieldDelegate {
         tweetBody = textField.text
     }
 }
+
+
+//MARK: - Constraints
+extension AddCommentViewController {
+    private func addConstraints() {
+        let userImageViewConstraints = [
+            userImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            userImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            userImageView.widthAnchor.constraint(equalToConstant: K.userImageSize),
+            userImageView.heightAnchor.constraint(equalToConstant: K.userImageSize)
+        ]
+        let tweetTextFieldConstraints = [
+            tweetTextField.leadingAnchor.constraint(equalTo: userImageView.trailingAnchor, constant: 10),
+            tweetTextField.topAnchor.constraint(equalTo: userImageView.topAnchor, constant: 10)
+        ]
+        let replyButtonConstraints = [
+            replyButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            replyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+        ]
+        let cancelButtonConstraints = [
+            cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
+        ]
+        
+        NSLayoutConstraint.activate(userImageViewConstraints)
+        NSLayoutConstraint.activate(tweetTextFieldConstraints)
+        NSLayoutConstraint.activate(replyButtonConstraints)
+        NSLayoutConstraint.activate(cancelButtonConstraints)
+    }
+}
+    
