@@ -113,8 +113,8 @@ final class DatabaseManager {
             }
         })
         return resultTweets.sorted { tweet1, tweet2 in
-            guard let date1 = tweet1.dateCreated,
-                  let date2 = tweet2.dateCreated
+            guard let date1 = tweet1.dateCreatedString,
+                  let date2 = tweet2.dateCreatedString
             else {return false}
             return date1 > date2
         }
@@ -234,7 +234,7 @@ final class DatabaseManager {
                     likers: [],
                     retweeters: [],
                     comments: [],
-                    dateCreated: nil
+                    dateCreatedString: String.date(from: Date())
                 )
             )
             ref.setData(tweet?.asDictionary() ?? [:])
@@ -244,7 +244,7 @@ final class DatabaseManager {
     
 //MARK: - Notifications
    
-    func insertNotifications(of type: NotificationActions, from sender: String, tweet: TweetModel, completion: @escaping (Bool) -> Void ) {
+    func insertNotifications(of type: NotificationActions, tweet: TweetModel, completion: @escaping (Bool) -> Void ) {
         guard let receiverUsername = tweet.username else {
             completion(false)
             return
@@ -253,10 +253,10 @@ final class DatabaseManager {
         
         let ref = userRef.document(receiverUsername).collection("notifications").document(notificationId)
         guard let data = NotificationsVCViewModel(
-            senderUserName: sender,
+            senderUserName: currentUser.userName,
             action: type.rawValue,
             model: tweet,
-            dateString: Date().timeIntervalSince1970.formatted()
+            dateString: String.date(from: Date()) ?? Date().timeIntervalSince1970.formatted()
         ).asDictionary() else {
             completion(false)
             return

@@ -100,20 +100,20 @@ class LoginViewController: UIViewController {
         emailField.resignFirstResponder()
         
         guard let email = emailField.text,
-              !email.isEmpty,
+              !email.trimmingCharacters(in: .whitespaces).isEmpty,
               email.contains("@"),
               email.contains("."),
               let password = passwordField.text,
-              !password.isEmpty,
-              password.count >= 6 else {return}
+              !password.trimmingCharacters(in: .whitespaces).isEmpty,
+              password.count >= 4 else {return}
         
         //login functionality
         AuthManager.shared.loginUser(email: email.lowercased(), password: password) {[weak self] success in
             DispatchQueue.main.async {
                 if success {
                     //user logged in
+                    NotificationCenter.default.post(name: Notification.Name("login"), object: nil)
                     //dismisses the LoginVC so the HomeVC will be shown
-                    print("\nlogged in")
                     self?.dismiss(animated: true, completion: nil)
                 }
                 else {

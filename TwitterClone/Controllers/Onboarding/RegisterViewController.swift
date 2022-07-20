@@ -113,10 +113,15 @@ final class RegisterViewController: UIViewController {
         emailField.resignFirstResponder()
         usernameField.resignFirstResponder()
         
-        guard let email = emailField.text, !email.isEmpty,
-              let password = passwordField.text, !password.isEmpty, password.count >= 8,
-              let username = usernameField.text, !username.isEmpty,
-              let userHandle = userHandleField.text, !userHandle.isEmpty
+        guard let email = emailField.text,
+              !email.trimmingCharacters(in: .whitespaces).isEmpty,
+              let password = passwordField.text,
+              !password.trimmingCharacters(in: .whitespaces).isEmpty,
+              password.count >= 4,
+              let username = usernameField.text,
+              !username.trimmingCharacters(in: .whitespaces).isEmpty,
+              let userHandle = userHandleField.text,
+              !userHandle.trimmingCharacters(in: .whitespaces).isEmpty
         else {return}
         
         let newUser = User(

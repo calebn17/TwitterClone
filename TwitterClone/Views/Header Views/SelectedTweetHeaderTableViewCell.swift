@@ -16,7 +16,7 @@ protocol SelectedTweetHeaderTableViewCellDelegate: AnyObject {
 
 class SelectedTweetHeaderTableViewCell: UITableViewCell {
 
-//MARK: - Setup
+//MARK: - Properties
     
     static let identifier = "SelectedTweetHeaderTableViewCell"
     public weak var delegate: SelectedTweetHeaderTableViewCellDelegate?
@@ -24,6 +24,7 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
     private var isCurrentlyLikedByCurrentUser = false
     private var isRetweetedByCurrentUser = false
     
+//MARK: - Subviews
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.fill")
@@ -131,7 +132,7 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
  
-//MARK: - Configure Methods
+//MARK: - Lifecycle
     
     private func addSubViews() {
         contentView.addSubview(profileImageView)
@@ -144,7 +145,72 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
         contentView.addSubview(shareButton)
         contentView.addSubview(dateCreatedLabel)
     }
+
+//MARK: - Configure
+    public func configure(with tweet: TweetModel) {
+        self.tweet = tweet
+        tweetBodyLabel.text = tweet.text
+        usernameLabel.text = tweet.username ?? "UserName"
+        userHandleLabel.text = "@\(tweet.userHandle ?? "userhandle")"
+        dateCreatedLabel.text = tweet.dateCreatedString
+    }
     
+//MARK: - Action Methods
+    
+    private func addActions() {
+        commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+        //retweetButton.addTarget(self, action: #selector(didTapRetweetButton), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+    }
+    
+    @objc private func didTapCommentButton() {
+        delegate?.didTapHeaderCommentButton()
+    }
+    
+//    @objc private func didTapRetweetButton() {
+//        // Un-retweet
+//        if isRetweetedByCurrentUser {
+//            retweetButton.tintColor = .label
+//        }
+//        else {
+//            if let tweetModel = tweet {
+//                delegate?.didTapRetweet(retweeted: !isRetweetedByCurrentUser, model: tweetModel)
+//                retweetButton.tintColor = .systemGreen
+//            }
+////            else if let commentModel = commentModel {
+////                delegate?.didTapRetweetInComment(with: commentModel)
+////
+////                retweetButton.tintColor = .systemGreen
+////            }
+//        }
+//        isRetweetedByCurrentUser = !isRetweetedByCurrentUser
+//    }
+    
+    @objc private func didTapLikeButton() {
+        
+        guard let tweetModel = tweet else {return}
+        if likeButton.tintColor == .red {
+            let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
+            likeButton.setImage(image, for: .normal)
+            likeButton.tintColor = .label
+            delegate?.didTapHeaderLikeButton(liked: false, model: tweetModel)
+        }
+        else {
+            let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
+            likeButton.setImage(image, for: .normal)
+            likeButton.tintColor = .red
+            delegate?.didTapHeaderLikeButton(liked: true, model: tweetModel)
+        }
+    }
+    
+    @objc private func didTapShareButton() {
+        delegate?.didTapHeaderShareButton()
+    }
+}
+
+//MARK: - Constraints
+extension SelectedTweetHeaderTableViewCell {
     private func addConstraints() {
         let profileImageViewConstraints = [
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -201,63 +267,4 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(shareButtonConstraints)
     }
     
-    public func configure(with tweet: TweetModel) {
-        self.tweet = tweet
-        tweetBodyLabel.text = tweet.text
-        usernameLabel.text = tweet.username ?? "UserName"
-        userHandleLabel.text = "@\(tweet.userHandle ?? "userhandle")"
-    }
-    
-//MARK: - Action Methods
-    
-    private func addActions() {
-        commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
-        //retweetButton.addTarget(self, action: #selector(didTapRetweetButton), for: .touchUpInside)
-        likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
-        shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
-    }
-    
-    @objc private func didTapCommentButton() {
-        delegate?.didTapHeaderCommentButton()
-    }
-    
-//    @objc private func didTapRetweetButton() {
-//        // Un-retweet
-//        if isRetweetedByCurrentUser {
-//            retweetButton.tintColor = .label
-//        }
-//        else {
-//            if let tweetModel = tweet {
-//                delegate?.didTapRetweet(retweeted: !isRetweetedByCurrentUser, model: tweetModel)
-//                retweetButton.tintColor = .systemGreen
-//            }
-////            else if let commentModel = commentModel {
-////                delegate?.didTapRetweetInComment(with: commentModel)
-////
-////                retweetButton.tintColor = .systemGreen
-////            }
-//        }
-//        isRetweetedByCurrentUser = !isRetweetedByCurrentUser
-//    }
-    
-    @objc private func didTapLikeButton() {
-        
-        guard let tweetModel = tweet else {return}
-        if likeButton.tintColor == .red {
-            let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
-            likeButton.setImage(image, for: .normal)
-            likeButton.tintColor = .label
-            delegate?.didTapHeaderLikeButton(liked: false, model: tweetModel)
-        }
-        else {
-            let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
-            likeButton.setImage(image, for: .normal)
-            likeButton.tintColor = .red
-            delegate?.didTapHeaderLikeButton(liked: true, model: tweetModel)
-        }
-    }
-    
-    @objc private func didTapShareButton() {
-        delegate?.didTapHeaderShareButton()
-    }
 }

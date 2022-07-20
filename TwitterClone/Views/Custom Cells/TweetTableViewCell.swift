@@ -141,8 +141,7 @@ class TweetTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//MARK: - Configure
-    
+//MARK: - Lifecycle
     private func addSubViews() {
         //add contentView here so that autolayout constraints work and automatically resize
         contentView.addSubview(userNameLabel)
@@ -158,7 +157,24 @@ class TweetTableViewCell: UITableViewCell {
         contentView.addSubview(retweetsCountLabel)
     }
     
-   
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        model = nil
+        userHandleLabel.text = ""
+        userNameLabel.text = nil
+        twitterTextLabel.text = nil
+        commentsCount = 0
+        commentCountLabel.text = nil
+        likesCount = 0
+        likesCountLabel.text = nil
+        retweetsCount = 0
+        retweetsCountLabel.text = nil
+        likeButton.tintColor = .label
+        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        retweetButton.tintColor = .label
+    }
+    
+//MARK: - Configure
     public func configure(with model: TweetModel){
         self.model = model
         userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
@@ -185,19 +201,7 @@ class TweetTableViewCell: UITableViewCell {
         }
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        model = nil
-        userHandleLabel.text = ""
-        userNameLabel.text = nil
-        twitterTextLabel.text = nil
-        commentsCount = 0
-        commentCountLabel.text = nil
-        likesCount = 0
-        likesCountLabel.text = nil
-        retweetsCount = 0
-        retweetsCountLabel.text = nil
-    }
+    
  
 //MARK: - Action
     

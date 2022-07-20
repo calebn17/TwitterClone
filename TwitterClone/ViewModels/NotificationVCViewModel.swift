@@ -21,24 +21,12 @@ struct NotificationsVCViewModel: Codable {
     let dateString: String
     
     static func fetchData() async throws -> [NotificationsVCViewModel] {
-        let notifications = try await DatabaseManager.shared.getNotifications()
+        var notifications = try await DatabaseManager.shared.getNotifications()
+        
+        notifications.sort(by: {
+            return $0.dateString > $1.dateString
+        })
+        
         return notifications
     }
-//    static func mockNotifications() -> [NotificationsVCViewModel] {
-//        var notifications = [NotificationsVCViewModel]()
-//
-//        for x in 0...30 {
-//            let action: NotificationActions
-//            let i = x * Int.random(in: 0...20)
-//
-//            if i % 2 == 0 {
-//                action = .followed
-//            }
-//            else {
-//                action = .liked
-//            }
-//            notifications.append(NotificationsVCViewModel(userName: "@User \(i)", action: action, tweetBody: "Wow this is really cool!!!", profilePicture: nil, date: nil))
-//        }
-//        return notifications
-//    }
 }

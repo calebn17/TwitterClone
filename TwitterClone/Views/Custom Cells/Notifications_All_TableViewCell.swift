@@ -63,7 +63,8 @@ class Notifications_All_TableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+//MARK: - Lifecycle
     private func addSubviews(){
         contentView.addSubview(userImageView)
         contentView.addSubview(titleLabel)
@@ -71,38 +72,18 @@ class Notifications_All_TableViewCell: UITableViewCell {
         contentView.addSubview(actionImageView)
     }
     
-    private func addConstraints() {
-        let imageSize = K.userImageSize
-        let userImageViewConstraints = [
-            userImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            userImageView.leadingAnchor.constraint(equalTo: actionImageView.trailingAnchor, constant: 20),
-            userImageView.heightAnchor.constraint(equalToConstant: imageSize),
-            userImageView.widthAnchor.constraint(equalToConstant: imageSize)
-        ]
-        let titleLabelConstraints = [
-            titleLabel.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: userImageView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-        ]
-        let subtitleLabelConstraints = [
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            subtitleLabel.leadingAnchor.constraint(equalTo: userImageView.leadingAnchor),
-            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            subtitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
-        ]
-        let actionImageViewConstraints = [
-            actionImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            actionImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            actionImageView.heightAnchor.constraint(equalToConstant: imageSize),
-            actionImageView.widthAnchor.constraint(equalToConstant: imageSize)
-        ]
-        
-        NSLayoutConstraint.activate(userImageViewConstraints)
-        NSLayoutConstraint.activate(titleLabelConstraints)
-        NSLayoutConstraint.activate(subtitleLabelConstraints)
-        NSLayoutConstraint.activate(actionImageViewConstraints)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        actionImageView.image = UIImage(systemName: "heart")
+        actionImageView.tintColor = .label
+        actionImageView.image = UIImage(systemName: "message")
+        actionImageView.tintColor = .label
+        actionImageView.image = UIImage(systemName: "arrow.2.squarepath")
+        actionImageView.tintColor = .label
+        titleLabel.text = nil
+        subtitleLabel.text = nil
     }
-    
+//MARK: - Configure
     func configure(with model: NotificationsVCViewModel) {
         
         switch model.action {
@@ -134,5 +115,40 @@ class Notifications_All_TableViewCell: UITableViewCell {
         default:
             break
         }
+    }
+}
+
+//MARK: - Constraints
+extension Notifications_All_TableViewCell {
+    private func addConstraints() {
+        let imageSize = K.userImageSize
+        let userImageViewConstraints = [
+            userImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            userImageView.leadingAnchor.constraint(equalTo: actionImageView.trailingAnchor, constant: 20),
+            userImageView.heightAnchor.constraint(equalToConstant: imageSize),
+            userImageView.widthAnchor.constraint(equalToConstant: imageSize)
+        ]
+        let titleLabelConstraints = [
+            titleLabel.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: userImageView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+        ]
+        let subtitleLabelConstraints = [
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+            subtitleLabel.leadingAnchor.constraint(equalTo: userImageView.leadingAnchor),
+            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            subtitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+        ]
+        let actionImageViewConstraints = [
+            actionImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            actionImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            actionImageView.heightAnchor.constraint(equalToConstant: imageSize),
+            actionImageView.widthAnchor.constraint(equalToConstant: imageSize)
+        ]
+        
+        NSLayoutConstraint.activate(userImageViewConstraints)
+        NSLayoutConstraint.activate(titleLabelConstraints)
+        NSLayoutConstraint.activate(subtitleLabelConstraints)
+        NSLayoutConstraint.activate(actionImageViewConstraints)
     }
 }

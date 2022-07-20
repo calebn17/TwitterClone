@@ -7,11 +7,8 @@
 
 import Foundation
 
-class HomeVCViewModel {
+struct HomeVCViewModel {
     
-    var tweets = [TweetModel]()
-    
-    init() {}
     
     
     

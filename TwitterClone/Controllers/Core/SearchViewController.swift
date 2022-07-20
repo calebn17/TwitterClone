@@ -169,7 +169,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
                         likers: [],
                         retweeters: [],
                         comments: [],
-                        dateCreated: nil
+                        dateCreatedString: nil
                     )
                 })
                 resultsController.update(with: results)

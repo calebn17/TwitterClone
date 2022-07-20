@@ -70,6 +70,7 @@ final class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         handleNotAuthenticated()
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
     }
 
 //MARK: - Configure
@@ -109,7 +110,7 @@ final class HomeViewController: UIViewController {
     }
     
 //MARK: - Networking
-    private func fetchData() {
+    @objc private func fetchData() {
         Task {
             do {
                 let responseTweets = try await APICaller.shared.getSearch(with: "bitcoin")
@@ -126,7 +127,7 @@ final class HomeViewController: UIViewController {
                         likers: [],
                         retweeters: [],
                         comments: [],
-                        dateCreated: nil
+                        dateCreatedString: nil
                     )
                 })
                 
@@ -197,7 +198,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: - Tweet Methods
+//MARK: - Tweet Action Methods
 extension HomeViewController: TweetTableViewCellDelegate {
     
     func didTapCommentButton(owner: TweetModel) {
@@ -217,6 +218,11 @@ extension HomeViewController: TweetTableViewCellDelegate {
                 DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model) { success in
                     if !success {
                         print("Something went wrong when retweeting")
+                    }
+                    DatabaseManager.shared.insertNotifications(of: .retweet, tweet: model) { success in
+                        if !success {
+                            print("Something went wrong when updating notifications in DB")
+                        }
                     }
                     completion(true)
                 }
@@ -253,7 +259,6 @@ extension HomeViewController: TweetTableViewCellDelegate {
             if liked {
                 DatabaseManager.shared.insertNotifications(
                     of: .liked,
-                    from: DatabaseManager.shared.currentUser.userName,
                     tweet: model) { successful in
                         if !successful {
                             print("Error occured when inserting notification")
@@ -295,7 +300,7 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
             likers: [],
             retweeters: [],
             comments: [],
-            dateCreated: Date()
+            dateCreatedString: String.date(from: Date())
         )
         
         tweetResponses.insert(addedTweet, at: 0)
@@ -329,7 +334,7 @@ extension HomeViewController: AddCommentViewControllerDelegate {
             likers: [],
             retweeters: [],
             comments: [],
-            dateCreated: Date()
+            dateCreatedString: String.date(from: Date())
         )
         //for now, will add the new comment to this collection to demonstrate functionality
         addedComments.append(addedComment)
@@ -339,11 +344,10 @@ extension HomeViewController: AddCommentViewControllerDelegate {
             if !success {
                 print("Could not insert comment")
             }
-            self?.homeFeedTableView.reloadData()
+            self?.fetchData()
             
             DatabaseManager.shared.insertNotifications(
                 of: .comment,
-                from: DatabaseManager.shared.currentUser.userName,
                 tweet: owner) { successful in
                     if !successful {
                         print("Error occured when inserting notification")

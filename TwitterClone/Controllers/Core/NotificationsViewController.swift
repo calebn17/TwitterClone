@@ -37,11 +37,8 @@ final class NotificationsViewController: UIViewController {
         button.layer.masksToBounds = true
         return button
     }()
-    
-    
-
+ 
 //MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -52,16 +49,93 @@ final class NotificationsViewController: UIViewController {
         fetchData()
         configureEmptyStateView()
         emptyStateCheck()
-        configureAddTweetButton()
+        configurePullToRefresh()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
+    }
+
+//MARK: - Networking
+    @objc private func fetchData() {
+        //DB Call
+        Task {
+            do {
+                models = try await NotificationsVCViewModel.fetchData()
+                emptyStateCheck()
+                notificationsTableView.reloadData()
+            }
+            catch {
+                print("error when fetching notifications")
+            }
+        }
+    }
+
+//MARK: - Actions
+    
+    @objc private func didPullToRefresh(_ sender: UIRefreshControl) {
+        sender.beginRefreshing()
+        fetchData()
+        sender.endRefreshing()
+    }
+}
+//MARK: - TableView Methods
+extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+       
+        return models.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Notifications_All_TableViewCell.identifier, for: indexPath) as? Notifications_All_TableViewCell
+        else {return UITableViewCell()}
+        
+        let model = models[indexPath.row]
+        cell.configure(with: model)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let viewModel = models[indexPath.row].model
+        Task {
+            do {
+                guard let tweet = try await DatabaseManager.shared.getTweet(with: viewModel.tweetId) else {
+                    print("Error when getting tweet and pushing selectedTweetVC")
+                    return
+                }
+                let vc = SelectedTweetViewController(with: tweet)
+                navigationController?.pushViewController(vc, animated: true)
+            }
+            catch {
+                print("Error when getting tweet and pushing selectedTweetVC")
+            }
+        }
         
     }
-   
-//MARK: - Configure
+}
+
+//MARK: - NotifcationsHeaderViewDelegate Methods
+extension NotificationsViewController: NotificationsHeaderViewDelegate {
+    func tappedAllButton() {
+        // Show all notifications
+        
+    }
     
+    func tappedMentionsButton() {
+        // Show only mention notifications
+        
+    }
+}
+
+//MARK: - Configure/Constraints
+extension NotificationsViewController {
     private func configureNavbar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .done, target: self, action: nil)
@@ -121,81 +195,10 @@ final class NotificationsViewController: UIViewController {
         }
     }
     
-    private func configureAddTweetButton() {
-        view.addSubview(addTweetButton)
-        let addTweetButtonConstraints = [
-            addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
-            addTweetButton.heightAnchor.constraint(equalToConstant: K.addButtonSize),
-            addTweetButton.widthAnchor.constraint(equalToConstant: K.addButtonSize)
-        ]
-        NSLayoutConstraint.activate(addTweetButtonConstraints)
-        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
-    }
-    
-
-//MARK: - Networking
-    private func fetchData() {
-        //DB Call
-        Task {
-            do {
-                models = try await NotificationsVCViewModel.fetchData()
-                print(models.count)
-                emptyStateCheck()
-                notificationsTableView.reloadData()
-            }
-            catch {
-                print("error when fetching notifications")
-            }
-        }
-        
-        //Mock Data
-        //models = NotificationsVCViewModel.mockNotifications()
-        
-    }
-
-//MARK: - Actions
-    @objc private func didTapAddTweetButton() {
-        let vc = AddTweetViewController()
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true, completion: nil)
+    private func configurePullToRefresh() {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        notificationsTableView.refreshControl = control
     }
 }
 
-//MARK: - TableView Methods
-
-extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
-        return models.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Notifications_All_TableViewCell.identifier, for: indexPath) as? Notifications_All_TableViewCell
-        else {return UITableViewCell()}
-        
-        let model = models[indexPath.row]
-        cell.configure(with: model)
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-//MARK: - NotifcationsHeaderViewDelegate Methods
-extension NotificationsViewController: NotificationsHeaderViewDelegate {
-    func tappedAllButton() {
-        // Show all notifications
-        
-    }
-    
-    func tappedMentionsButton() {
-        // Show only mention notifications
-        
-    }
-    
-    
-}
