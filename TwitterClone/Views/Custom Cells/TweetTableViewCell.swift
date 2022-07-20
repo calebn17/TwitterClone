@@ -158,86 +158,7 @@ class TweetTableViewCell: UITableViewCell {
         contentView.addSubview(retweetsCountLabel)
     }
     
-    private func configureConstraints() {
-        
-        let userImageConstraints = [
-            userImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            userImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            userImage.widthAnchor.constraint(equalToConstant: 50),
-            userImage.heightAnchor.constraint(equalToConstant: 50)
-        ]
-        let userNameLabelConstraints = [
-            userNameLabel.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 20),
-            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
-        ]
-        let twitterTextLabelConstraints = [
-            twitterTextLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 20),
-            twitterTextLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
-            twitterTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
-        ]
-        let userHandleLabelConstraints = [
-            userHandleLabel.leadingAnchor.constraint(equalTo: userNameLabel.trailingAnchor, constant: 5),
-            userHandleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
-        ]
-        let commentButtonConstraints = [
-            commentButton.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
-            commentButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
-            commentButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            commentButton.widthAnchor.constraint(equalToConstant: 20),
-            commentButton.heightAnchor.constraint(equalToConstant: 20)
-        ]
-        let likeButtonConstraints = [
-            likeButton.leadingAnchor.constraint(equalTo: commentButton.leadingAnchor, constant: 80),
-            likeButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
-            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            likeButton.widthAnchor.constraint(equalToConstant: 20),
-            likeButton.heightAnchor.constraint(equalToConstant: 20)
-        ]
-        let retweetButtonConstraints = [
-            retweetButton.leadingAnchor.constraint(equalTo: likeButton.leadingAnchor, constant: 80),
-            retweetButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
-            retweetButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            retweetButton.widthAnchor.constraint(equalToConstant: 20),
-            retweetButton.heightAnchor.constraint(equalToConstant: 20)
-        ]
-        let shareButtonConstraints = [
-            shareButton.leadingAnchor.constraint(equalTo: retweetButton.leadingAnchor, constant: 80),
-            shareButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
-            shareButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            shareButton.widthAnchor.constraint(equalToConstant: 20),
-            shareButton.heightAnchor.constraint(equalToConstant: 20)
-        ]
-        let commentCountLabelConstraints = [
-            commentCountLabel.topAnchor.constraint(equalTo: commentButton.topAnchor),
-            commentCountLabel.bottomAnchor.constraint(equalTo: commentButton.bottomAnchor),
-            commentCountLabel.leadingAnchor.constraint(equalTo: commentButton.trailingAnchor, constant: 10),
-            commentCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: likeButton.leadingAnchor)
-        ]
-        let likeCountLabelConstraints = [
-            likesCountLabel.topAnchor.constraint(equalTo: likeButton.topAnchor),
-            likesCountLabel.bottomAnchor.constraint(equalTo: likeButton.bottomAnchor),
-            likesCountLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 10),
-            likesCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: retweetButton.leadingAnchor)
-        ]
-        let retweetCountLabelConstraints = [
-            retweetsCountLabel.topAnchor.constraint(equalTo: retweetButton.topAnchor),
-            retweetsCountLabel.bottomAnchor.constraint(equalTo: retweetButton.bottomAnchor),
-            retweetsCountLabel.leadingAnchor.constraint(equalTo: retweetButton.trailingAnchor, constant: 10),
-            retweetsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: shareButton.leadingAnchor)
-        ]
-        NSLayoutConstraint.activate(userImageConstraints)
-        NSLayoutConstraint.activate(userNameLabelConstraints)
-        NSLayoutConstraint.activate(twitterTextLabelConstraints)
-        NSLayoutConstraint.activate(userHandleLabelConstraints)
-        NSLayoutConstraint.activate(commentButtonConstraints)
-        NSLayoutConstraint.activate(likeButtonConstraints)
-        NSLayoutConstraint.activate(retweetButtonConstraints)
-        NSLayoutConstraint.activate(shareButtonConstraints)
-        NSLayoutConstraint.activate(commentCountLabelConstraints)
-        NSLayoutConstraint.activate(likeCountLabelConstraints)
-        NSLayoutConstraint.activate(retweetCountLabelConstraints)
-    }
-    
+   
     public func configure(with model: TweetModel){
         self.model = model
         userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
@@ -347,4 +268,89 @@ class TweetTableViewCell: UITableViewCell {
     @objc private func tappedShareButton() {
         delegate?.didTapShareButton()
     }
+}
+
+//MARK: - Constraints
+extension TweetTableViewCell {
+    
+    private func configureConstraints() {
+        
+        let userImageConstraints = [
+            userImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            userImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            userImage.widthAnchor.constraint(equalToConstant: 50),
+            userImage.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        let userNameLabelConstraints = [
+            userNameLabel.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 20),
+            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
+        ]
+        let twitterTextLabelConstraints = [
+            twitterTextLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 20),
+            twitterTextLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+            twitterTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+        ]
+        let userHandleLabelConstraints = [
+            userHandleLabel.leadingAnchor.constraint(equalTo: userNameLabel.trailingAnchor, constant: 5),
+            userHandleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
+        ]
+        let commentButtonConstraints = [
+            commentButton.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+            commentButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
+            commentButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            commentButton.widthAnchor.constraint(equalToConstant: 20),
+            commentButton.heightAnchor.constraint(equalToConstant: 20)
+        ]
+        let likeButtonConstraints = [
+            likeButton.leadingAnchor.constraint(equalTo: commentButton.leadingAnchor, constant: 80),
+            likeButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
+            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            likeButton.widthAnchor.constraint(equalToConstant: 20),
+            likeButton.heightAnchor.constraint(equalToConstant: 20)
+        ]
+        let retweetButtonConstraints = [
+            retweetButton.leadingAnchor.constraint(equalTo: likeButton.leadingAnchor, constant: 80),
+            retweetButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
+            retweetButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            retweetButton.widthAnchor.constraint(equalToConstant: 20),
+            retweetButton.heightAnchor.constraint(equalToConstant: 20)
+        ]
+        let shareButtonConstraints = [
+            shareButton.leadingAnchor.constraint(equalTo: retweetButton.leadingAnchor, constant: 80),
+            shareButton.topAnchor.constraint(equalTo: twitterTextLabel.bottomAnchor, constant: 10),
+            shareButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            shareButton.widthAnchor.constraint(equalToConstant: 20),
+            shareButton.heightAnchor.constraint(equalToConstant: 20)
+        ]
+        let commentCountLabelConstraints = [
+            commentCountLabel.topAnchor.constraint(equalTo: commentButton.topAnchor),
+            commentCountLabel.bottomAnchor.constraint(equalTo: commentButton.bottomAnchor),
+            commentCountLabel.leadingAnchor.constraint(equalTo: commentButton.trailingAnchor, constant: 10),
+            commentCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: likeButton.leadingAnchor)
+        ]
+        let likeCountLabelConstraints = [
+            likesCountLabel.topAnchor.constraint(equalTo: likeButton.topAnchor),
+            likesCountLabel.bottomAnchor.constraint(equalTo: likeButton.bottomAnchor),
+            likesCountLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 10),
+            likesCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: retweetButton.leadingAnchor)
+        ]
+        let retweetCountLabelConstraints = [
+            retweetsCountLabel.topAnchor.constraint(equalTo: retweetButton.topAnchor),
+            retweetsCountLabel.bottomAnchor.constraint(equalTo: retweetButton.bottomAnchor),
+            retweetsCountLabel.leadingAnchor.constraint(equalTo: retweetButton.trailingAnchor, constant: 10),
+            retweetsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: shareButton.leadingAnchor)
+        ]
+        NSLayoutConstraint.activate(userImageConstraints)
+        NSLayoutConstraint.activate(userNameLabelConstraints)
+        NSLayoutConstraint.activate(twitterTextLabelConstraints)
+        NSLayoutConstraint.activate(userHandleLabelConstraints)
+        NSLayoutConstraint.activate(commentButtonConstraints)
+        NSLayoutConstraint.activate(likeButtonConstraints)
+        NSLayoutConstraint.activate(retweetButtonConstraints)
+        NSLayoutConstraint.activate(shareButtonConstraints)
+        NSLayoutConstraint.activate(commentCountLabelConstraints)
+        NSLayoutConstraint.activate(likeCountLabelConstraints)
+        NSLayoutConstraint.activate(retweetCountLabelConstraints)
+    }
+    
 }

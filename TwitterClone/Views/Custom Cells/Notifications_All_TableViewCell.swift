@@ -28,7 +28,7 @@ class Notifications_All_TableViewCell: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "default title"
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -36,7 +36,8 @@ class Notifications_All_TableViewCell: UITableViewCell {
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = "default subtitle"
-        label.numberOfLines = 0
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -91,7 +92,7 @@ class Notifications_All_TableViewCell: UITableViewCell {
         ]
         let actionImageViewConstraints = [
             actionImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            actionImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            actionImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             actionImageView.heightAnchor.constraint(equalToConstant: imageSize),
             actionImageView.widthAnchor.constraint(equalToConstant: imageSize)
         ]
@@ -103,21 +104,35 @@ class Notifications_All_TableViewCell: UITableViewCell {
     }
     
     func configure(with model: NotificationsVCViewModel) {
-        titleLabel.text = "\(model.userName) \(model.action) your tweet!"
-        subtitleLabel.text = model.tweetBody
         
         switch model.action {
-        case .followed:
-            actionImageView.image = UIImage(named: "twitterLogo")
-            actionImageView.tintColor = .clear
-        case .liked:
+            
+        // liked
+        case 1:
             actionImageView.image = UIImage(systemName: "heart.fill")
             actionImageView.tintColor = .red
-        case .reply:
-            break
-        case .retweet:
+            titleLabel.text = "\(model.senderUserName) liked your tweet!"
+            subtitleLabel.text = model.model.text
+        // comment
+        case 2:
+            actionImageView.image = UIImage(systemName: "message.fill")
+            actionImageView.tintColor = .systemCyan
+            titleLabel.text = "\(model.senderUserName) commented!"
+            subtitleLabel.text = model.model.text
+        
+        // retweet
+        case 3:
+            actionImageView.image = UIImage(systemName: "arrow.2.squarepath")
+            actionImageView.tintColor = .systemGreen
+            titleLabel.text = "\(model.senderUserName) retweeted your tweet!"
+            subtitleLabel.text = model.model.text
+            
+        // followed
+        case 4:
+            actionImageView.image = UIImage(named: "twitterLogo")
+            actionImageView.tintColor = .clear
+        default:
             break
         }
     }
-    
 }

@@ -197,7 +197,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: - TweetTableViewCellDelegate Methods
+//MARK: - Tweet Methods
 extension HomeViewController: TweetTableViewCellDelegate {
     
     func didTapCommentButton(owner: TweetModel) {
@@ -250,6 +250,16 @@ extension HomeViewController: TweetTableViewCellDelegate {
             if !success {
                 print("Error occured when updating like status")
             }
+            if liked {
+                DatabaseManager.shared.insertNotifications(
+                    of: .liked,
+                    from: DatabaseManager.shared.currentUser.userName,
+                    tweet: model) { successful in
+                        if !successful {
+                            print("Error occured when inserting notification")
+                        }
+                    }
+            }
         }
     }
     
@@ -261,7 +271,7 @@ extension HomeViewController: TweetTableViewCellDelegate {
     }
 }
 
-//MARK: - AddTweetViewControllerDelegate Methods
+//MARK: - AddTweetViewVC Methods
 extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControllerDelegate {
     
     func didTapPublishTweet(tweetBody: String, publishedFromSearchVC sender: SearchViewController) {
@@ -301,7 +311,7 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
     }
 }
 
-//MARK: - AddCommentViewControllerDelegate Methods
+//MARK: - AddCommentVC Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
     func didTapReplyButton(tweetBody: String, owner: TweetModel) {
         guard let username = UserDefaults.standard.string(forKey: "username"),
@@ -330,6 +340,15 @@ extension HomeViewController: AddCommentViewControllerDelegate {
                 print("Could not insert comment")
             }
             self?.homeFeedTableView.reloadData()
+            
+            DatabaseManager.shared.insertNotifications(
+                of: .comment,
+                from: DatabaseManager.shared.currentUser.userName,
+                tweet: owner) { successful in
+                    if !successful {
+                        print("Error occured when inserting notification")
+                    }
+                }
         }
     }
 }

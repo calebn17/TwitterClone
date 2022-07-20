@@ -241,4 +241,45 @@ final class DatabaseManager {
             completion(true)
         }
     }
+    
+//MARK: - Notifications
+   
+    func insertNotifications(of type: NotificationActions, from sender: String, tweet: TweetModel, completion: @escaping (Bool) -> Void ) {
+        guard let receiverUsername = tweet.username else {
+            completion(false)
+            return
+        }
+        let notificationId = UUID().uuidString
+        
+        let ref = userRef.document(receiverUsername).collection("notifications").document(notificationId)
+        guard let data = NotificationsVCViewModel(
+            senderUserName: sender,
+            action: type.rawValue,
+            model: tweet,
+            dateString: Date().timeIntervalSince1970.formatted()
+        ).asDictionary() else {
+            completion(false)
+            return
+        }
+        
+        ref.setData(data) { error in
+            completion(error == nil)
+        }
+    }
+    
+    func getNotifications() async throws -> [NotificationsVCViewModel] {
+        let ref = userRef.document(currentUser.userName).collection("notifications")
+        
+        let result: [NotificationsVCViewModel] = try await withCheckedThrowingContinuation({ continuation in
+            ref.getDocuments { snapshot, error in
+                guard let notifications = snapshot?.documents.compactMap({NotificationsVCViewModel(with: $0.data())}),
+                      error == nil else {
+                          continuation.resume(throwing: error!)
+                          return
+                      }
+                continuation.resume(returning: notifications)
+            }
+        })
+        return result
+    }
 }

@@ -51,6 +51,7 @@ final class NotificationsViewController: UIViewController {
         configureTableView()
         fetchData()
         configureEmptyStateView()
+        emptyStateCheck()
         configureAddTweetButton()
     }
     
@@ -105,6 +106,10 @@ final class NotificationsViewController: UIViewController {
         emptyImageView = NotificationEmptyStateView(frame: view.bounds)
         guard let emptyImageView = emptyImageView else {return}
         view.addSubview(emptyImageView)
+    }
+    
+    private func emptyStateCheck() {
+        guard let emptyImageView = emptyImageView else {return}
         
         if models.count == 0 {
             notificationsTableView.isHidden = true
@@ -131,10 +136,22 @@ final class NotificationsViewController: UIViewController {
 
 //MARK: - Networking
     private func fetchData() {
-        //API Call
+        //DB Call
+        Task {
+            do {
+                models = try await NotificationsVCViewModel.fetchData()
+                print(models.count)
+                emptyStateCheck()
+                notificationsTableView.reloadData()
+            }
+            catch {
+                print("error when fetching notifications")
+            }
+        }
+        
         //Mock Data
-        models = NotificationsVCViewModel.mockNotifications()
-        notificationsTableView.reloadData()
+        //models = NotificationsVCViewModel.mockNotifications()
+        
     }
 
 //MARK: - Actions
