@@ -19,11 +19,13 @@ struct K {
 
 struct SettingsAndPrivacyStrings {
     static let yourAccount = "See information about your account, download an archive of your data, or learn about your account deactivation options."
-//    static let Security =
-//    static let Monetization =
-//    static let TwitterBlue =
-//    static let PrivacyAndSafety =
-//    static let Notifications =
+    static let Security = "This is a mock description so that I can see how everything looks when put in this cell"
+    static let Monetization = "This is a mock description so that I can see how everything looks when put in this cell"
+    static let TwitterBlue = "This is a mock description so that I can see how everything looks when put in this cell"
+    static let PrivacyAndSafety = "This is a mock description so that I can see how everything looks when put in this cell"
+    static let Notifications = "This is a mock description so that I can see how everything looks when put in this cell"
+    static let Accesibility = "This is a mock description so that I can see how everything looks when put in this cell"
+    static let Resources = "This is a mock description so that I can see how everything looks when put in this cell"
 }
 
 struct Cache {

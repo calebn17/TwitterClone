@@ -9,8 +9,11 @@ import UIKit
 
 class SettingsAndPrivacyTableViewCell: UITableViewCell {
     
+//MARK: - Properties
+    
     static let identifier = "SettingsAndPrivacyTableViewCell"
     
+//MARK: - Subviews
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Title"
@@ -39,6 +42,7 @@ class SettingsAndPrivacyTableViewCell: UITableViewCell {
         return imageView
     }()
     
+//MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(titleLabel)
@@ -50,7 +54,15 @@ class SettingsAndPrivacyTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+//MARK: - Configure
+    func configure(with model: SettingsAndPrivacyViewModel) {
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        iconImageView.image = UIImage(systemName: model.icon)
+    }
     
+//MARK: - Constraints
     private func addConstraints() {
         
         let imageSize = K.userImageSize/2
@@ -74,11 +86,5 @@ class SettingsAndPrivacyTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(iconImageViewConstraints)
         NSLayoutConstraint.activate(titleLabelConstraints)
         NSLayoutConstraint.activate(descriptionLabelConstraints)
-    }
-    
-    func configure(with model: SettingsAndPrivacyModel) {
-        titleLabel.text = model.title
-        descriptionLabel.text = model.description
-        iconImageView.image = UIImage(systemName: model.icon)
     }
 }

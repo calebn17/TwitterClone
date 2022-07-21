@@ -17,7 +17,10 @@ final class APICaller {
     private init() {}
     
     public func getSearch(with query: String) async throws -> [TweetResponse] {
-        guard let request = try await createRequest(with: URL(string: "\(K.baseURL)tweets/search/recent?query=\(query)&max_results=30"), type: .GET)
+        guard let request = try await createRequest(
+            with: URL(string: "\(K.baseURL)tweets/search/recent?query=\(query)&max_results=30"),
+            type: .GET
+        )
         else { return [] }
         
         let (data, _) = try await URLSession.shared.data(for: request)
@@ -40,10 +43,11 @@ final class APICaller {
         guard let apiURL = url else {
             return nil
         }
-        
         var request = URLRequest(url: apiURL)
-        request.setValue("Bearer \(K.bearerToken)", forHTTPHeaderField: "Authorization")
-        
+        request.setValue(
+            "Bearer \(K.bearerToken)",
+            forHTTPHeaderField: "Authorization"
+        )
         request.httpMethod = type.rawValue
         request.timeoutInterval = 60
         return request

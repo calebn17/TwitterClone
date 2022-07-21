@@ -10,7 +10,7 @@ import Foundation
 struct HomeVCViewModel {
     
     static func fetchData() async throws -> [TweetModel] {
-        let responseTweets = try await APICaller.shared.getSearch(with: "bitcoin")
+        let responseTweets = try await APICaller.shared.getSearch(with: "news")
         let dbTweets = try await DatabaseManager.shared.getTweets()
         
         let apiTweets = responseTweets.compactMap({

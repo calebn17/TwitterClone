@@ -10,7 +10,9 @@ import UIKit
 class SettingsAndPrivacyViewController: UIViewController {
     
 //MARK: - Properties
-    private var models = [SettingsAndPrivacyModel]()
+    private var models: [SettingsAndPrivacyViewModel] {
+        return SettingsAndPrivacyViewModel.configureModel()
+    }
     
 //MARK: - SubViews
     private let tableView: UITableView = {
@@ -25,7 +27,6 @@ class SettingsAndPrivacyViewController: UIViewController {
         view.backgroundColor = .systemBackground
         configureNavbar()
         configureTableView()
-        configureModels()
     }
     
     override func viewDidLayoutSubviews() {
@@ -45,16 +46,7 @@ class SettingsAndPrivacyViewController: UIViewController {
         tableView.separatorColor = UIColor.clear
     }
     
-    private func configureModels() {
-        models.append(SettingsAndPrivacyModel(title: "Your Account", icon: "person", description: SettingsAndPrivacyStrings.yourAccount))
-        models.append(SettingsAndPrivacyModel(title: "Security and Account Access", icon: "lock", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-        models.append(SettingsAndPrivacyModel(title: "Monetization", icon: "dollarsign.square", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-        models.append(SettingsAndPrivacyModel(title: "Twitter Blue", icon: "b.square", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-        models.append(SettingsAndPrivacyModel(title: "Privacy and Safety", icon: "shield.lefthalf.filled", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-        models.append(SettingsAndPrivacyModel(title: "Notifications", icon: "bell", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-        models.append(SettingsAndPrivacyModel(title: "Accessibility, display, and languages", icon: "figure.stand", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-        models.append(SettingsAndPrivacyModel(title: "Additional Resources", icon: "ellipsis.circle", description: "This is a mock description so that I can see how everything looks when put in this cell"))
-    }
+    
 }
 
 //MARK: - TableView Methods

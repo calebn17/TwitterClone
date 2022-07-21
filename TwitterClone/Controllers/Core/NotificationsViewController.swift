@@ -15,7 +15,7 @@ final class NotificationsViewController: UIViewController {
     // frame later to properly call the views with all their subviews
     private var emptyImageView: NotificationEmptyStateView?
     private var headerView: NotificationsHeaderView?
-    private var models = [NotificationsVCViewModel]()
+    private var models = [NotificationsViewModel]()
     
 //MARK: - SubViews
     private let notificationsTableView: UITableView = {
@@ -66,7 +66,7 @@ final class NotificationsViewController: UIViewController {
         //DB Call
         Task {
             do {
-                models = try await NotificationsVCViewModel.fetchData()
+                models = try await NotificationsViewModel.fetchData()
                 emptyStateCheck()
                 notificationsTableView.reloadData()
             }

@@ -84,7 +84,7 @@ class Notifications_All_TableViewCell: UITableViewCell {
         subtitleLabel.text = nil
     }
 //MARK: - Configure
-    func configure(with model: NotificationsVCViewModel) {
+    func configure(with model: NotificationsViewModel) {
         
         switch model.action {
             

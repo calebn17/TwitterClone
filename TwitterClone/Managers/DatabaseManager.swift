@@ -252,7 +252,7 @@ final class DatabaseManager {
         let notificationId = UUID().uuidString
         
         let ref = userRef.document(receiverUsername).collection("notifications").document(notificationId)
-        guard let data = NotificationsVCViewModel(
+        guard let data = NotificationsViewModel(
             senderUserName: currentUser.userName,
             action: type.rawValue,
             model: tweet,
@@ -267,12 +267,12 @@ final class DatabaseManager {
         }
     }
     
-    func getNotifications() async throws -> [NotificationsVCViewModel] {
+    func getNotifications() async throws -> [NotificationsViewModel] {
         let ref = userRef.document(currentUser.userName).collection("notifications")
         
-        let result: [NotificationsVCViewModel] = try await withCheckedThrowingContinuation({ continuation in
+        let result: [NotificationsViewModel] = try await withCheckedThrowingContinuation({ continuation in
             ref.getDocuments { snapshot, error in
-                guard let notifications = snapshot?.documents.compactMap({NotificationsVCViewModel(with: $0.data())}),
+                guard let notifications = snapshot?.documents.compactMap({NotificationsViewModel(with: $0.data())}),
                       error == nil else {
                           continuation.resume(throwing: error!)
                           return
