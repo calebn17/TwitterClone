@@ -46,6 +46,7 @@
 		AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */; };
 		AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC422283BBAB700F4ED7D /* StorageManager.swift */; };
 		AFDC2C772869D6BA007DCDF5 /* NotificationVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDC2C762869D6BA007DCDF5 /* NotificationVCViewModel.swift */; };
+		AFE173E62888CC70004EACB7 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		AFDBC420283BBA9700F4ED7D /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		AFDBC422283BBAB700F4ED7D /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		AFDC2C762869D6BA007DCDF5 /* NotificationVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationVCViewModel.swift; sourceTree = "<group>"; };
+		AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		BECF0032A00C884C702B85E0 /* Pods-TwitterClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterClone.release.xcconfig"; path = "Target Support Files/Pods-TwitterClone/Pods-TwitterClone.release.xcconfig"; sourceTree = "<group>"; };
 		C92ABDF50BBD7E6E608563E6 /* Pods_TwitterClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -154,6 +156,7 @@
 			children = (
 				705E79AA2867BD87003AEA17 /* HomeVCViewModel.swift */,
 				AFDC2C762869D6BA007DCDF5 /* NotificationVCViewModel.swift */,
+				AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
 				AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */,
 				AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */,
+				AFE173E62888CC70004EACB7 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

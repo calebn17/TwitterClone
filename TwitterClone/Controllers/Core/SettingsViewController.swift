@@ -16,7 +16,15 @@ final class SettingsViewController: UIViewController {
     struct Constants {
         static let rowHeight: CGFloat = 70
     }
-    private var settingsModel: [SettingsModel] = []
+    private var settingsModel: [SettingsViewModel] {
+        return SettingsViewModel.configureSettingsSections()
+    }
+    private var userHandle: String {
+        return DatabaseManager.shared.currentUser.userHandle
+    }
+    private var userName: String {
+        return DatabaseManager.shared.currentUser.userName
+    }
     
 //MARK: - SubViews
     private var headerView: SettingsHeaderView?
@@ -36,7 +44,6 @@ final class SettingsViewController: UIViewController {
         title = nil
         configureHeaderView()
         configureTableView()
-        configureSettingsSections()
     }
     
     override func viewDidLayoutSubviews() {
@@ -45,8 +52,8 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        headerView?.userHandleButton.setTitle(UserDefaults.standard.string(forKey: "userHandle"), for: .normal)
-        headerView?.userNameButton.setTitle(UserDefaults.standard.string(forKey: "username"), for: .normal)
+        headerView?.userHandleButton.setTitle("@\(userHandle)", for: .normal)
+        headerView?.userNameButton.setTitle(userName, for: .normal)
     }
 
 //MARK: - Configure
@@ -83,26 +90,10 @@ final class SettingsViewController: UIViewController {
         NSLayoutConstraint.activate(settingsTableViewConstraints)
     }
     
-    private func configureSettingsSections() {
-        settingsModel.append(SettingsModel(title: "Profile", icon: "person"))
-        settingsModel.append(SettingsModel(title: "Lists", icon: "list.bullet.rectangle"))
-        settingsModel.append(SettingsModel(title: "Topics", icon: "text.bubble"))
-        settingsModel.append(SettingsModel(title: "Bookmarks", icon: "bookmark"))
-        settingsModel.append(SettingsModel(title: "TwitterBlue", icon: "b.square"))
-        settingsModel.append(SettingsModel(title: "Moments", icon: "bolt"))
-        settingsModel.append(SettingsModel(title: "Purchases", icon: "cart"))
-        settingsModel.append(SettingsModel(title: "Monetization", icon: "dollarsign.square"))
-        settingsModel.append(SettingsModel(title: "Twitter for Professionals", icon: "airplane"))
-        settingsModel.append(SettingsModel(title: "Settings and privacy", icon: nil))
-        settingsModel.append(SettingsModel(title: "Help Center", icon: nil))
-        settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
-    }
-    
 //MARK: - Actions
     
     ///Called when user clicks on the help cell
     private func presentHelpPage(){
-        
         guard let url = URL(string: "https://help.twitter.com/en") else {return}
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true, completion: nil)
@@ -154,8 +145,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.identifier, for: indexPath)
-                            as? SettingsTableViewCell
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: SettingsTableViewCell.identifier,
+            for: indexPath
+        ) as? SettingsTableViewCell
         else {return UITableViewCell()}
         
         cell.configure(with: settingsModel[indexPath.row])
@@ -188,6 +181,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+//MARK: - Settings Header Methods
 extension SettingsViewController: SettingsHeaderViewDelegate {
     func didTapAccountsButton() {
         print("did tap accounts button")
@@ -206,10 +200,6 @@ extension SettingsViewController: SettingsHeaderViewDelegate {
             }))
             
             self?.present(actionSheet, animated: true, completion: nil)
-            
         }
-        
     }
-    
-    
 }

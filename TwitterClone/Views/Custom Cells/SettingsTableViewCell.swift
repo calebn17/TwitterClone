@@ -9,9 +9,12 @@ import UIKit
 
 class SettingsTableViewCell: UITableViewCell {
 
+//MARK: - Properties
     static let identifier = "SettingsTableViewCell"
     
-    private let label: UILabel = {
+    
+//MARK: - Subviews
+    public let label: UILabel = {
         let label = UILabel()
         label.text = "Label"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -26,6 +29,7 @@ class SettingsTableViewCell: UITableViewCell {
         return imageView
     }()
     
+//MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -38,11 +42,13 @@ class SettingsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+//MARK: - Lifecycle
     override func prepareForReuse() {
         label.text = nil
         iconImageView.image = nil
     }
-    
+
+//MARK: - Configure/Constraints
     private func addConstraints() {
         let iconImageViewConstraints = [
             iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -57,13 +63,15 @@ class SettingsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(labelConstraints)
     }
     
-    public func configure(with model: SettingsModel) {
+    public func configure(with model: SettingsViewModel) {
         label.text = model.title
         iconImageView.image = UIImage(systemName: model.icon ?? "")
         
         if model.title == "TwitterBlue" {
             iconImageView.tintColor = .systemBlue
         }
+        if model.title == "Sign Out" {
+            label.textColor = .systemRed
+        }
     }
-
 }

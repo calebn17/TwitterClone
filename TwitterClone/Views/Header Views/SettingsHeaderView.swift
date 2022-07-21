@@ -55,7 +55,7 @@ class SettingsHeaderView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("@userHandle", for: .normal)
-        button.setTitleColor(.secondaryLabel, for: .normal)
+        button.setTitleColor(.tertiaryLabel, for: .normal)
         return button
     }()
     
@@ -75,8 +75,6 @@ class SettingsHeaderView: UIView {
         backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
-        userNameButton.setTitle(DatabaseManager.shared.currentUser.userName, for: .normal)
-        userHandleButton.setTitle(DatabaseManager.shared.currentUser.userName, for: .normal)
         accountsButton.addTarget(self, action: #selector(didTapAccountsButton), for: .touchUpInside)
     }
     
@@ -108,18 +106,18 @@ class SettingsHeaderView: UIView {
 extension SettingsHeaderView {
     private func configureConstraints() {
         let userImageViewConstraints = [
-            userImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            userImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             userImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             userImageView.widthAnchor.constraint(equalToConstant: K.userImageSize),
             userImageView.heightAnchor.constraint(equalToConstant: K.userImageSize)
         ]
         let userNameButtonConstraints = [
             userNameButton.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: 5),
-            userNameButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
+            userNameButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
         ]
         let userHandleButtonConstraints = [
             userHandleButton.topAnchor.constraint(equalTo: userNameButton.bottomAnchor, constant: 5),
-            userHandleButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            userHandleButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             userHandleButton.heightAnchor.constraint(equalToConstant: userNameButton.height/1.5)
         ]
         let followingButtonConstraints = [

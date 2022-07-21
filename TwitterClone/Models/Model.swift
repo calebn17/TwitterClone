@@ -7,10 +7,7 @@
 
 import Foundation
 
-struct SettingsModel {
-    let title: String
-    let icon: String?
-}
+
 
 struct SettingsAndPrivacyModel {
     let title: String
@@ -18,27 +15,11 @@ struct SettingsAndPrivacyModel {
     let description: String
 }
 
-struct NotificationsModel {
-    let userName: String
-    let action: NotificationActions
-    let tweetBody: String
-    let profilePicture: String?
-    let date: Date?
-}
-
 struct User: Codable {
     var id: Int?
     var userName: String
     var userHandle: String
     var userEmail: String
-}
-
-struct HomeTweetViewCellViewModel {
-    let id: String?
-    let userName: String
-    let userAvatar: URL?
-    let tweetBody: String
-    let url_link: URL?
 }
 
 struct TweetModel: Codable {

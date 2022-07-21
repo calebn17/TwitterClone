@@ -13,6 +13,16 @@ final class HomeViewController: UIViewController {
 
 //MARK: - Properties
     static let shared = HomeViewController()
+    
+    private var username: String {
+        return DatabaseManager.shared.currentUser.userName
+    }
+    private var userhandle: String {
+        return DatabaseManager.shared.currentUser.userHandle
+    }
+    private var email: String {
+        return DatabaseManager.shared.currentUser.userEmail
+    }
     public var tweetResponses: [TweetModel] = []
     
     //Temporary collection to hold added comments
@@ -56,9 +66,7 @@ final class HomeViewController: UIViewController {
         configureHomeFeedTableView()
         configureAddTweetButton()
         fetchData()
-        
-        let searchVC = SearchViewController()
-        searchVC.delegate = self
+        configurePullToRefresh()
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,72 +74,17 @@ final class HomeViewController: UIViewController {
         homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 30)
     }
     
-    //Whenever this screen comes into view
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         handleNotAuthenticated()
         NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
-    }
-
-//MARK: - Configure
-    
-    private func configureNavbar() {
-        var image = UIImage(named: "twitterLogo")
-        image?.accessibilityFrame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        //forces xcode to use the original image (logo comes out as different color if this isnt done)
-        image = image?.withRenderingMode(.alwaysOriginal)
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
-                                                            style: .done,
-                                                            target: self,
-                                                            action: nil)
-        navigationItem.titleView = twitterIcon
-        
-        navigationController?.navigationBar.tintColor = .white
-        navigationItem.title = ""
-    }
-    
-    private func configureHomeFeedTableView() {
-        view.addSubview(homeFeedTableView)
-        homeFeedTableView.delegate = self
-        homeFeedTableView.dataSource = self
-    }
-    
-    private func configureAddTweetButton() {
-        view.addSubview(addTweetButton)
-        let addTweetButtonConstraints = [
-            addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
-            addTweetButton.heightAnchor.constraint(equalToConstant: K.addButtonSize),
-            addTweetButton.widthAnchor.constraint(equalToConstant: K.addButtonSize)
-        ]
-        NSLayoutConstraint.activate(addTweetButtonConstraints)
-        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
     }
     
 //MARK: - Networking
     @objc private func fetchData() {
         Task {
             do {
-                let responseTweets = try await APICaller.shared.getSearch(with: "bitcoin")
-                let dbTweets = try await DatabaseManager.shared.getTweets()
-                
-                let apiTweets = responseTweets.compactMap({
-                    TweetModel(
-                        tweetId: UUID().uuidString,
-                        username: nil,
-                        userHandle: nil,
-                        userEmail: nil,
-                        userAvatar: nil,
-                        text: $0.text,
-                        likers: [],
-                        retweeters: [],
-                        comments: [],
-                        dateCreatedString: nil
-                    )
-                })
-                
-                tweetResponses = dbTweets + apiTweets
+                tweetResponses = try await HomeVCViewModel.fetchData()
                 homeFeedTableView.reloadData()
             }
             catch {
@@ -139,14 +92,13 @@ final class HomeViewController: UIViewController {
             }
         }
     }
-    
-    private func updateTweetCollection(apiTweets: [TweetModel], dbTweets: [TweetModel]) {
-        print("done fetching tweets from API and DB")
-        self.tweetResponses = dbTweets + apiTweets
-        self.homeFeedTableView.reloadData()
-    }
-    
+
 //MARK: - Actions
+    @objc private func didPullToRefresh(_ sender: UIRefreshControl) {
+        sender.beginRefreshing()
+        fetchData()
+        sender.endRefreshing()
+    }
     
     private func handleNotAuthenticated() {
         //check Auth status
@@ -284,16 +236,12 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
     }
     
     func didTapTweetPublishButton(tweetBody: String) {
-        guard let username = UserDefaults.standard.string(forKey: "username"),
-              let userHandle = UserDefaults.standard.string(forKey: "userHandle"),
-              let email = UserDefaults.standard.string(forKey: "email")
-        else {return}
         
         //setting addedTweet as a var so I can update the username values
         let addedTweet = TweetModel(
             tweetId: UUID().uuidString,
             username: username,
-            userHandle: userHandle,
+            userHandle: userhandle,
             userEmail: email,
             userAvatar: nil,
             text: tweetBody,
@@ -319,15 +267,11 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
 //MARK: - AddCommentVC Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
     func didTapReplyButton(tweetBody: String, owner: TweetModel) {
-        guard let username = UserDefaults.standard.string(forKey: "username"),
-              let userHandle = UserDefaults.standard.string(forKey: "userHandle")
-        else {return}
-        
         let commentID = UUID().uuidString
         let addedComment = TweetModel(
             tweetId: commentID,
             username: username,
-            userHandle: userHandle,
+            userHandle: userhandle,
             userEmail: nil,
             userAvatar: nil,
             text: tweetBody,
@@ -354,5 +298,48 @@ extension HomeViewController: AddCommentViewControllerDelegate {
                     }
                 }
         }
+    }
+}
+
+//MARK: - Configure
+extension HomeViewController {
+    
+    private func configureNavbar() {
+        var image = UIImage(named: "twitterLogo")
+        image?.accessibilityFrame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        //forces xcode to use the original image (logo comes out as different color if this isnt done)
+        image = image?.withRenderingMode(.alwaysOriginal)
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: nil)
+        navigationItem.titleView = twitterIcon
+        
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = ""
+    }
+    
+    private func configureHomeFeedTableView() {
+        view.addSubview(homeFeedTableView)
+        homeFeedTableView.delegate = self
+        homeFeedTableView.dataSource = self
+    }
+    
+    private func configureAddTweetButton() {
+        view.addSubview(addTweetButton)
+        let addTweetButtonConstraints = [
+            addTweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            addTweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+            addTweetButton.heightAnchor.constraint(equalToConstant: K.addButtonSize),
+            addTweetButton.widthAnchor.constraint(equalToConstant: K.addButtonSize)
+        ]
+        NSLayoutConstraint.activate(addTweetButtonConstraints)
+        addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
+    }
+    
+    private func configurePullToRefresh() {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
     }
 }
