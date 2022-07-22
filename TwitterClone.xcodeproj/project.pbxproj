@@ -10,7 +10,7 @@
 		2CB9B452F559E8CEA175256F /* Pods_TwitterClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C92ABDF50BBD7E6E608563E6 /* Pods_TwitterClone.framework */; };
 		3BC26E05282949D000A56D5C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E04282949D000A56D5C /* Constants.swift */; };
 		3BC26E092829528C00A56D5C /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */; };
-		3BC26E0B282970C400A56D5C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E0A282970C400A56D5C /* Model.swift */; };
+		3BC26E0B282970C400A56D5C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26E0A282970C400A56D5C /* User.swift */; };
 		7038FEAA2830597200715D54 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEA92830597200715D54 /* SettingsHeaderView.swift */; };
 		7038FEAC28305E4E00715D54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAB28305E4E00715D54 /* Extensions.swift */; };
 		7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */; };
@@ -27,6 +27,8 @@
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
 		AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */; };
 		AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */; };
+		AF37160E2889CA06000519D7 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */; };
+		AF3716102889F710000519D7 /* ProfileInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF37160F2889F710000519D7 /* ProfileInfoModel.swift */; };
 		AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */; };
 		AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
@@ -34,10 +36,14 @@
 		AFC809E82888263600B90540 /* ReusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC809E72888263600B90540 /* ReusableTextField.swift */; };
 		AFCC323428380F2700C0B01C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323328380F2600C0B01C /* LoginViewController.swift */; };
 		AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323528380F3600C0B01C /* RegisterViewController.swift */; };
+		AFCEE1CB28898F7E00B6D187 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */; };
+		AFCEE1CD288993D800B6D187 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */; };
+		AFCEE1CF28899CBE00B6D187 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEE1CE28899CBE00B6D187 /* EditProfileViewController.swift */; };
 		AFD6123128380C5A002A297C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AFD6123028380C5A002A297C /* GoogleService-Info.plist */; };
 		AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853B92825632E00D080D4 /* APICaller.swift */; };
 		AFD853BD2825682800D080D4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853BC2825682800D080D4 /* SearchResponse.swift */; };
 		AFD853C32825784E00D080D4 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD853C22825784E00D080D4 /* TweetTableViewCell.swift */; };
+		AFDAF8272889C23200F2BBA0 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDAF8262889C23200F2BBA0 /* CustomLabel.swift */; };
 		AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBA2262824B98B00085DDC /* AppDelegate.swift */; };
 		AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDBA2282824B98B00085DDC /* SceneDelegate.swift */; };
 		AFDBA2312824B98B00085DDC /* TwitterClone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */; };
@@ -55,7 +61,7 @@
 		032B1A41E04188B284511625 /* Pods-TwitterClone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterClone.debug.xcconfig"; path = "Target Support Files/Pods-TwitterClone/Pods-TwitterClone.debug.xcconfig"; sourceTree = "<group>"; };
 		3BC26E04282949D000A56D5C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
-		3BC26E0A282970C400A56D5C /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		3BC26E0A282970C400A56D5C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7038FEA92830597200715D54 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		7038FEAB28305E4E00715D54 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
@@ -72,6 +78,8 @@
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
+		AF37160F2889F710000519D7 /* ProfileInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoModel.swift; sourceTree = "<group>"; };
 		AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHeaderView.swift; sourceTree = "<group>"; };
 		AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEmptyStateView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
@@ -79,10 +87,14 @@
 		AFC809E72888263600B90540 /* ReusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableTextField.swift; sourceTree = "<group>"; };
 		AFCC323328380F2600C0B01C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		AFCC323528380F3600C0B01C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		AFCEE1CE28899CBE00B6D187 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		AFD6123028380C5A002A297C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AFD853B92825632E00D080D4 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		AFD853BC2825682800D080D4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		AFD853C22825784E00D080D4 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
+		AFDAF8262889C23200F2BBA0 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		AFDBA2232824B98B00085DDC /* TwitterClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFDBA2262824B98B00085DDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AFDBA2282824B98B00085DDC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +143,8 @@
 				708C50F32831A0E200978DD6 /* AddCommentViewController.swift */,
 				AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */,
 				AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */,
+				AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */,
+				AFCEE1CE28899CBE00B6D187 /* EditProfileViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -163,6 +177,7 @@
 				AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */,
 				AFFFD4AB2888F87900270E6E /* SettingsAndPrivacyViewModel.swift */,
 				AF2153EC2888FF4A00766354 /* TweetViewModel.swift */,
+				AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -183,6 +198,7 @@
 				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
 				AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */,
 				AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift */,
+				AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */,
 			);
 			path = "Header Views";
 			sourceTree = "<group>";
@@ -223,7 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				AFD853BE2825683000D080D4 /* API Responses */,
-				3BC26E0A282970C400A56D5C /* Model.swift */,
+				3BC26E0A282970C400A56D5C /* User.swift */,
+				AF37160F2889F710000519D7 /* ProfileInfoModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -243,6 +260,7 @@
 				AF8C41B8283581D00005E023 /* Custom Cells */,
 				AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */,
 				AFC809E72888263600B90540 /* ReusableTextField.swift */,
+				AFDAF8262889C23200F2BBA0 /* CustomLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -410,22 +428,26 @@
 				AFCC323428380F2700C0B01C /* LoginViewController.swift in Sources */,
 				AFD853C32825784E00D080D4 /* TweetTableViewCell.swift in Sources */,
 				7038FEAC28305E4E00715D54 /* Extensions.swift in Sources */,
+				AF3716102889F710000519D7 /* ProfileInfoModel.swift in Sources */,
 				AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */,
 				AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */,
 				AFDC2C772869D6BA007DCDF5 /* NotificationViewModel.swift in Sources */,
 				AFDBA2312824B98B00085DDC /* TwitterClone.xcdatamodeld in Sources */,
+				AFCEE1CD288993D800B6D187 /* ProfileHeaderView.swift in Sources */,
 				AF1B4C1A283EE93100AC2510 /* SelectedTweetViewController.swift in Sources */,
 				7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */,
 				3BC26E092829528C00A56D5C /* SearchResultsViewController.swift in Sources */,
 				7038FEAA2830597200715D54 /* SettingsHeaderView.swift in Sources */,
 				AFD853BD2825682800D080D4 /* SearchResponse.swift in Sources */,
 				AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */,
+				AFCEE1CF28899CBE00B6D187 /* EditProfileViewController.swift in Sources */,
 				AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */,
 				AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */,
 				AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */,
+				AF37160E2889CA06000519D7 /* ProfileHeaderViewModel.swift in Sources */,
 				708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */,
 				AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */,
-				3BC26E0B282970C400A56D5C /* Model.swift in Sources */,
+				3BC26E0B282970C400A56D5C /* User.swift in Sources */,
 				AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */,
 				705E79AB2867BD87003AEA17 /* HomeVCViewModel.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
@@ -436,6 +458,7 @@
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AFC809E82888263600B90540 /* ReusableTextField.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
+				AFDAF8272889C23200F2BBA0 /* CustomLabel.swift in Sources */,
 				AF1B4C1C283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift in Sources */,
 				AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */,
 				AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */,
@@ -443,6 +466,7 @@
 				AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */,
 				AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */,
 				AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */,
+				AFCEE1CB28898F7E00B6D187 /* ProfileViewController.swift in Sources */,
 				AFFFD4AC2888F87900270E6E /* SettingsAndPrivacyViewModel.swift in Sources */,
 				AFE173E62888CC70004EACB7 /* SettingsViewModel.swift in Sources */,
 			);

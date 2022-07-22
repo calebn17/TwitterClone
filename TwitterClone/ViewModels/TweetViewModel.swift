@@ -19,3 +19,7 @@ struct TweetModel: Codable {
     var comments: [TweetModel]
     let dateCreatedString: String?
 }
+
+struct TweetViewModel {
+    
+}

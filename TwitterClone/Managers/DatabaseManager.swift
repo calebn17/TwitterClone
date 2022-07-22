@@ -77,6 +77,30 @@ final class DatabaseManager {
         return user
     }
     
+    func getUserInfo(user: User) async throws -> ProfileHeaderViewModel? {
+        let result: ProfileHeaderViewModel? = try await withCheckedThrowingContinuation({ continuation in
+            userRef.document(user.userName).getDocument { snapshot, error in
+                guard let info = snapshot?.data(),
+                      error == nil else {
+                          continuation.resume(throwing: error!)
+                          return
+                      }
+                continuation.resume(returning: ProfileHeaderViewModel(with: info))
+            }
+        })
+        return result
+    }
+    
+    func insertUserInfo(info: ProfileHeaderViewModel, completion: @escaping (Bool) -> Void) {
+        guard let data = info.asDictionary() else {
+            completion(false)
+            return
+        }
+        userRef.document(info.userName).setData(data) { error in
+            completion(error == nil)
+        }
+    }
+    
 //MARK: - Tweets
     func insertTweet(
         with tweet: TweetModel,

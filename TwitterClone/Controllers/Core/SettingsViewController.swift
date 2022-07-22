@@ -92,6 +92,12 @@ final class SettingsViewController: UIViewController {
     
 //MARK: - Actions
     
+    private func presentProfilePage() {
+        let vc = ProfileViewController(with: DatabaseManager.shared.currentUser)
+        vc.title = "Profile"
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     ///Called when user clicks on the help cell
     private func presentHelpPage(){
         guard let url = URL(string: "https://help.twitter.com/en") else {return}
@@ -159,7 +165,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch indexPath.row {
-        case 0: break
+        case 0: presentProfilePage()
         case 1: break
         case 2: break
         case 3: break
