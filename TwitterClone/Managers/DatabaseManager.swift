@@ -91,13 +91,28 @@ final class DatabaseManager {
         return result
     }
     
-    func insertUserInfo(info: ProfileHeaderViewModel, completion: @escaping (Bool) -> Void) {
-        guard let data = info.asDictionary() else {
-            completion(false)
-            return
-        }
-        userRef.document(info.userName).setData(data) { error in
-            completion(error == nil)
+    func insertUserBio(bio: String, completion: @escaping (Bool) -> Void) {
+        Task {
+            do {
+                let userInfo = try await getUserInfo(user: currentUser)
+                let updatedInfo = UserInfo(
+                    id: currentUser.id,
+                    userName: currentUser.userName,
+                    userHandle: currentUser.userHandle,
+                    userEmail: currentUser.userEmail,
+                    bio: bio,
+                    followerCount: userInfo?.followerCount,
+                    followingCount: userInfo?.followingCount,
+                    profileImage: userInfo?.profileImage
+                )
+                guard let data = updatedInfo.asDictionary() else {
+                    completion(false)
+                    return
+                }
+                userRef.document(currentUser.userName).setData(data) { error in
+                    completion(error == nil)
+                }
+            }
         }
     }
     

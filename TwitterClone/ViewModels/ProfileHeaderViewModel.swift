@@ -30,21 +30,24 @@ struct ProfileHeaderViewModel: Codable {
         return viewModel
     }
     
-    static func setProfileHeaderViewModel(info: ProfileHeaderViewModel) {
-        DatabaseManager.shared.insertUserInfo(info: info) { success in
+    static func setProfileBio(bio: String) {
+        DatabaseManager.shared.insertUserBio(bio: bio) { success in
             if !success {
                 print("Error when inserting profile info into database")
             }
         }
     }
     
+    
+    
     static func getProfileTweets(user: User) async throws -> [TweetModel] {
         let allTweets = try await DatabaseManager.shared.getTweets()
-        
+        print(user.userName)
         let filteredTweets = allTweets.filter { tweet in
             if tweet.likers.contains(user.userName) ||
                 tweet.retweeters.contains(user.userName) ||
-                tweet.comments.contains(where: {$0.username == tweet.username}) {
+                tweet.comments.contains(where: { $0.username == user.userName }) ||
+                tweet.username == user.userName {
                 return true
             } else {
                 return false

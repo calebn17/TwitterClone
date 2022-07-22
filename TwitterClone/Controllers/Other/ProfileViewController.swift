@@ -77,6 +77,7 @@ class ProfileViewController: UIViewController {
                 guard let profileInfo = try await ProfileHeaderViewModel.getProfileHeaderViewModel(user: self.user) else {return}
                 // Fetching tweets that will populate the tableView
                 tweets = try await ProfileHeaderViewModel.getProfileTweets(user: self.user)
+                print(self.user.userName)
                 headerView?.configure(with: profileInfo)
                 tableView.reloadData()
             }
@@ -86,10 +87,6 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func setUserInfo() {
-        guard let profileInfo = self.profileInfo else {return}
-        ProfileHeaderViewModel.setProfileHeaderViewModel(info: profileInfo)
-    }
     
 //MARK: - Actions 
     

@@ -35,23 +35,35 @@ class EditProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseButton))
-        view.addSubview(textView)
+        addSubViews()
         textView.delegate = self
-        
-        view.addSubview(saveButton)
-      
+        saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        textView.frame = CGRect(x: 50, y: 50, width: 100, height: 100)
+        textView.frame = CGRect(x: 20, y: 300, width: view.width - 40, height: 100)
         
         saveButton.sizeToFit()
-        saveButton.frame = CGRect(x: view.width - 150, y: view.bottom - 200, width: saveButton.width, height: saveButton.height)
+        saveButton.frame = CGRect(x: (view.width - saveButton.width - 20)/2, y: view.bottom - 200, width: saveButton.width + 20, height: saveButton.height)
+    }
+    
+    private func addSubViews() {
+        view.addSubview(textView)
+        view.addSubview(saveButton)
     }
     
     @objc private func didTapCloseButton() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func didTapSaveButton() {
+        didTapCloseButton()
+        guard let bio = textView.text,
+              !textView.text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+        ProfileHeaderViewModel.setProfileBio(bio: bio)
     }
 }
 
