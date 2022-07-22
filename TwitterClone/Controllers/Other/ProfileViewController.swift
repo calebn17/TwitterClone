@@ -122,6 +122,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let tweet = tweets[indexPath.row]
+        let vc = SelectedTweetViewController(with: tweet)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }

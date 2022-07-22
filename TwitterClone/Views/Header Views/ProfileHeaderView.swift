@@ -23,6 +23,7 @@ class ProfileHeaderView: UIView {
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.systemBackground.cgColor
         imageView.image = UIImage(systemName: "person")
+        imageView.tintColor = .label
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -101,7 +102,7 @@ class ProfileHeaderView: UIView {
 //MARK: - Configure
     
     func configure(with model: ProfileHeaderViewModel) {
-        profileImageView.sd_setImage(with: model.profileImage, completed: nil)
+        //profileImageView.sd_setImage(with: model.profileImage, completed: nil)
         nameLabel.text = model.userName
         handleLabel.text = model.userHandle
         bioLabel.text = model.bio
@@ -128,9 +129,8 @@ class ProfileHeaderView: UIView {
         let bioLabelConstraints = [
             bioLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             bioLabel.topAnchor.constraint(equalTo: handleLabel.bottomAnchor, constant: 15),
-            bioLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
-            bioLabel.heightAnchor.constraint(equalToConstant: bounds.height/5),
-            bioLabel.widthAnchor.constraint(equalToConstant: bounds.width - 30)
+            bioLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -15),
+            bioLabel.heightAnchor.constraint(equalToConstant: bounds.height/5)
         ]
         let followingLabelConstraints = [
             followingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
