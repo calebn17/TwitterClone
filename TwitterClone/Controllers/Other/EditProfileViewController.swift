@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol EditProfileViewControllerDelegate: AnyObject {
+    func tappedSaveButton(bio: String)
+}
+
 class EditProfileViewController: UIViewController {
+    
+    weak var delegate: EditProfileViewControllerDelegate?
     
     struct K {
         static let textViewPlaceholder = "Add your bio..."
@@ -63,7 +69,7 @@ class EditProfileViewController: UIViewController {
               !textView.text.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
-        ProfileHeaderViewModel.setProfileBio(bio: bio)
+        delegate?.tappedSaveButton(bio: bio)
     }
 }
 

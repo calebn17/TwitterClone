@@ -225,8 +225,10 @@ class TweetTableViewCell: UITableViewCell {
             let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .label
-            likesCount -= 1
-            likesCountLabel.text = String(likesCount)
+            if likesCount > 0 {
+                likesCount -= 1
+                likesCountLabel.text = String(likesCount)
+            }
         }
         // tapping this button will like tweet
         else {

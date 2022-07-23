@@ -12,6 +12,7 @@ struct User: Codable, Equatable {
     let userName: String
     let userHandle: String
     let userEmail: String
+    
 }
 
 struct UserInfo: Codable {
@@ -20,8 +21,8 @@ struct UserInfo: Codable {
     let userHandle: String
     let userEmail: String
     let bio: String?
-    let followerCount: Int?
-    let followingCount: Int?
+    let followers: [String]
+    let following: [String]
     let profileImage: URL?
 }
 

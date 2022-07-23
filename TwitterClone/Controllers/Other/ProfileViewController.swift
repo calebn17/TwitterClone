@@ -11,7 +11,7 @@ class ProfileViewController: UIViewController {
 
 //MARK: - Properties
     private let user: User
-    private var isCurrentUser: Bool {
+    var isCurrentUser: Bool {
         return DatabaseManager.shared.currentUser == user
     }
     private var profileInfo: ProfileHeaderViewModel?
@@ -47,6 +47,10 @@ class ProfileViewController: UIViewController {
         configureHeaderView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
@@ -63,10 +67,14 @@ class ProfileViewController: UIViewController {
         headerView = ProfileHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 270))
         tableView.tableHeaderView = headerView
         
+        // Tells headerView whether this is the user's own profile page or not
+        headerView?.isCurrentUser = isCurrentUser
     }
     
     private func configureNavBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.horizontal.3"), style: .done, target: self, action: #selector(didTapEditButton))
+        if isCurrentUser {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.horizontal.3"), style: .done, target: self, action: #selector(didTapEditButton))
+        }
     }
     
 //MARK: - Networking
@@ -124,5 +132,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = SelectedTweetViewController(with: tweet)
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+}
+
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    func tappedSaveButton(bio: String) {
+        ProfileHeaderViewModel.setProfileBio(bio: bio)
+        fetchData()
+    }
 }

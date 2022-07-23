@@ -13,6 +13,8 @@ class ProfileHeaderView: UIView {
 //MARK: - Properties
     
     private let imageSize: CGFloat = K.userImageSize
+    var isCurrentUser: Bool = false
+    
     
 //MARK: - Subviews
     private let profileImageView: UIImageView = {
@@ -77,15 +79,30 @@ class ProfileHeaderView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private let followButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Follow", for: .normal)
+        button.setTitleColor(UIColor.systemBackground, for: .normal)
+        button.backgroundColor = .label
+        button.layer.cornerRadius = K.userImageSize/2.2
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.systemBackground.cgColor
+        button.layer.masksToBounds = true
+        button.isHidden = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
    
 //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
         addSubViews()
+        configureFollowButton()
         configureConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -97,6 +114,7 @@ class ProfileHeaderView: UIView {
         addSubview(bioLabel)
         addSubview(followingLabel)
         addSubview(followersLabel)
+        addSubview(followButton)
     }
     
 //MARK: - Configure
@@ -104,10 +122,16 @@ class ProfileHeaderView: UIView {
     func configure(with model: ProfileHeaderViewModel) {
         //profileImageView.sd_setImage(with: model.profileImage, completed: nil)
         nameLabel.text = model.userName
-        handleLabel.text = model.userHandle
+        handleLabel.text = "@\(model.userHandle)"
         bioLabel.text = model.bio
-        followingLabel.text = "\(model.followingCount ?? 0) Following"
-        followersLabel.text = "\(model.followerCount ?? 0) Followers"
+        followingLabel.text = "\(model.following.count) Following"
+        followersLabel.text = "\(model.followers.count) Followers"
+    }
+    
+    private func configureFollowButton() {
+        if isCurrentUser {
+            followButton.isHidden = true
+        }
     }
     
 //MARK: - Constraints
@@ -142,11 +166,17 @@ class ProfileHeaderView: UIView {
             followersLabel.topAnchor.constraint(equalTo: bioLabel.bottomAnchor, constant: 15),
             followersLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: 10)
         ]
+        let followButtonConstraints = [
+            followButton.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: 20),
+            followButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
+            followButton.widthAnchor.constraint(equalToConstant: imageSize*2)
+        ]
         NSLayoutConstraint.activate(profileImageViewContraints)
         NSLayoutConstraint.activate(nameLabelConstraints)
         NSLayoutConstraint.activate(handleLabelConstraints)
         NSLayoutConstraint.activate(bioLabelConstraints)
         NSLayoutConstraint.activate(followingLabelConstraints)
         NSLayoutConstraint.activate(followersLabelConstraints)
+        NSLayoutConstraint.activate(followButtonConstraints)
     }
 }

@@ -49,15 +49,25 @@ final class DatabaseManager {
     func insertUser(
         newUser: User,
         completion: @escaping (Bool) -> Void) {
-        guard let data = newUser.asDictionary() else {
-            completion(false)
-            return
+            
+            let newUserInfo = UserInfo(
+                id: nil,
+                userName: newUser.userName,
+                userHandle: newUser.userHandle,
+                userEmail: newUser.userEmail,
+                bio: nil,
+                followers: [],
+                following: [],
+                profileImage: nil
+            )
+            guard let data = newUserInfo.asDictionary() else {
+                completion(false)
+                return
+            }
+            userRef.document(newUser.userName).setData(data) { error in
+                completion(error == nil)
+            }
         }
-        userRef.document(newUser.userName).setData(data) { error in
-            completion(error == nil)
-        }
-    }
-  
     
     ///Fetches a User's username from the DB
     ///- Parameters
@@ -101,8 +111,8 @@ final class DatabaseManager {
                     userHandle: currentUser.userHandle,
                     userEmail: currentUser.userEmail,
                     bio: bio,
-                    followerCount: userInfo?.followerCount,
-                    followingCount: userInfo?.followingCount,
+                    followers: userInfo?.followers ?? [],
+                    following: userInfo?.following ?? [],
                     profileImage: userInfo?.profileImage
                 )
                 guard let data = updatedInfo.asDictionary() else {

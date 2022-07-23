@@ -11,8 +11,8 @@ struct ProfileHeaderViewModel: Codable {
     let userName: String
     let userHandle: String
     let bio: String?
-    let followerCount: Int?
-    let followingCount: Int?
+    let followers: [String]
+    let following: [String]
     let profileImage: URL?
     
     static func getProfileHeaderViewModel(user: User) async throws -> ProfileHeaderViewModel? {
@@ -23,8 +23,8 @@ struct ProfileHeaderViewModel: Codable {
             userName: result.userName,
             userHandle: result.userHandle,
             bio: result.bio ?? "",
-            followerCount: result.followerCount,
-            followingCount: result.followingCount,
+            followers: result.followers,
+            following: result.following,
             profileImage: result.profileImage
         )
         return viewModel
