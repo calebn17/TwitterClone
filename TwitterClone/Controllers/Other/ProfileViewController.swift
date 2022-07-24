@@ -138,7 +138,14 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - HeaderView Methods
 extension ProfileViewController: ProfileHeaderViewDelegate {
     func didTapOnFollowButton(didFollow: Bool) {
-        ProfileHeaderViewModel.updateRelationship(targetUser: user, didFollow: didFollow)
+        ProfileHeaderViewModel.updateRelationship(targetUser: user, didFollow: didFollow) {[weak self] success in
+            DispatchQueue.main.async {
+                if !success {
+                    print("Something went wrong when updating relationship")
+                }
+                self?.fetchData()
+            }
+        }
     }
 }
 
@@ -148,7 +155,7 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
         ProfileHeaderViewModel.setProfileBio(bio: bio) {[weak self] success in
             DispatchQueue.main.async {
                 if !success {
-                    print("Something went wrong went updating bio")
+                    print("Something went wrong when updating bio")
                 }
                 self?.fetchData()
             }

@@ -147,19 +147,28 @@ class ProfileHeaderView: UIView {
             
             // If the current user is a follower of the viewed user, then show the Unfollow button
             if model.followers.contains(currentUser.userName) {
-                followButton.setTitle("Unfollow", for: .normal)
-                followButton.setTitleColor(.label, for: .normal)
-                followButton.backgroundColor = .systemBackground
-                followButton.layer.borderColor = UIColor.label.cgColor
+                configureFollowButtonState(showFollow: false)
             } else {
-                followButton.setTitle("Follow", for: .normal)
-                followButton.setTitleColor(.systemBackground, for: .normal)
-                followButton.backgroundColor = .label
-                followButton.layer.borderColor = UIColor.systemBackground.cgColor
+                configureFollowButtonState(showFollow: true)
             }
         }
         
         followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
+    }
+    
+    private func configureFollowButtonState(showFollow: Bool) {
+        if showFollow {
+            followButton.setTitle("Follow", for: .normal)
+            followButton.setTitleColor(.systemBackground, for: .normal)
+            followButton.backgroundColor = .label
+            followButton.layer.borderColor = UIColor.systemBackground.cgColor
+        }
+        else {
+            followButton.setTitle("Unfollow", for: .normal)
+            followButton.setTitleColor(.label, for: .normal)
+            followButton.backgroundColor = .systemBackground
+            followButton.layer.borderColor = UIColor.label.cgColor
+        }
     }
     
 //MARK: - Actions
@@ -170,9 +179,13 @@ class ProfileHeaderView: UIView {
         
         if model.followers.contains(currentUser.userName) {
             // Already following -> unfollow
+            print("unfollowing")
+            configureFollowButtonState(showFollow: true)
             delegate?.didTapOnFollowButton(didFollow: false)
         } else {
             // Not following -> follow
+            print("following")
+            configureFollowButtonState(showFollow: false)
             delegate?.didTapOnFollowButton(didFollow: true)
         }
     }

@@ -48,11 +48,13 @@ struct ProfileHeaderViewModel: Codable {
         return filteredTweets
     }
     
-    static func updateRelationship(targetUser: User, didFollow: Bool) {
+    static func updateRelationship(targetUser: User, didFollow: Bool, completion: @escaping (Bool) -> Void) {
         DatabaseManager.shared.updateRelationship(targetUser: targetUser, didFollow: didFollow) { success in
             if !success {
                 print("Something went wrong when updating relationship")
+                completion(false)
             }
+            completion(true)
         }
     }
 }
