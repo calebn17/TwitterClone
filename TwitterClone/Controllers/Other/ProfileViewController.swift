@@ -12,6 +12,7 @@ class ProfileViewController: UIViewController {
 //MARK: - Properties
     private let user: User
     var isCurrentUser: Bool {
+        print(DatabaseManager.shared.currentUser == user)
         return DatabaseManager.shared.currentUser == user
     }
     private var profileInfo: ProfileHeaderViewModel?
@@ -66,9 +67,7 @@ class ProfileViewController: UIViewController {
     private func configureHeaderView() {
         headerView = ProfileHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 270))
         tableView.tableHeaderView = headerView
-        
-        // Tells headerView whether this is the user's own profile page or not
-        headerView?.isCurrentUser = isCurrentUser
+        headerView?.delegate = self
     }
     
     private func configureNavBar() {
@@ -100,12 +99,14 @@ class ProfileViewController: UIViewController {
     
     @objc private func didTapEditButton() {
         let vc = EditProfileViewController()
+        vc.delegate = self
         vc.title = "Edit Profile"
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
     }
 }
 
+//MARK: - TableView Methods
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -134,9 +135,23 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+//MARK: - HeaderView Methods
+extension ProfileViewController: ProfileHeaderViewDelegate {
+    func didTapOnFollowButton(didFollow: Bool) {
+        ProfileHeaderViewModel.updateRelationship(targetUser: user, didFollow: didFollow)
+    }
+}
+
+//MARK: - EditProfileVC Methods
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func tappedSaveButton(bio: String) {
-        ProfileHeaderViewModel.setProfileBio(bio: bio)
-        fetchData()
+        ProfileHeaderViewModel.setProfileBio(bio: bio) {[weak self] success in
+            DispatchQueue.main.async {
+                if !success {
+                    print("Something went wrong went updating bio")
+                }
+                self?.fetchData()
+            }
+        }
     }
 }

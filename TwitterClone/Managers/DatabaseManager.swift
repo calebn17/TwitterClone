@@ -55,7 +55,7 @@ final class DatabaseManager {
                 userName: newUser.userName,
                 userHandle: newUser.userHandle,
                 userEmail: newUser.userEmail,
-                bio: nil,
+                bio: " ",
                 followers: [],
                 following: [],
                 profileImage: nil
@@ -87,7 +87,7 @@ final class DatabaseManager {
         return user
     }
     
-    func getUserInfo(user: User) async throws -> ProfileHeaderViewModel? {
+    func getUserHeaderInfo(user: User) async throws -> ProfileHeaderViewModel? {
         let result: ProfileHeaderViewModel? = try await withCheckedThrowingContinuation({ continuation in
             userRef.document(user.userName).getDocument { snapshot, error in
                 guard let info = snapshot?.data(),
@@ -101,21 +101,37 @@ final class DatabaseManager {
         return result
     }
     
+    func getUserInfo(user: User) async throws -> UserInfo {
+        let result: UserInfo = try await withCheckedThrowingContinuation({ continuation in
+            userRef.document(user.userName).getDocument { snapshot, error in
+                guard let data = snapshot?.data(),
+                      let userInfo = UserInfo(with: data),
+                      error == nil else {
+                          continuation.resume(throwing: error!)
+                          return
+                      }
+                continuation.resume(returning: userInfo)
+            }
+        })
+        return result
+    }
+    
     func insertUserBio(bio: String, completion: @escaping (Bool) -> Void) {
         Task {
             do {
-                let userInfo = try await getUserInfo(user: currentUser)
-                let updatedInfo = UserInfo(
+                guard let userProfileInfo = try await getUserHeaderInfo(user: currentUser) else {return}
+                
+                let userInfo = UserInfo(
                     id: currentUser.id,
                     userName: currentUser.userName,
                     userHandle: currentUser.userHandle,
                     userEmail: currentUser.userEmail,
                     bio: bio,
-                    followers: userInfo?.followers ?? [],
-                    following: userInfo?.following ?? [],
-                    profileImage: userInfo?.profileImage
+                    followers: userProfileInfo.followers,
+                    following: userProfileInfo.following,
+                    profileImage: userProfileInfo.profileImage
                 )
-                guard let data = updatedInfo.asDictionary() else {
+                guard let data = userInfo.asDictionary() else {
                     completion(false)
                     return
                 }
@@ -330,5 +346,61 @@ final class DatabaseManager {
             }
         })
         return result
+    }
+    
+//MARK: - Relationships
+    
+    func updateRelationship(targetUser: User, didFollow: Bool, completion: @escaping (Bool) -> Void) {
+        
+        if didFollow {
+            Task {
+                // Add current user to target user's followers list
+                var targetUserInfo = try await getUserInfo(user: targetUser)
+                targetUserInfo.followers.append(currentUser.userName)
+                guard let targetUserData = targetUserInfo.asDictionary() else {
+                    completion(false)
+                    return
+                }
+                userRef.document(targetUser.userName).setData(targetUserData) { error in
+                    completion(error == nil)
+                }
+                
+                // Add target user to current user's following list
+                var currentUserInfo = try await getUserInfo(user: currentUser)
+                currentUserInfo.following.append(targetUser.userName)
+                guard let currentUserData = currentUserInfo.asDictionary() else {
+                    completion(false)
+                    return
+                }
+                userRef.document(currentUser.userName).setData(currentUserData) { error in
+                    completion(error == nil)
+                }
+            }
+        }
+        else {
+            Task {
+                // Remove current user from target user's followers list
+                var targetUserInfo = try await getUserInfo(user: targetUser)
+                targetUserInfo.followers.removeAll(where: { $0 == currentUser.userName})
+                guard let targetUserData = targetUserInfo.asDictionary() else {
+                    completion(false)
+                    return
+                }
+                userRef.document(targetUser.userName).setData(targetUserData) { error in
+                    completion(error == nil)
+                }
+                
+                // Remove target user from current user's following list
+                var currentUserInfo = try await getUserInfo(user: currentUser)
+                currentUserInfo.following.removeAll(where: { $0 == targetUser.userName})
+                guard let currentUserData = currentUserInfo.asDictionary() else {
+                    completion(false)
+                    return
+                }
+                userRef.document(currentUser.userName).setData(currentUserData) { error in
+                    completion(error == nil)
+                }
+            }
+        }
     }
 }

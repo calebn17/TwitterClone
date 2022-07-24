@@ -13,6 +13,7 @@ protocol TweetTableViewCellDelegate: AnyObject {
     func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void)
     func didTapLikeButton(liked: Bool, model: TweetModel)
     func didTapShareButton()
+    func didTapProfilePicture(user: User)
 }
 ///Individual Tweet Cell
 class TweetTableViewCell: UITableViewCell {
@@ -44,6 +45,7 @@ class TweetTableViewCell: UITableViewCell {
         imageView.layer.cornerRadius = 25
         imageView.layer.masksToBounds = true
         imageView.tintColor = .label
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
@@ -210,6 +212,26 @@ class TweetTableViewCell: UITableViewCell {
         likeButton.addTarget(self, action: #selector(tappedLikeButton), for: .touchUpInside)
         retweetButton.addTarget(self, action: #selector(tappedRetweetButton), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(tappedShareButton), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tappedOnProfilePicture))
+        userImage.addGestureRecognizer(tap)
+    }
+    
+    @objc private func tappedOnProfilePicture() {
+        
+        guard let model = self.model,
+              let username = model.username,
+              let handle = model.userHandle,
+              let email = model.userEmail else {
+                  return
+              }
+        let user = User(
+            id: nil,
+            userName: username,
+            userHandle: handle,
+            userEmail: email
+        )
+        delegate?.didTapProfilePicture(user: user)
     }
     
     @objc private func tappedCommentButton() {

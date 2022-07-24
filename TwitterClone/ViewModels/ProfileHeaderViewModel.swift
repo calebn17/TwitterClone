@@ -10,36 +10,28 @@ import Foundation
 struct ProfileHeaderViewModel: Codable {
     let userName: String
     let userHandle: String
-    let bio: String?
-    let followers: [String]
-    let following: [String]
-    let profileImage: URL?
+    var bio: String
+    var followers: [String]
+    var following: [String]
+    var profileImage: URL?
     
     static func getProfileHeaderViewModel(user: User) async throws -> ProfileHeaderViewModel? {
-        guard let result = try await DatabaseManager.shared.getUserInfo(user: user) else {
+        guard let result = try await DatabaseManager.shared.getUserHeaderInfo(user: user) else {
             return nil
         }
-        let viewModel = ProfileHeaderViewModel(
-            userName: result.userName,
-            userHandle: result.userHandle,
-            bio: result.bio ?? "",
-            followers: result.followers,
-            following: result.following,
-            profileImage: result.profileImage
-        )
-        return viewModel
+        return result
     }
     
-    static func setProfileBio(bio: String) {
+    static func setProfileBio(bio: String, completion: @escaping (Bool) -> Void) {
         DatabaseManager.shared.insertUserBio(bio: bio) { success in
             if !success {
                 print("Error when inserting profile info into database")
+                completion(false)
             }
+            completion(true)
         }
     }
-    
-    
-    
+   
     static func getProfileTweets(user: User) async throws -> [TweetModel] {
         let allTweets = try await DatabaseManager.shared.getTweets()
         print(user.userName)
@@ -54,5 +46,13 @@ struct ProfileHeaderViewModel: Codable {
             }
         }
         return filteredTweets
+    }
+    
+    static func updateRelationship(targetUser: User, didFollow: Bool) {
+        DatabaseManager.shared.updateRelationship(targetUser: targetUser, didFollow: didFollow) { success in
+            if !success {
+                print("Something went wrong when updating relationship")
+            }
+        }
     }
 }

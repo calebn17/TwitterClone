@@ -103,6 +103,12 @@ extension SelectedTweetViewController: SelectedTweetHeaderTableViewCellDelegate 
 }
 
 extension SelectedTweetViewController: TweetTableViewCellDelegate {
+    
+    func didTapProfilePicture(user: User) {
+        let vc = ProfileViewController(with: user)
+        vc.title = user.userName
+        navigationController?.pushViewController(vc, animated: true)
+    }
    
     func didTapCommentButton(owner: TweetModel) {
         let vc = AddCommentViewController(with: owner)

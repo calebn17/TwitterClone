@@ -8,12 +8,19 @@
 import UIKit
 import SDWebImage
 
+protocol ProfileHeaderViewDelegate: AnyObject {
+    func didTapOnFollowButton(didFollow: Bool)
+}
+
 class ProfileHeaderView: UIView {
 
 //MARK: - Properties
-    
+    weak var delegate: ProfileHeaderViewDelegate?
     private let imageSize: CGFloat = K.userImageSize
-    var isCurrentUser: Bool = false
+    private var currentUser: User {
+        return DatabaseManager.shared.currentUser
+    }
+    private var model: ProfileHeaderViewModel?
     
     
 //MARK: - Subviews
@@ -99,7 +106,6 @@ class ProfileHeaderView: UIView {
         super.init(frame: frame)
         backgroundColor = .systemBackground
         addSubViews()
-        configureFollowButton()
         configureConstraints()
     }
 
@@ -120,17 +126,54 @@ class ProfileHeaderView: UIView {
 //MARK: - Configure
     
     func configure(with model: ProfileHeaderViewModel) {
+        self.model = model
         //profileImageView.sd_setImage(with: model.profileImage, completed: nil)
         nameLabel.text = model.userName
         handleLabel.text = "@\(model.userHandle)"
         bioLabel.text = model.bio
         followingLabel.text = "\(model.following.count) Following"
         followersLabel.text = "\(model.followers.count) Followers"
+        configureFollowButton()
     }
     
     private func configureFollowButton() {
-        if isCurrentUser {
+        guard let model = self.model else {return}
+        
+        if model.userName == currentUser.userName {
             followButton.isHidden = true
+        }
+        else {
+            followButton.isHidden = false
+            
+            // If the current user is a follower of the viewed user, then show the Unfollow button
+            if model.followers.contains(currentUser.userName) {
+                followButton.setTitle("Unfollow", for: .normal)
+                followButton.setTitleColor(.label, for: .normal)
+                followButton.backgroundColor = .systemBackground
+                followButton.layer.borderColor = UIColor.label.cgColor
+            } else {
+                followButton.setTitle("Follow", for: .normal)
+                followButton.setTitleColor(.systemBackground, for: .normal)
+                followButton.backgroundColor = .label
+                followButton.layer.borderColor = UIColor.systemBackground.cgColor
+            }
+        }
+        
+        followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
+    }
+    
+//MARK: - Actions
+    
+    @objc private func didTapFollowButton() {
+        guard let model = self.model else {return}
+        
+        
+        if model.followers.contains(currentUser.userName) {
+            // Already following -> unfollow
+            delegate?.didTapOnFollowButton(didFollow: false)
+        } else {
+            // Not following -> follow
+            delegate?.didTapOnFollowButton(didFollow: true)
         }
     }
     

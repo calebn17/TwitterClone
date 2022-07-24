@@ -20,10 +20,10 @@ struct UserInfo: Codable {
     let userName: String
     let userHandle: String
     let userEmail: String
-    let bio: String?
-    let followers: [String]
-    let following: [String]
-    let profileImage: URL?
+    var bio: String
+    var followers: [String]
+    var following: [String]
+    var profileImage: URL?
 }
 
 
