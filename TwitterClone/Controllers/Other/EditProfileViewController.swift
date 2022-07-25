@@ -7,18 +7,21 @@
 
 import UIKit
 
+//MARK: - Protocol
 protocol EditProfileViewControllerDelegate: AnyObject {
     func tappedSaveButton(bio: String)
 }
 
 class EditProfileViewController: UIViewController {
-    
+
+//MARK: - Properties
     weak var delegate: EditProfileViewControllerDelegate?
     
     struct K {
         static let textViewPlaceholder = "Add your bio..."
     }
     
+//MARK: - SubViews
     private let textView: UITextView = {
         let view = UITextView()
         view.text = K.textViewPlaceholder
@@ -37,28 +40,37 @@ class EditProfileViewController: UIViewController {
         return button
     }()
 
+//MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseButton))
+        configureNavbar()
         addSubViews()
         textView.delegate = self
-        saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         textView.addDoneButton(title: "Done", target: self, selector: #selector(didTapDone))
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         textView.frame = CGRect(x: 20, y: 300, width: view.width - 40, height: 100)
-        
-        saveButton.sizeToFit()
-        saveButton.frame = CGRect(x: (view.width - saveButton.width - 20)/2, y: view.bottom - 200, width: saveButton.width + 20, height: saveButton.height)
     }
     
     private func addSubViews() {
         view.addSubview(textView)
         view.addSubview(saveButton)
     }
+    
+//MARK: - Configure
+    
+    private func configureNavbar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(didTapSaveButton))
+        navigationItem.rightBarButtonItem?.tintColor = .label
+    }
+    
+//MARK: - Actions
     
     @objc private func didTapCloseButton() {
         dismiss(animated: true, completion: nil)
@@ -78,6 +90,7 @@ class EditProfileViewController: UIViewController {
     }
 }
 
+//MARK: - TextView Methods
 extension EditProfileViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == K.textViewPlaceholder {

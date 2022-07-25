@@ -12,7 +12,7 @@ struct TweetModel: Codable {
     var username: String?
     var userHandle: String?
     var userEmail: String?
-    let userAvatar: String?
+    let userAvatar: URL?
     let text: String?
     var likers: [String]
     var retweeters: [String]

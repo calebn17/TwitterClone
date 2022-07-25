@@ -24,9 +24,9 @@ final class RegisterViewController: UIViewController {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = K.userImageSize/2
+        imageView.layer.cornerRadius = K.userImageSize*1.5/2
         imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.systemBackground.cgColor
+        imageView.layer.borderColor = UIColor.label.cgColor
         imageView.image = UIImage(systemName: "person")
         imageView.tintColor = .label
         imageView.isUserInteractionEnabled = true
@@ -114,8 +114,9 @@ final class RegisterViewController: UIViewController {
         configureTextFields()
         registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
-        profileImageView.addGestureRecognizer(tap
-        )
+        profileImageView.addGestureRecognizer(tap)
+        let tap2 = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap2)
     }
     
     private func addSubviews() {
@@ -197,7 +198,7 @@ final class RegisterViewController: UIViewController {
             }
         }
         
-        StorageManager.shared.uploadProfilePicture(user: newUser, data: image.pngData()) {[weak self] success in
+        StorageManager.shared.uploadProfilePicture(user: newUser, data: image.pngData()) {success in
             DispatchQueue.main.async {
                 if !success {
                     print("Something went wrong when uploading profile picture")
@@ -229,6 +230,10 @@ extension RegisterViewController: UITextFieldDelegate {
         }
         return true
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+    }
 }
 
 //MARK: - Image Picker Methods
@@ -254,9 +259,9 @@ extension RegisterViewController {
         
         let profileImageViewConstraints = [
             profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
-            profileImageView.heightAnchor.constraint(equalToConstant: K.userImageSize),
-            profileImageView.widthAnchor.constraint(equalToConstant: K.userImageSize)
+            profileImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            profileImageView.heightAnchor.constraint(equalToConstant: K.userImageSize*1.5),
+            profileImageView.widthAnchor.constraint(equalToConstant: K.userImageSize*1.5)
         ]
         let usernameFieldConstraints = [
             usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),

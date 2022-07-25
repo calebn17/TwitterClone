@@ -83,6 +83,8 @@ class LoginViewController: UIViewController {
         configureTextFields()
         loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap)
     }
     
     private func addSubviews() {

@@ -29,6 +29,11 @@ final class TabBarViewController: UITabBarController {
         vc3.navigationItem.largeTitleDisplayMode = .never
         vc4.navigationItem.largeTitleDisplayMode = .never
         
+        vc1.navigationItem.backButtonDisplayMode  = .minimal
+        vc2.navigationItem.backButtonDisplayMode  = .minimal
+        vc3.navigationItem.backButtonDisplayMode  = .minimal
+        vc4.navigationItem.backButtonDisplayMode  = .minimal
+        
         let nav1 = UINavigationController(rootViewController: vc1)
         let nav2 = UINavigationController(rootViewController: vc2)
         let nav3 = UINavigationController(rootViewController: vc3)
@@ -53,9 +58,5 @@ final class TabBarViewController: UITabBarController {
         
         UITabBar.appearance().barTintColor = .systemBackground
         UITabBar.appearance().tintColor = .white
-
- 
     }
-    
-
 }

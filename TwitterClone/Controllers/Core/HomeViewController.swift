@@ -243,30 +243,33 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
     
     func didTapTweetPublishButton(tweetBody: String) {
         
-        //setting addedTweet as a var so I can update the username values
-        let addedTweet = TweetModel(
-            tweetId: UUID().uuidString,
-            username: username,
-            userHandle: userhandle,
-            userEmail: email,
-            userAvatar: nil,
-            text: tweetBody,
-            likers: [],
-            retweeters: [],
-            comments: [],
-            dateCreatedString: String.date(from: Date())
-        )
-        
-        tweetResponses.insert(addedTweet, at: 0)
-        DatabaseManager.shared.insertTweet(with: addedTweet) { success in
-            if success {
-                print("Tweet saved")
+        Task {
+            let url = try await HomeVCViewModel.fetchProfilePictureURL(user: DatabaseManager.shared.currentUser)
+            
+            //setting addedTweet as a var so I can update the username values
+            let addedTweet = TweetModel(
+                tweetId: UUID().uuidString,
+                username: username,
+                userHandle: userhandle,
+                userEmail: email,
+                userAvatar: url,
+                text: tweetBody,
+                likers: [],
+                retweeters: [],
+                comments: [],
+                dateCreatedString: String.date(from: Date())
+            )
+            tweetResponses.insert(addedTweet, at: 0)
+            DatabaseManager.shared.insertTweet(with: addedTweet) { success in
+                if success {
+                    print("Tweet saved")
+                }
+                else {
+                    print("Tweet was not saved: error")
+                }
             }
-            else {
-                print("Tweet was not saved: error")
-            }
+            homeFeedTableView.reloadData()
         }
-        homeFeedTableView.reloadData()
     }
 }
 

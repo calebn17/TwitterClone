@@ -29,4 +29,9 @@ struct HomeVCViewModel {
         })
         return dbTweets + apiTweets
     }
+    
+    static func fetchProfilePictureURL(user: User) async throws -> URL? {
+        let url = try await StorageManager.shared.downloadProfilePicture(user: user)
+        return url
+    }
 }

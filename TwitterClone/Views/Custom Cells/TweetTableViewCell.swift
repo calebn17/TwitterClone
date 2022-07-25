@@ -179,6 +179,13 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Configure
     public func configure(with model: TweetModel){
         self.model = model
+        
+        if let image = model.userAvatar {
+            userImage.sd_setImage(with: image, completed: nil)
+        } else {
+            userImage.image = UIImage(systemName: "person.fill")
+        }
+        
         userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
         userNameLabel.text = model.username ?? "Unknown"
         twitterTextLabel.text = model.text
@@ -202,8 +209,6 @@ class TweetTableViewCell: UITableViewCell {
             isRetweetedByCurrentUser = true
         }
     }
-    
-    
  
 //MARK: - Action
     
