@@ -50,6 +50,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        fetchData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -84,7 +85,6 @@ class ProfileViewController: UIViewController {
                 guard let profileInfo = try await ProfileHeaderViewModel.getProfileHeaderViewModel(user: self.user) else {return}
                 // Fetching tweets that will populate the tableView
                 tweets = try await ProfileHeaderViewModel.getProfileTweets(user: self.user)
-                print(self.user.userName)
                 headerView?.configure(with: profileInfo)
                 tableView.reloadData()
             }
@@ -137,6 +137,32 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: - HeaderView Methods
 extension ProfileViewController: ProfileHeaderViewDelegate {
+    func didTapOnProfilePicture() {
+        guard isCurrentUser else {return}
+        
+        let sheet = UIAlertController(title: "Change your profile picture", message: "Update your profile picture", preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        sheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
+            DispatchQueue.main.async {
+                let picker = UIImagePickerController()
+                picker.sourceType = .camera
+                picker.allowsEditing = true
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            }
+        }))
+        sheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { [weak self] _ in
+            DispatchQueue.main.async {
+                let picker = UIImagePickerController()
+                picker.sourceType = .photoLibrary
+                picker.allowsEditing = true
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            }
+        }))
+        present(sheet, animated: true)
+    }
+    
     func didTapOnFollowButton(didFollow: Bool) {
         ProfileHeaderViewModel.updateRelationship(targetUser: user, didFollow: didFollow) {[weak self] success in
             DispatchQueue.main.async {
@@ -157,6 +183,25 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
                 if !success {
                     print("Something went wrong when updating bio")
                 }
+                self?.fetchData()
+            }
+        }
+    }
+}
+
+//MARK: - Image Picker Methods
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
+        StorageManager.shared.uploadProfilePicture(user: user, data: image.pngData()) {[weak self] success in
+            if success {
+                self?.tweets = []
                 self?.fetchData()
             }
         }

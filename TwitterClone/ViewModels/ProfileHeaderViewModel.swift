@@ -16,10 +16,30 @@ struct ProfileHeaderViewModel: Codable {
     var profileImage: URL?
     
     static func getProfileHeaderViewModel(user: User) async throws -> ProfileHeaderViewModel? {
-        guard let result = try await DatabaseManager.shared.getUserHeaderInfo(user: user) else {
-            return nil
+        let userHeaderInfo = try await DatabaseManager.shared.getUserInfo(user: user)
+        let profilePictureURL = try await StorageManager.shared.downloadProfilePicture(user: user)
+        
+        if let profilePictureURL = profilePictureURL {
+            let result = ProfileHeaderViewModel(
+                userName: userHeaderInfo.userName,
+                userHandle: userHeaderInfo.userHandle,
+                bio: userHeaderInfo.bio,
+                followers: userHeaderInfo.followers,
+                following: userHeaderInfo.following,
+                profileImage: profilePictureURL
+            )
+            return result
+        } else {
+            let result = ProfileHeaderViewModel(
+                userName: userHeaderInfo.userName,
+                userHandle: userHeaderInfo.userHandle,
+                bio: userHeaderInfo.bio,
+                followers: userHeaderInfo.followers,
+                following: userHeaderInfo.following,
+                profileImage: nil
+            )
+            return result
         }
-        return result
     }
     
     static func setProfileBio(bio: String, completion: @escaping (Bool) -> Void) {

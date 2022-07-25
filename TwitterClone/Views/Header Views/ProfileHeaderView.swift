@@ -10,6 +10,7 @@ import SDWebImage
 
 protocol ProfileHeaderViewDelegate: AnyObject {
     func didTapOnFollowButton(didFollow: Bool)
+    func didTapOnProfilePicture()
 }
 
 class ProfileHeaderView: UIView {
@@ -33,6 +34,7 @@ class ProfileHeaderView: UIView {
         imageView.layer.borderColor = UIColor.systemBackground.cgColor
         imageView.image = UIImage(systemName: "person")
         imageView.tintColor = .label
+        imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -107,6 +109,7 @@ class ProfileHeaderView: UIView {
         backgroundColor = .systemBackground
         addSubViews()
         configureConstraints()
+        addActions()
     }
 
     required init?(coder: NSCoder) {
@@ -127,7 +130,12 @@ class ProfileHeaderView: UIView {
     
     func configure(with model: ProfileHeaderViewModel) {
         self.model = model
-        //profileImageView.sd_setImage(with: model.profileImage, completed: nil)
+        
+        if model.profileImage == nil {
+            profileImageView.image = UIImage(systemName: "person")
+        } else {
+            profileImageView.sd_setImage(with: model.profileImage, completed: nil)
+        }
         nameLabel.text = model.userName
         handleLabel.text = "@\(model.userHandle)"
         bioLabel.text = model.bio
@@ -171,7 +179,16 @@ class ProfileHeaderView: UIView {
         }
     }
     
+    private func addActions() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfilePicture))
+        profileImageView.addGestureRecognizer(tap)
+    }
+    
 //MARK: - Actions
+    
+    @objc private func didTapProfilePicture() {
+        delegate?.didTapOnProfilePicture()
+    }
     
     @objc private func didTapFollowButton() {
         guard let model = self.model else {return}

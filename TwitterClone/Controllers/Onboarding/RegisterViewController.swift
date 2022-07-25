@@ -16,9 +16,24 @@ final class RegisterViewController: UIViewController {
 
 //MARK: - Properties
     weak var delegate: RegisterViewControllerDelegate?
+    private var image: UIImage?
 
 
 //MARK: - SubViews
+    private let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = K.userImageSize/2
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.systemBackground.cgColor
+        imageView.image = UIImage(systemName: "person")
+        imageView.tintColor = .label
+        imageView.isUserInteractionEnabled = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     private let emailLabel: UILabel = {
         let label = UILabel()
         label.text = "Email Address"
@@ -97,9 +112,13 @@ final class RegisterViewController: UIViewController {
         addSubviews()
         addConstraints()
         registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
+        profileImageView.addGestureRecognizer(tap
+        )
     }
     
     private func addSubviews() {
+        view.addSubview(profileImageView)
         view.addSubview(emailField)
         view.addSubview(usernameField)
         view.addSubview(passwordField)
@@ -108,6 +127,30 @@ final class RegisterViewController: UIViewController {
     }
     
 //MARK: - Actions
+    @objc private func didTapProfileImage() {
+        let sheet = UIAlertController(title: "Change your profile picture", message: "Update your profile picture", preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        sheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
+            DispatchQueue.main.async {
+                let picker = UIImagePickerController()
+                picker.sourceType = .camera
+                picker.allowsEditing = true
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            }
+        }))
+        sheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { [weak self] _ in
+            DispatchQueue.main.async {
+                let picker = UIImagePickerController()
+                picker.sourceType = .photoLibrary
+                picker.allowsEditing = true
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            }
+        }))
+        present(sheet, animated: true)
+    }
+    
     @objc private func didTapRegisterButton() {
         passwordField.resignFirstResponder()
         emailField.resignFirstResponder()
@@ -121,7 +164,8 @@ final class RegisterViewController: UIViewController {
               let username = usernameField.text,
               !username.trimmingCharacters(in: .whitespaces).isEmpty,
               let userHandle = userHandleField.text,
-              !userHandle.trimmingCharacters(in: .whitespaces).isEmpty
+              !userHandle.trimmingCharacters(in: .whitespaces).isEmpty,
+              let image = self.image
         else {return}
         
         let newUser = User(
@@ -141,6 +185,15 @@ final class RegisterViewController: UIViewController {
                     //something failed
                     print("failed to register")
                 }
+            }
+        }
+        
+        StorageManager.shared.uploadProfilePicture(user: newUser, data: image.pngData()) {[weak self] success in
+            DispatchQueue.main.async {
+                if !success {
+                    print("Something went wrong when uploading profile picture")
+                }
+                self?.profileImageView.image = image
             }
         }
     }
@@ -170,15 +223,35 @@ extension RegisterViewController: UITextFieldDelegate {
     }
 }
 
+//MARK: - Image Picker Methods
+extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
+        self.image = image
+    }
+}
+
 //MARK: - SubView Constraints
 extension RegisterViewController {
     
     private func addConstraints() {
         let size: CGFloat = 200
         
+        let profileImageViewConstraints = [
+            profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
+            profileImageView.heightAnchor.constraint(equalToConstant: K.userImageSize),
+            profileImageView.widthAnchor.constraint(equalToConstant: K.userImageSize)
+        ]
         let usernameFieldConstraints = [
             usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            usernameField.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
+            usernameField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20),
             usernameField.heightAnchor.constraint(equalToConstant: 40),
             usernameField.widthAnchor.constraint(equalToConstant: 300)
         ]
@@ -207,6 +280,7 @@ extension RegisterViewController {
             registerButton.widthAnchor.constraint(equalToConstant: size),
             registerButton.heightAnchor.constraint(equalToConstant: 40)
         ]
+        NSLayoutConstraint.activate(profileImageViewConstraints)
         NSLayoutConstraint.activate(usernameFieldConstraints)
         NSLayoutConstraint.activate(userHandleFieldConstraints)
         NSLayoutConstraint.activate(emailFieldConstraints)
