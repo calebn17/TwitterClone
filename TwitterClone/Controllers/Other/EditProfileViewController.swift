@@ -44,6 +44,7 @@ class EditProfileViewController: UIViewController {
         addSubViews()
         textView.delegate = self
         saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+        textView.addDoneButton(title: "Done", target: self, selector: #selector(didTapDone))
     }
     
     override func viewDidLayoutSubviews() {
@@ -63,6 +64,10 @@ class EditProfileViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @objc private func didTapDone() {
+        textView.endEditing(true)
+    }
+    
     @objc private func didTapSaveButton() {
         didTapCloseButton()
         guard let bio = textView.text,
@@ -78,5 +83,9 @@ extension EditProfileViewController: UITextViewDelegate {
         if textView.text == K.textViewPlaceholder {
             textView.text = nil
         }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.resignFirstResponder()
     }
 }

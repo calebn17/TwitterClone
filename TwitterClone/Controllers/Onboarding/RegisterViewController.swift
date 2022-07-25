@@ -111,6 +111,7 @@ final class RegisterViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseButton))
         addSubviews()
         addConstraints()
+        configureTextFields()
         registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
         profileImageView.addGestureRecognizer(tap
@@ -124,6 +125,14 @@ final class RegisterViewController: UIViewController {
         view.addSubview(passwordField)
         view.addSubview(registerButton)
         view.addSubview(userHandleField)
+    }
+    
+//MARK: - Configure
+    private func configureTextFields() {
+        emailField.delegate = self
+        usernameField.delegate = self
+        passwordField.delegate = self
+        userHandleField.delegate = self
     }
     
 //MARK: - Actions
@@ -193,7 +202,6 @@ final class RegisterViewController: UIViewController {
                 if !success {
                     print("Something went wrong when uploading profile picture")
                 }
-                self?.profileImageView.image = image
             }
         }
     }
@@ -234,6 +242,7 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
         
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
         self.image = image
+        profileImageView.image = image
     }
 }
 

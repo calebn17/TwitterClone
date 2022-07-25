@@ -80,6 +80,7 @@ class LoginViewController: UIViewController {
         title = "Login"
         addSubviews()
         addConstraints()
+        configureTextFields()
         loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
     }
@@ -89,6 +90,12 @@ class LoginViewController: UIViewController {
         view.addSubview(passwordField)
         view.addSubview(loginButton)
         view.addSubview(registerButton)
+    }
+    
+//MARK: - Configure
+    private func configureTextFields() {
+        emailField.delegate = self
+        passwordField.delegate = self
     }
  
 //MARK: - Actions

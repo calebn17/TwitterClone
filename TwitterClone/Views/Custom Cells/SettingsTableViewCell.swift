@@ -46,6 +46,7 @@ class SettingsTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         label.text = nil
         iconImageView.image = nil
+        label.textColor = .label
     }
 
 //MARK: - Configure/Constraints
