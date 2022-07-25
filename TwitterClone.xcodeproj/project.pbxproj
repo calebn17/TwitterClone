@@ -129,36 +129,11 @@
 			children = (
 				AFD6123028380C5A002A297C /* GoogleService-Info.plist */,
 				AFDBA2322824B98D00085DDC /* Assets.xcassets */,
+				AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */,
 				3BC26E04282949D000A56D5C /* Constants.swift */,
 				7038FEAB28305E4E00715D54 /* Extensions.swift */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		3BC26E062829523A00A56D5C /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */,
-				708C50F128317A2200978DD6 /* AddTweetViewController.swift */,
-				708C50F32831A0E200978DD6 /* AddCommentViewController.swift */,
-				AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */,
-				AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */,
-				AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */,
-				AFCEE1CE28899CBE00B6D187 /* EditProfileViewController.swift */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
-		3BC26E072829524D00A56D5C /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				AF2DED752824BCCF002E9264 /* TabBarViewController.swift */,
-				AF2DED772824BD4A002E9264 /* HomeViewController.swift */,
-				AF2DED792824BD58002E9264 /* SearchViewController.swift */,
-				AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */,
-				AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */,
-			);
-			path = Core;
 			sourceTree = "<group>";
 		};
 		44FE34073B67F1FCD04B50BA /* Frameworks */ = {
@@ -169,59 +144,117 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		705E79A92867BD6F003AEA17 /* ViewModels */ = {
+		AF2DED742824BC71002E9264 /* TabBarView */ = {
 			isa = PBXGroup;
 			children = (
+				AF2DED752824BCCF002E9264 /* TabBarViewController.swift */,
+			);
+			path = TabBarView;
+			sourceTree = "<group>";
+		};
+		AF8C41B8283581D00005E023 /* Custom  */ = {
+			isa = PBXGroup;
+			children = (
+				AFDAF8262889C23200F2BBA0 /* CustomLabel.swift */,
+				AFC809E72888263600B90540 /* ReusableTextField.swift */,
+			);
+			path = "Custom ";
+			sourceTree = "<group>";
+		};
+		AFC9877A288F5C3400B2DAF8 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				AF2DED772824BD4A002E9264 /* HomeViewController.swift */,
 				705E79AA2867BD87003AEA17 /* HomeVCViewModel.swift */,
-				AFDC2C762869D6BA007DCDF5 /* NotificationViewModel.swift */,
-				AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */,
-				AFFFD4AB2888F87900270E6E /* SettingsAndPrivacyViewModel.swift */,
-				AF2153EC2888FF4A00766354 /* TweetViewModel.swift */,
-				AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */,
 			);
-			path = ViewModels;
+			path = HomeView;
 			sourceTree = "<group>";
 		};
-		AF2DED742824BC71002E9264 /* Controllers */ = {
+		AFD43BDE288F5D7300D1377E /* NotificationsView */ = {
 			isa = PBXGroup;
 			children = (
-				AFCC323228380EFD00C0B01C /* Onboarding */,
-				3BC26E072829524D00A56D5C /* Core */,
-				3BC26E062829523A00A56D5C /* Other */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		AF6A444428366B50001F0018 /* Header Views */ = {
-			isa = PBXGroup;
-			children = (
-				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
 				AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */,
-				AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift */,
-				AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */,
-			);
-			path = "Header Views";
-			sourceTree = "<group>";
-		};
-		AF8C41B8283581D00005E023 /* Custom Cells */ = {
-			isa = PBXGroup;
-			children = (
-				7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */,
-				AFD853C22825784E00D080D4 /* TweetTableViewCell.swift */,
-				AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */,
+				AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */,
+				AFDC2C762869D6BA007DCDF5 /* NotificationViewModel.swift */,
 				AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */,
 				AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */,
+				AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */,
 			);
-			path = "Custom Cells";
+			path = NotificationsView;
 			sourceTree = "<group>";
 		};
-		AFCC323228380EFD00C0B01C /* Onboarding */ = {
+		AFD43BDF288F5D9F00D1377E /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
-				AFCC323328380F2600C0B01C /* LoginViewController.swift */,
-				AFCC323528380F3600C0B01C /* RegisterViewController.swift */,
+				AF2DED792824BD58002E9264 /* SearchViewController.swift */,
+				3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */,
 			);
-			path = Onboarding;
+			path = SearchView;
+			sourceTree = "<group>";
+		};
+		AFD43BE0288F5DC300D1377E /* SettingsView */ = {
+			isa = PBXGroup;
+			children = (
+				AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */,
+				AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */,
+				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
+				7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */,
+				AFD43BE1288F5E3C00D1377E /* SettingsAndPrivacyView */,
+			);
+			path = SettingsView;
+			sourceTree = "<group>";
+		};
+		AFD43BE1288F5E3C00D1377E /* SettingsAndPrivacyView */ = {
+			isa = PBXGroup;
+			children = (
+				AFFFD4AB2888F87900270E6E /* SettingsAndPrivacyViewModel.swift */,
+				AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */,
+				AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */,
+			);
+			path = SettingsAndPrivacyView;
+			sourceTree = "<group>";
+		};
+		AFD43BE2288F5E5300D1377E /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */,
+				AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */,
+				AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */,
+				AFCEE1CE28899CBE00B6D187 /* EditProfileViewController.swift */,
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		AFD43BE3288F5EA100D1377E /* TweetView */ = {
+			isa = PBXGroup;
+			children = (
+				AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */,
+				AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift */,
+				AF2153EC2888FF4A00766354 /* TweetViewModel.swift */,
+				AFD853C22825784E00D080D4 /* TweetTableViewCell.swift */,
+				708C50F128317A2200978DD6 /* AddTweetViewController.swift */,
+				708C50F32831A0E200978DD6 /* AddCommentViewController.swift */,
+			);
+			path = TweetView;
+			sourceTree = "<group>";
+		};
+		AFD43BE4288F5EEB00D1377E /* OnboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				AFCC323528380F3600C0B01C /* RegisterViewController.swift */,
+				AFCC323328380F2600C0B01C /* LoginViewController.swift */,
+			);
+			path = OnboardingViews;
+			sourceTree = "<group>";
+		};
+		AFD43BE5288F5F4700D1377E /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				AFDBA2262824B98B00085DDC /* AppDelegate.swift */,
+				AFDBA2282824B98B00085DDC /* SceneDelegate.swift */,
+				AFDBA2342824B98D00085DDC /* LaunchScreen.storyboard */,
+			);
+			path = Launch;
 			sourceTree = "<group>";
 		};
 		AFD853B82825631C00D080D4 /* Managers */ = {
@@ -253,18 +286,6 @@
 			path = "API Responses";
 			sourceTree = "<group>";
 		};
-		AFD853BF282577C400D080D4 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				AF6A444428366B50001F0018 /* Header Views */,
-				AF8C41B8283581D00005E023 /* Custom Cells */,
-				AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */,
-				AFC809E72888263600B90540 /* ReusableTextField.swift */,
-				AFDAF8262889C23200F2BBA0 /* CustomLabel.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		AFDBA21A2824B98B00085DDC = {
 			isa = PBXGroup;
 			children = (
@@ -286,17 +307,20 @@
 		AFDBA2252824B98B00085DDC /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
-				3BC26E03282949BA00A56D5C /* Resources */,
-				705E79A92867BD6F003AEA17 /* ViewModels */,
-				AFD853BF282577C400D080D4 /* Views */,
+				AFD43BE4288F5EEB00D1377E /* OnboardingViews */,
+				AFD43BE3288F5EA100D1377E /* TweetView */,
+				AFD43BE2288F5E5300D1377E /* ProfileView */,
+				AFD43BE0288F5DC300D1377E /* SettingsView */,
+				AFD43BDF288F5D9F00D1377E /* SearchView */,
+				AFD43BDE288F5D7300D1377E /* NotificationsView */,
+				AFC9877A288F5C3400B2DAF8 /* HomeView */,
+				AF8C41B8283581D00005E023 /* Custom  */,
 				AFD853BB2825680600D080D4 /* Models */,
 				AFD853B82825631C00D080D4 /* Managers */,
-				AF2DED742824BC71002E9264 /* Controllers */,
-				AFDBA2262824B98B00085DDC /* AppDelegate.swift */,
-				AFDBA2282824B98B00085DDC /* SceneDelegate.swift */,
-				AFDBA2342824B98D00085DDC /* LaunchScreen.storyboard */,
+				AF2DED742824BC71002E9264 /* TabBarView */,
+				3BC26E03282949BA00A56D5C /* Resources */,
+				AFD43BE5288F5F4700D1377E /* Launch */,
 				AFDBA2372824B98D00085DDC /* Info.plist */,
-				AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */,
 			);
 			path = TwitterClone;
 			sourceTree = "<group>";

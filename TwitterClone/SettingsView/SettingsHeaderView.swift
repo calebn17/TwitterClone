@@ -109,7 +109,7 @@ class SettingsHeaderView: UIView {
         }
         userNameButton.setTitle(viewModel.username, for: .normal)
         userHandleButton.setTitle("@\(viewModel.userhandle)", for: .normal)
-        followersButton.setTitle("\(viewModel.followers.count) Following", for: .normal)
+        followersButton.setTitle("\(viewModel.followers.count) Follower", for: .normal)
         followingButton.setTitle("\(viewModel.following.count) Following", for: .normal)
     }
     

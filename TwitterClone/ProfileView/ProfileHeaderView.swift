@@ -94,8 +94,8 @@ class ProfileHeaderView: UIView {
         button.setTitle("Follow", for: .normal)
         button.setTitleColor(UIColor.systemBackground, for: .normal)
         button.backgroundColor = .label
-        button.layer.cornerRadius = K.userImageSize/2.2
-        button.layer.borderWidth = 2
+        button.layer.cornerRadius = K.userImageSize/2.4
+        button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.systemBackground.cgColor
         button.layer.masksToBounds = true
         button.isHidden = false
