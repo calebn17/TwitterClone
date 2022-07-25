@@ -87,20 +87,6 @@ final class DatabaseManager {
         return user
     }
     
-    func getUserHeaderInfo(user: User) async throws -> ProfileHeaderViewModel? {
-        let result: ProfileHeaderViewModel? = try await withCheckedThrowingContinuation({ continuation in
-            userRef.document(user.userName).getDocument { snapshot, error in
-                guard let info = snapshot?.data(),
-                      error == nil else {
-                          continuation.resume(throwing: error!)
-                          return
-                      }
-                continuation.resume(returning: ProfileHeaderViewModel(with: info))
-            }
-        })
-        return result
-    }
-    
     func getUserInfo(user: User) async throws -> UserInfo {
         let result: UserInfo = try await withCheckedThrowingContinuation({ continuation in
             userRef.document(user.userName).getDocument { snapshot, error in
@@ -119,18 +105,8 @@ final class DatabaseManager {
     func insertUserBio(bio: String, completion: @escaping (Bool) -> Void) {
         Task {
             do {
-                guard let userProfileInfo = try await getUserHeaderInfo(user: currentUser) else {return}
-                
-                let userInfo = UserInfo(
-                    id: currentUser.id,
-                    userName: currentUser.userName,
-                    userHandle: currentUser.userHandle,
-                    userEmail: currentUser.userEmail,
-                    bio: bio,
-                    followers: userProfileInfo.followers,
-                    following: userProfileInfo.following,
-                    profileImage: userProfileInfo.profileImage
-                )
+                var userInfo = try await getUserInfo(user: currentUser)
+                userInfo.bio = bio
                 guard let data = userInfo.asDictionary() else {
                     completion(false)
                     return

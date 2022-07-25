@@ -174,6 +174,7 @@ class TweetTableViewCell: UITableViewCell {
         likeButton.tintColor = .label
         likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         retweetButton.tintColor = .label
+        userImage.image = nil
     }
     
 //MARK: - Configure
