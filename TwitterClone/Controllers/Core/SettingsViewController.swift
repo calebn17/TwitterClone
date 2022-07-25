@@ -19,11 +19,8 @@ final class SettingsViewController: UIViewController {
     private var settingsModel: [SettingsViewModel] {
         return SettingsViewModel.configureSettingsSections()
     }
-    private var userHandle: String {
-        return DatabaseManager.shared.currentUser.userHandle
-    }
-    private var userName: String {
-        return DatabaseManager.shared.currentUser.userName
+    private var currentUser: User {
+        return DatabaseManager.shared.currentUser
     }
     
 //MARK: - SubViews
@@ -44,6 +41,7 @@ final class SettingsViewController: UIViewController {
         title = nil
         configureHeaderView()
         configureTableView()
+        constraints()
     }
     
     override func viewDidLayoutSubviews() {
@@ -52,8 +50,6 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        headerView?.userHandleButton.setTitle("@\(userHandle)", for: .normal)
-        headerView?.userNameButton.setTitle(userName, for: .normal)
     }
 
 //MARK: - Configure
@@ -64,14 +60,10 @@ final class SettingsViewController: UIViewController {
         view.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         
-        let headerViewConstraints = [
-            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 70),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 150),
-            headerView.widthAnchor.constraint(equalToConstant: view.width)
-        ]
-        NSLayoutConstraint.activate(headerViewConstraints)
+        Task {
+            let viewModel = try await SettingsHeaderViewModel.fetchData(user: currentUser)
+            headerView.configure(with: viewModel)
+        }
     }
     
     private func configureTableView() {
@@ -93,7 +85,7 @@ final class SettingsViewController: UIViewController {
 //MARK: - Actions
     
     private func presentProfilePage() {
-        let vc = ProfileViewController(with: DatabaseManager.shared.currentUser)
+        let vc = ProfileViewController(with: currentUser)
         vc.title = "Profile"
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -207,5 +199,20 @@ extension SettingsViewController: SettingsHeaderViewDelegate {
             
             self?.present(actionSheet, animated: true, completion: nil)
         }
+    }
+}
+
+//MARK: - Constraints
+extension SettingsViewController {
+    private func constraints() {
+        guard let headerView = headerView else {return}
+        let headerViewConstraints = [
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 70),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 150),
+            headerView.widthAnchor.constraint(equalToConstant: view.width)
+        ]
+        NSLayoutConstraint.activate(headerViewConstraints)
     }
 }

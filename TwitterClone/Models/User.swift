@@ -23,7 +23,7 @@ struct UserInfo: Codable {
     var bio: String
     var followers: [String]
     var following: [String]
-    var profileImage: URL?
+    //var profileImage: URL?
 }
 
 

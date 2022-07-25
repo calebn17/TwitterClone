@@ -57,8 +57,7 @@ final class DatabaseManager {
                 userEmail: newUser.userEmail,
                 bio: " ",
                 followers: [],
-                following: [],
-                profileImage: nil
+                following: []
             )
             guard let data = newUserInfo.asDictionary() else {
                 completion(false)

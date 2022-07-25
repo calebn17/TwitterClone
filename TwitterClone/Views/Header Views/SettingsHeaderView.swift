@@ -25,6 +25,8 @@ class SettingsHeaderView: UIView {
         imageView.tintColor = .label
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = K.userImageSize/2
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -33,6 +35,7 @@ class SettingsHeaderView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("# Following", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
     }()
     
@@ -40,6 +43,7 @@ class SettingsHeaderView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("# Followers", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
     }()
     
@@ -96,6 +100,19 @@ class SettingsHeaderView: UIView {
         addSubview(accountsButton)
     }
     
+//MARK: - Configure
+    func configure(with viewModel: SettingsHeaderViewModel) {
+        if let url = viewModel.profilePictureURL {
+            userImageView.sd_setImage(with: url, completed: nil)
+        } else {
+            userImageView.image = UIImage(systemName: "person")
+        }
+        userNameButton.setTitle(viewModel.username, for: .normal)
+        userHandleButton.setTitle("@\(viewModel.userhandle)", for: .normal)
+        followersButton.setTitle("\(viewModel.followers.count) Following", for: .normal)
+        followingButton.setTitle("\(viewModel.following.count) Following", for: .normal)
+    }
+    
 //MARK: - Action Methods
     @objc private func didTapAccountsButton() {
         delegate?.didTapAccountsButton()
@@ -122,7 +139,7 @@ extension SettingsHeaderView {
         ]
         let followingButtonConstraints = [
             followingButton.topAnchor.constraint(equalTo: userHandleButton.bottomAnchor, constant: 30),
-            followingButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            followingButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             followingButton.heightAnchor.constraint(equalToConstant: userNameButton.height/1.5)
         ]
         let followersButtonConstraints = [
