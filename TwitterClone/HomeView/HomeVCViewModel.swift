@@ -14,21 +14,21 @@ struct HomeVCViewModel {
         let responseTweets = try await APICaller.shared.getSearch(with: "news")
         let dbTweets = try await DatabaseManager.shared.getTweets()
         
-        let apiTweets = responseTweets.compactMap({
-            TweetViewModel(
-                tweetId: UUID().uuidString,
-                username: nil,
-                userHandle: nil,
-                userEmail: nil,
-                userAvatar: nil,
-                text: $0.text,
-                likers: [],
-                retweeters: [],
-                comments: [],
-                dateCreatedString: nil
-            )
-        })
-        return dbTweets + apiTweets
+//        let apiTweets = responseTweets.compactMap({
+//            TweetViewModel(
+//                tweetId: UUID().uuidString,
+//                username: nil,
+//                userHandle: nil,
+//                userEmail: nil,
+//                userAvatar: nil,
+//                text: $0.text,
+//                likers: [],
+//                retweeters: [],
+//                comments: [],
+//                dateCreatedString: nil
+//            )
+//        })
+        return dbTweets //+ apiTweets
     }
     
     static func fetchProfilePictureURL(user: User) async throws -> URL? {

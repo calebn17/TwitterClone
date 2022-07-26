@@ -12,6 +12,16 @@ class LoginViewController: UIViewController {
     
 //MARK: - Subviews
     
+    private let logo: UIImageView = {
+        let logo = UIImageView()
+        logo.image = UIImage(named: "twitterLogo2")
+        logo.clipsToBounds = true
+        logo.contentMode = .scaleAspectFill
+        logo.backgroundColor = .systemBackground
+        logo.translatesAutoresizingMaskIntoConstraints = false
+        return logo
+    }()
+    
     private let emailLabel: UILabel = {
         let label = UILabel()
         label.text = "Email Address or Username"
@@ -88,6 +98,7 @@ class LoginViewController: UIViewController {
     }
     
     private func addSubviews() {
+        view.addSubview(logo)
         view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(loginButton)
@@ -174,9 +185,16 @@ extension LoginViewController {
     private func addConstraints() {
         let size: CGFloat = 200
         
+        let logoConstraints = [
+            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
+            logo.widthAnchor.constraint(equalToConstant: 200),
+            logo.heightAnchor.constraint(equalToConstant: 200)
+        ]
+        
         let emailFieldConstraints = [
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailField.topAnchor.constraint(equalTo: view.topAnchor, constant: 320),
+            emailField.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 50),
             emailField.heightAnchor.constraint(equalToConstant: 40),
             emailField.widthAnchor.constraint(equalToConstant: 300)
         ]
@@ -198,6 +216,7 @@ extension LoginViewController {
             registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20),
             registerButton.heightAnchor.constraint(equalToConstant: 40)
         ]
+        NSLayoutConstraint.activate(logoConstraints)
         NSLayoutConstraint.activate(emailFieldConstraints)
         NSLayoutConstraint.activate(passwordFieldConstraints)
         NSLayoutConstraint.activate(loginButtonConstraints)
