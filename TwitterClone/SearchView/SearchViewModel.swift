@@ -14,9 +14,9 @@ struct SearchViewModel {
         let results = response.compactMap({
             TweetViewModel(
                 tweetId: UUID().uuidString,
-                username: nil,
-                userHandle: nil,
-                userEmail: nil,
+                username: "",
+                userHandle: "",
+                userEmail: "",
                 userAvatar: nil,
                 text: $0.text,
                 likers: [],

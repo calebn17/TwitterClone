@@ -199,7 +199,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         picker.dismiss(animated: true, completion: nil)
         
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
-        StorageManager.shared.uploadProfilePicture(user: user, data: image.pngData()) {[weak self] success in
+        ProfileViewModel.uploadProfilePicture(user: user, data: image.pngData()) {[weak self] success in
             if success {
                 self?.tweets = []
                 self?.fetchData()

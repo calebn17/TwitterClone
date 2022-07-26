@@ -11,7 +11,7 @@ import UIKit
 struct HomeVCViewModel {
     
     static func fetchData() async throws -> [TweetViewModel] {
-        let responseTweets = try await APICaller.shared.getSearch(with: "news")
+        //let responseTweets = try await APICaller.shared.getSearch(with: "news")
         let dbTweets = try await DatabaseManager.shared.getTweets()
         
 //        let apiTweets = responseTweets.compactMap({

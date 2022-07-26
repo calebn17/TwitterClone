@@ -71,4 +71,10 @@ struct ProfileViewModel {
             completion(true)
         }
     }
+    
+    static func uploadProfilePicture(user: User, data: Data?, completion: @escaping (Bool) -> Void) {
+        StorageManager.shared.uploadProfilePicture(user: user, data: data) { success in
+            completion(success == true)
+        }
+    }
 }

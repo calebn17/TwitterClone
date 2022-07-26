@@ -262,13 +262,14 @@ final class DatabaseManager {
                 completion(false)
                 return
             }
+            
             var tweet = TweetViewModel(with: data)
             tweet?.comments.append(
                 TweetViewModel(
                     tweetId: UUID().uuidString,
-                    username: self?.currentUser.userName,
-                    userHandle: self?.currentUser.userHandle,
-                    userEmail: self?.currentUser.userEmail,
+                    username: self?.currentUser.userName ?? "",
+                    userHandle: self?.currentUser.userHandle ?? "",
+                    userEmail: self?.currentUser.userEmail ?? "",
                     userAvatar: nil,
                     text: text,
                     likers: [],
@@ -285,10 +286,7 @@ final class DatabaseManager {
 //MARK: - Notifications
    
     func insertNotifications(of type: NotificationActions, tweet: TweetViewModel, completion: @escaping (Bool) -> Void ) {
-        guard let receiverUsername = tweet.username else {
-            completion(false)
-            return
-        }
+        let receiverUsername = tweet.username
         let notificationId = UUID().uuidString
         
         let ref = userRef.document(receiverUsername).collection("notifications").document(notificationId)

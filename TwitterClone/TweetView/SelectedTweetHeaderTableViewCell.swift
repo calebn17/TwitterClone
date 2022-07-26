@@ -137,11 +137,22 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
 //MARK: - Configure
     public func configure(with tweet: TweetViewModel) {
         self.tweet = tweet
+        configureUserImage(with: tweet)
         tweetBodyLabel.text = tweet.text
-        usernameLabel.text = tweet.username ?? "UserName"
-        userHandleLabel.text = "@\(tweet.userHandle ?? "userhandle")"
+        usernameLabel.text = tweet.username
+        userHandleLabel.text = "@\(tweet.userHandle)"
         dateCreatedLabel.text = tweet.dateCreatedString
         profileImageView.sd_setImage(with: tweet.userAvatar, completed: nil)
+    }
+    
+    private func configureUserImage(with model: TweetViewModel) {
+        Task {
+            if let imageUrl = try await TweetViewModel.fetchProfilePictureURL(tweet: model) {
+                profileImageView.sd_setImage(with: imageUrl, completed: nil)
+            } else {
+                profileImageView.image = UIImage(systemName: "person.fill")
+            }
+        }
     }
     
 //MARK: - Action Methods

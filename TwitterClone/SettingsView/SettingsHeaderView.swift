@@ -103,7 +103,7 @@ class SettingsHeaderView: UIView {
         }
         userNameButton.setTitle(viewModel.username, for: .normal)
         userHandleButton.setTitle("@\(viewModel.userhandle)", for: .normal)
-        followersButton.setTitle("\(viewModel.followers.count) Follower", for: .normal)
+        followersButton.setTitle("\(viewModel.followers.count) Followers", for: .normal)
         followingButton.setTitle("\(viewModel.following.count) Following", for: .normal)
     }
     
@@ -147,7 +147,6 @@ extension SettingsHeaderView {
             accountsButton.heightAnchor.constraint(equalToConstant: K.userImageSize),
             accountsButton.widthAnchor.constraint(equalToConstant: K.userImageSize)
         ]
-        
         NSLayoutConstraint.activate(userImageViewConstraints)
         NSLayoutConstraint.activate(userNameButtonConstraints)
         NSLayoutConstraint.activate(userHandleButtonConstraints)

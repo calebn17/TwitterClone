@@ -166,15 +166,10 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Configure
     public func configure(with model: TweetViewModel){
         self.model = model
-        
-        if let image = model.userAvatar {
-            userImage.sd_setImage(with: image, completed: nil)
-        } else {
-            userImage.image = UIImage(systemName: "person.fill")
-        }
-        
-        userHandleLabel.text = "@\(model.userHandle ?? "unknown")"
-        userNameLabel.text = model.username ?? "Unknown"
+        configureUserImage(with: model)
+
+        userHandleLabel.text = "@\(model.userHandle)"
+        userNameLabel.text = model.username
         twitterTextLabel.text = model.text
         
         commentsCount = model.comments.count
@@ -196,6 +191,16 @@ class TweetTableViewCell: UITableViewCell {
             isRetweetedByCurrentUser = true
         }
     }
+    
+    private func configureUserImage(with model: TweetViewModel) {
+        Task {
+            if let imageUrl = try await TweetViewModel.fetchProfilePictureURL(tweet: model) {
+                userImage.sd_setImage(with: imageUrl, completed: nil)
+            } else {
+                userImage.image = UIImage(systemName: "person.fill")
+            }
+        }
+    }
  
 //MARK: - Action
     
@@ -211,17 +216,12 @@ class TweetTableViewCell: UITableViewCell {
     
     @objc private func tappedOnProfilePicture() {
         
-        guard let model = self.model,
-              let username = model.username,
-              let handle = model.userHandle,
-              let email = model.userEmail else {
-                  return
-              }
+        guard let model = self.model else {return}
         let user = User(
             id: nil,
-            userName: username,
-            userHandle: handle,
-            userEmail: email
+            userName: model.username,
+            userHandle: model.userHandle,
+            userEmail: model.userEmail
         )
         delegate?.didTapProfilePicture(user: user)
     }
