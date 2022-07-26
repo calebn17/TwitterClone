@@ -19,55 +19,49 @@ class SettingsHeaderView: UIView {
     public weak var delegate: SettingsHeaderViewDelegate?
     
 //MARK: - Subviews
-    private let userImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let userImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person.fill")
         imageView.tintColor = .label
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = K.userImageSize/2
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let followingButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+    private let followingButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("# Following", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.layer.masksToBounds = false
         return button
     }()
     
-    private let followersButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+    private let followersButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("# Followers", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.layer.masksToBounds = false
         return button
     }()
     
-    public let userNameButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+    public let userNameButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("User Name", for: .normal)
         button.setTitleColor(.label, for: .normal)
         return button
     }()
     
-    public let userHandleButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+    public let userHandleButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("@userHandle", for: .normal)
         button.setTitleColor(.tertiaryLabel, for: .normal)
+        button.layer.masksToBounds = false
         return button
     }()
     
-    private let accountsButton: UIButton = {
-        let button = UIButton()
+    private let accountsButton: CustomButton = {
+        let button = CustomButton()
         let image =  UIImage(systemName: "person.3")
         button.tintColor = .label
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(image, for: .normal)
         return button
     }()

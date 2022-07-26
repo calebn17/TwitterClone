@@ -28,32 +28,28 @@ final class SearchViewController: UIViewController {
         return vc
     }()
     
-    private let searchTableViewPlaceholderImage: UIImageView = {
-        let imageView = UIImageView()
+    private let searchTableViewPlaceholderImage: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         let image = UIImage(systemName: "rectangle.and.text.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100))
         imageView.image = image
         imageView.tintColor = .label
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let twitterIcon: UIImageView = {
-        let icon = UIImageView()
+    private let twitterIcon: CustomImageView = {
+        let icon = CustomImageView(frame: .zero)
         icon.image = UIImage(named: "twitterLogo")
-        icon.clipsToBounds = true
         icon.contentMode = .scaleAspectFit
         return icon
     }()
     
-    private let addTweetButton: UIButton = {
-        let button = UIButton()
+    private let addTweetButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         button.setImage(image, for: .normal)
         button.backgroundColor = .systemCyan
         button.tintColor = .white
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = K.addButtonSize/2
-        button.layer.masksToBounds = true
         return button
     }()
 

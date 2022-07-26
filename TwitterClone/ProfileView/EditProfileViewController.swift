@@ -30,15 +30,6 @@ class EditProfileViewController: UIViewController {
         view.font = .systemFont(ofSize: 15)
         return view
     }()
-    
-    private let saveButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Save Changes", for: .normal)
-        button.backgroundColor = .link
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 8
-        return button
-    }()
 
 //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -59,7 +50,6 @@ class EditProfileViewController: UIViewController {
     
     private func addSubViews() {
         view.addSubview(textView)
-        view.addSubview(saveButton)
     }
     
 //MARK: - Configure

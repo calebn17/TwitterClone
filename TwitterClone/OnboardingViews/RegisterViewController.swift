@@ -20,86 +20,57 @@ final class RegisterViewController: UIViewController {
 
 
 //MARK: - SubViews
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.layer.masksToBounds = true
+    private let profileImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.layer.cornerRadius = K.userImageSize*1.5/2
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.label.cgColor
         imageView.image = UIImage(systemName: "person")
         imageView.tintColor = .label
         imageView.isUserInteractionEnabled = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let emailLabel: UILabel = {
-        let label = UILabel()
+    private let emailLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Email Address"
         label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let passwordLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Password"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let emailField: ReusableTextField = {
-        let textField = ReusableTextField()
+    private let emailField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "  Enter your email address...  "
-        textField.textAlignment = .left
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let usernameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Username"
-        label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let usernameField: ReusableTextField = {
-        let textField = ReusableTextField()
+    private let usernameField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "  Enter your username...  "
-        textField.textAlignment = .left
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let userHandleField: ReusableTextField = {
-        let textField = ReusableTextField()
+    private let userHandleField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "  Enter your user handle...  "
-        textField.textAlignment = .left
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let passwordField: ReusableTextField = {
-        let textField = ReusableTextField()
+    private let passwordField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "  Enter your password...  "
-        textField.textAlignment = .left
         textField.isSecureTextEntry = true
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let registerButton: UIButton = {
-        let button = UIButton()
+    private let registerButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Register", for: UIControl.State.normal)
         button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 2
         button.backgroundColor = .systemBackground
-        button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -112,11 +83,7 @@ final class RegisterViewController: UIViewController {
         addSubviews()
         addConstraints()
         configureTextFields()
-        registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
-        profileImageView.addGestureRecognizer(tap)
-        let tap2 = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
-        view.addGestureRecognizer(tap2)
+        addActions()
     }
     
     private func addSubviews() {
@@ -126,6 +93,14 @@ final class RegisterViewController: UIViewController {
         view.addSubview(passwordField)
         view.addSubview(registerButton)
         view.addSubview(userHandleField)
+    }
+    
+    private func addActions() {
+        registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
+        profileImageView.addGestureRecognizer(tap)
+        let tap2 = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap2)
     }
     
 //MARK: - Configure
@@ -189,6 +164,7 @@ final class RegisterViewController: UIViewController {
             DispatchQueue.main.async {
                 if registered {
                     self?.dismiss(animated: true)
+                    NotificationCenter.default.post(name: Notification.Name("login"), object: nil)
                     self?.delegate?.didRegisterSuccessfully()
                 }
                 else {

@@ -50,6 +50,7 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchHeaderViewData), name: Notification.Name("login"), object: nil)
     }
 
 //MARK: - Configure
@@ -59,7 +60,12 @@ final class SettingsViewController: UIViewController {
         guard let headerView = headerView else {return}
         view.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
+        fetchHeaderViewData()
         
+    }
+    
+    @objc private func fetchHeaderViewData() {
+        guard let headerView = headerView else {return}
         Task {
             let viewModel = try await SettingsHeaderViewModel.fetchData(user: currentUser)
             headerView.configure(with: viewModel)

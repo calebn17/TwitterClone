@@ -29,34 +29,27 @@ final class HomeViewController: UIViewController {
     public var tweetResponses: [TweetViewModel] = []
     
 //MARK: - SubViews
-    private let profilePictureImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
+    private let profilePictureImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person")
-        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = K.userImageSize/2
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let twitterIcon: UIImageView = {
-        let icon = UIImageView()
+    private let twitterIcon: CustomImageView = {
+        let icon = CustomImageView(frame: .zero)
         icon.image = UIImage(named: "twitterLogo")
-        icon.clipsToBounds = true
         icon.contentMode = .scaleAspectFit
         return icon
     }()
     
-    private let addTweetButton: UIButton = {
-        let button = UIButton()
+    private let addTweetButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         button.setImage(image, for: .normal)
         button.backgroundColor = .systemCyan
         button.tintColor = .white
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = K.addButtonSize/2
-        button.layer.masksToBounds = true
         return button
     }()
     

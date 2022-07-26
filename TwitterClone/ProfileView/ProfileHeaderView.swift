@@ -25,81 +25,71 @@ class ProfileHeaderView: UIView {
     
     
 //MARK: - Subviews
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.layer.masksToBounds = true
+    private let profileImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.layer.cornerRadius = K.userImageSize/2
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.systemBackground.cgColor
         imageView.image = UIImage(systemName: "person")
         imageView.tintColor = .label
         imageView.isUserInteractionEnabled = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
-        let label = UILabel()
+    private let nameLabel: CustomLabel = {
+        let label = CustomLabel()
         label.font = .systemFont(ofSize: 20, weight: .heavy)
         label.textColor = .label
         label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "name"
         return label
     }()
     
-    private let handleLabel: UILabel = {
-        let label = UILabel()
+    private let handleLabel: CustomLabel = {
+        let label = CustomLabel()
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.textColor = .tertiaryLabel
         label.numberOfLines = 1
         label.text = "@handle"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let bioLabel: UILabel = {
-        let label = UILabel()
+    private let bioLabel: CustomLabel = {
+        let label = CustomLabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
         label.numberOfLines = 0
         label.text = "This is a little bit of information about myself!"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let followingLabel: UILabel = {
-        let label = UILabel()
+    private let followingLabel: CustomLabel = {
+        let label = CustomLabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
         label.numberOfLines = 0
         label.text = "# following"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let followersLabel: UILabel = {
-        let label = UILabel()
+    private let followersLabel: CustomLabel = {
+        let label = CustomLabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
         label.numberOfLines = 0
         label.text = "# followers"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let followButton: UIButton = {
-        let button = UIButton()
+    private let followButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Follow", for: .normal)
         button.setTitleColor(UIColor.systemBackground, for: .normal)
         button.backgroundColor = .label
         button.layer.cornerRadius = K.userImageSize/2.4
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.systemBackground.cgColor
-        button.layer.masksToBounds = true
         button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
    

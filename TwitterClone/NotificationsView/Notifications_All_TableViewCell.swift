@@ -13,32 +13,26 @@ class Notifications_All_TableViewCell: UITableViewCell {
     
     static let identifier = "Notifications_All_TableViewCell"
     
-    private let userImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let userImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person")
         imageView.tintColor = .label
-        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = K.userImageSize/2
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "default title"
         label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let subtitleLabel: UILabel = {
-        let label = UILabel()
+    private let subtitleLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "default subtitle"
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     

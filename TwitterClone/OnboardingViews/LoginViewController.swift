@@ -12,73 +12,49 @@ class LoginViewController: UIViewController {
     
 //MARK: - Subviews
     
-    private let logo: UIImageView = {
-        let logo = UIImageView()
+    private let logo: CustomImageView = {
+        let logo = CustomImageView(frame: .zero)
         logo.image = UIImage(named: "twitterLogo2")
-        logo.clipsToBounds = true
-        logo.contentMode = .scaleAspectFill
         logo.backgroundColor = .systemBackground
-        logo.translatesAutoresizingMaskIntoConstraints = false
         return logo
     }()
     
-    private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Email Address or Username"
-        label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let passwordLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Password"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let emailField: ReusableTextField = {
-        let textField = ReusableTextField()
+    private let emailField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "  Enter your email address...  "
         textField.textAlignment = .left
         textField.returnKeyType = .next
         textField.keyboardType = .emailAddress
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let passwordField: ReusableTextField = {
-        let textField = ReusableTextField()
+    private let passwordField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "  Enter your password...  "
         textField.textAlignment = .left
         textField.isSecureTextEntry = true
         textField.keyboardType = .default
         textField.returnKeyType = .done
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let loginButton: UIButton = {
-        let button = UIButton()
+    private let loginButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Login", for: UIControl.State.normal)
         button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 2
         button.backgroundColor = .systemBackground
-        button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private let registerButton: UIButton = {
-        let button = UIButton()
+    private let registerButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Don't have an account? Register here!", for: UIControl.State.normal)
         button.setTitleColor(.label, for: .normal)
         button.backgroundColor = .systemBackground
-        button.layer.masksToBounds = true
         button.layer.borderColor = UIColor.systemBackground.cgColor
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     

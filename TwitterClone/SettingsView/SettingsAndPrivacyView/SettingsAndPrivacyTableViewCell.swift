@@ -14,31 +14,27 @@ class SettingsAndPrivacyTableViewCell: UITableViewCell {
     static let identifier = "SettingsAndPrivacyTableViewCell"
     
 //MARK: - Subviews
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Title"
         label.font = .systemFont(ofSize: 15, weight: .bold)
         label.tintColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let descriptionLabel: UILabel = {
-        let label = UILabel()
+    private let descriptionLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Description"
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.tintColor = .secondaryLabel
         label.numberOfLines = 0
-        label.clipsToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let iconImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let iconImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 15))
         imageView.tintColor = .secondaryLabel
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     

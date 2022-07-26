@@ -26,15 +26,13 @@ final class NotificationsViewController: UIViewController {
         return tableView
     }()
     
-    private let addTweetButton: UIButton = {
-        let button = UIButton()
+    private let addTweetButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         button.setImage(image, for: .normal)
         button.backgroundColor = .systemCyan
         button.tintColor = .white
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = K.addButtonSize/2
-        button.layer.masksToBounds = true
         return button
     }()
  

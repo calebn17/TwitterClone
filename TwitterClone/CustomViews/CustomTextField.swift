@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ReusableTextField: UITextField {
+class CustomTextField: UITextField {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,9 +20,11 @@ class ReusableTextField: UITextField {
         layer.borderWidth = 1
         layer.borderColor = UIColor.secondaryLabel.cgColor
         
+        textAlignment = .natural
         backgroundColor = .systemBackground
         autocapitalizationType = .none
         autocorrectionType = .no
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init?(coder: NSCoder) {

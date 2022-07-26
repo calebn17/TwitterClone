@@ -11,20 +11,17 @@ class NotificationEmptyStateView: UIView {
 
 //MARK: - Setup
     
-    private let titleLabel: UILabel = {
-        let title = UILabel()
+    private let titleLabel: CustomLabel = {
+        let title = CustomLabel()
         title.text = "Oops! You have no Notifications..."
         title.font = .systemFont(ofSize: 20, weight: .bold)
-        title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
     
-    private let emptyStateImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let emptyStateImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "bell", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .regular))
         imageView.tintColor = .label
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .systemBackground
         return imageView
     }()

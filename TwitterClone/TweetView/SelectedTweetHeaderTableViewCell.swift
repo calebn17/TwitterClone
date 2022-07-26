@@ -25,96 +25,84 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
     private var isRetweetedByCurrentUser = false
     
 //MARK: - Subviews
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let profileImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person.fill")
         imageView.tintColor = .label
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = K.userImageSize/2
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let usernameLabel: UILabel = {
-        let label = UILabel()
+    private let usernameLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Username"
         label.numberOfLines = 1
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.tintColor = .label
         label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let userHandleLabel: UILabel = {
-        let label = UILabel()
+    private let userHandleLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "@userhandle"
         label.numberOfLines = 1
         label.font = UIFont.systemFont(ofSize: 18, weight: .light)
         label.textColor = .systemGray
         label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let tweetBodyLabel: UILabel = {
-        let label = UILabel()
+    private let tweetBodyLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Text Body of the tweet"
         label.numberOfLines = 0
         label.clipsToBounds = true
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.tintColor = .label
         label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let commentButton: UIButton = {
-        let button = UIButton()
+    private let commentButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "bubble.left", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let likeButton: UIButton = {
-        let button = UIButton()
+    private let likeButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let retweetButton: UIButton = {
-        let button = UIButton()
+    private let retweetButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "arrow.2.squarepath", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let shareButton: UIButton = {
-        let button = UIButton()
+    private let shareButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let dateCreatedLabel: UILabel = {
-        let label = UILabel()
+    private let dateCreatedLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Date Value"
         label.textColor = .systemGray
         label.numberOfLines = 1
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 

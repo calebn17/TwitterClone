@@ -11,7 +11,9 @@ class CustomLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        clipsToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
+        
     }
     
     required init?(coder: NSCoder) {

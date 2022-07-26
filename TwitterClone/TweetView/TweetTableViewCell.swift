@@ -29,104 +29,90 @@ class TweetTableViewCell: UITableViewCell {
     private var isRetweetedByCurrentUser = false
     
 //MARK: - SubViews
-    private let userNameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let userNameLabel: CustomLabel = {
+        let label = CustomLabel()
         label.textColor = .label
         label.textAlignment = .left
         label.text = "Username"
         return label
     }()
     
-    private let userImage: UIImageView = {
-        let imageView = UIImageView()
+    private let userImage: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 25
-        imageView.layer.masksToBounds = true
         imageView.tintColor = .label
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
-    private let twitterTextLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let twitterTextLabel: CustomLabel = {
+        let label = CustomLabel()
         label.textColor = .label
         label.numberOfLines = 0
-        label.clipsToBounds = true
         return label
     }()
     
-    private let userHandleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let userHandleLabel: CustomLabel = {
+        let label = CustomLabel()
         label.textColor = .systemGray
         label.text = "@userHandle"
-        label.clipsToBounds = true
         return label
     }()
     
-    private let commentButton: UIButton = {
-        let button = UIButton()
+    private let commentButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "bubble.left", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let likeButton: UIButton = {
-        let button = UIButton()
+    private let likeButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let retweetButton: UIButton = {
-        let button = UIButton()
+    private let retweetButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "arrow.2.squarepath", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let shareButton: UIButton = {
-        let button = UIButton()
+    private let shareButton: CustomButton = {
+        let button = CustomButton()
         let image = UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(pointSize:15))
         button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .label
         return button
     }()
     
-    private let commentCountLabel: UILabel = {
-        let label = UILabel()
+    private let commentCountLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "10"
         label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 15)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let likesCountLabel: UILabel = {
-        let label = UILabel()
+    private let likesCountLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "12"
         label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 15)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let retweetsCountLabel: UILabel = {
-        let label = UILabel()
+    private let retweetsCountLabel: CustomLabel = {
+        let label = CustomLabel()
         label.text = "14"
         label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 15)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
   

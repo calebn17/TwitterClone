@@ -20,13 +20,11 @@ final class AddCommentViewController: UIViewController {
     private var tweetBody: String?
     
 //MARK: - SubViews
-    private let userImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let userImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person.fill")
         imageView.tintColor = .label
-        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -37,22 +35,19 @@ final class AddCommentViewController: UIViewController {
         return field
     }()
     
-    private let replyButton: UIButton = {
-        let icon = UIButton()
+    private let replyButton: CustomButton = {
+        let icon = CustomButton()
         icon.backgroundColor = .systemGray
         icon.setTitleColor(.label, for: .disabled)
         icon.setTitle("  Reply  ", for: .normal)
-        icon.layer.masksToBounds = true
         icon.layer.cornerRadius = 13
         icon.isEnabled = false
-        icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
     }()
-    private let cancelButton: UIButton = {
-        let button = UIButton()
+    private let cancelButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(.label, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     

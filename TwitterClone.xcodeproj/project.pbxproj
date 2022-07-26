@@ -30,12 +30,14 @@
 		AF37160E2889CA06000519D7 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */; };
 		AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */; };
 		AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */; };
+		AF76FDA428901E59005B09A6 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF76FDA328901E59005B09A6 /* CustomButton.swift */; };
+		AF76FDA6289021FC005B09A6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF76FDA5289021FC005B09A6 /* CustomImageView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
 		AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */; };
 		AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */; };
 		AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */; };
 		AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */; };
-		AFC809E82888263600B90540 /* ReusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC809E72888263600B90540 /* ReusableTextField.swift */; };
+		AFC809E82888263600B90540 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC809E72888263600B90540 /* CustomTextField.swift */; };
 		AFCC323428380F2700C0B01C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323328380F2600C0B01C /* LoginViewController.swift */; };
 		AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323528380F3600C0B01C /* RegisterViewController.swift */; };
 		AFCEE1CB28898F7E00B6D187 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */; };
@@ -83,12 +85,14 @@
 		AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
 		AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHeaderView.swift; sourceTree = "<group>"; };
 		AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEmptyStateView.swift; sourceTree = "<group>"; };
+		AF76FDA328901E59005B09A6 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		AF76FDA5289021FC005B09A6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
 		AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyTableViewCell.swift; sourceTree = "<group>"; };
 		AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		AFC809E72888263600B90540 /* ReusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableTextField.swift; sourceTree = "<group>"; };
+		AFC809E72888263600B90540 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		AFCC323328380F2600C0B01C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		AFCC323528380F3600C0B01C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -156,13 +160,15 @@
 			path = TabBarView;
 			sourceTree = "<group>";
 		};
-		AF8C41B8283581D00005E023 /* Custom  */ = {
+		AF8C41B8283581D00005E023 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
 				AFDAF8262889C23200F2BBA0 /* CustomLabel.swift */,
-				AFC809E72888263600B90540 /* ReusableTextField.swift */,
+				AFC809E72888263600B90540 /* CustomTextField.swift */,
+				AF76FDA328901E59005B09A6 /* CustomButton.swift */,
+				AF76FDA5289021FC005B09A6 /* CustomImageView.swift */,
 			);
-			path = "Custom ";
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 		AFC9877A288F5C3400B2DAF8 /* HomeView */ = {
@@ -313,7 +319,7 @@
 				AFD43BDE288F5D7300D1377E /* NotificationsView */,
 				AFC9877A288F5C3400B2DAF8 /* HomeView */,
 				AF2DED742824BC71002E9264 /* TabBarView */,
-				AF8C41B8283581D00005E023 /* Custom  */,
+				AF8C41B8283581D00005E023 /* CustomViews */,
 				AFD853BB2825680600D080D4 /* Models */,
 				AFD853B82825631C00D080D4 /* Managers */,
 				3BC26E03282949BA00A56D5C /* Resources */,
@@ -472,15 +478,17 @@
 				AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */,
 				705E79AB2867BD87003AEA17 /* HomeVCViewModel.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
+				AF76FDA428901E59005B09A6 /* CustomButton.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
 				AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */,
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
-				AFC809E82888263600B90540 /* ReusableTextField.swift in Sources */,
+				AFC809E82888263600B90540 /* CustomTextField.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
 				AFDAF8272889C23200F2BBA0 /* CustomLabel.swift in Sources */,
+				AF76FDA6289021FC005B09A6 /* CustomImageView.swift in Sources */,
 				AF1B4C1C283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift in Sources */,
 				AFDBC421283BBA9700F4ED7D /* DatabaseManager.swift in Sources */,
 				AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */,

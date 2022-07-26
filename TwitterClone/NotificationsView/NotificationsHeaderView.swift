@@ -18,26 +18,24 @@ class NotificationsHeaderView: UIView {
     
     weak var delegate: NotificationsHeaderViewDelegate?
     
-    private let allButton: UIButton = {
-        let button = UIButton()
+    private let allButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("All", for: .normal)
         button.setTitleColor(.label, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBackground
         return button
     }()
     
-    private let mentionsButton: UIButton = {
-        let button = UIButton()
+    private let mentionsButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Mentions", for: .normal)
         button.setTitleColor(.label, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBackground
         return button
     }()

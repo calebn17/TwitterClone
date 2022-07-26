@@ -18,25 +18,20 @@ final class AddTweetViewController: UIViewController {
     private var tweetBody: String?
 
 //MARK: - SubViews
-    private let userImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let userImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "person.fill")
         imageView.tintColor = .label
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let chooseAudienceButton: UIButton = {
-        let button = UIButton()
+    private let chooseAudienceButton: CustomButton = {
+        let button = CustomButton()
         button.layer.borderColor = UIColor.systemCyan.cgColor
         button.layer.borderWidth = 2
         button.setTitle("  Everyone  ", for: .normal)
         button.setTitleColor(.systemCyan, for: .normal)
-        button.layer.masksToBounds = true
         button.layer.cornerRadius = 13
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -48,23 +43,20 @@ final class AddTweetViewController: UIViewController {
         return field
     }()
     
-    private let tweetPublishButton: UIButton = {
-        let icon = UIButton()
+    private let tweetPublishButton: CustomButton = {
+        let icon = CustomButton()
         icon.backgroundColor = .systemGray
         icon.setTitleColor(.label, for: .disabled)
         icon.setTitle("  Tweet  ", for: .normal)
-        icon.layer.masksToBounds = true
         icon.layer.cornerRadius = 13
         icon.isEnabled = false
-        icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
     }()
     
-    private let cancelButton: UIButton = {
-        let button = UIButton()
+    private let cancelButton: CustomButton = {
+        let button = CustomButton()
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(.label, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 

@@ -14,18 +14,16 @@ class SettingsTableViewCell: UITableViewCell {
     
     
 //MARK: - Subviews
-    public let label: UILabel = {
-        let label = UILabel()
+    public let label: CustomLabel = {
+        let label = CustomLabel()
         label.text = "Label"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let iconImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let iconImageView: CustomImageView = {
+        let imageView = CustomImageView(frame: .zero)
         imageView.image = UIImage(systemName: "list.bullet.rectangle")
         imageView.tintColor = .label
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
