@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TweetModel: Codable {
+struct TweetViewModel: Codable {
     let tweetId: String
     var username: String?
     var userHandle: String?
@@ -16,10 +16,7 @@ struct TweetModel: Codable {
     let text: String?
     var likers: [String]
     var retweeters: [String]
-    var comments: [TweetModel]
+    var comments: [TweetViewModel]
     let dateCreatedString: String?
 }
 
-struct TweetViewModel {
-    
-}

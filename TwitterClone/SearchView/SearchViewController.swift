@@ -17,7 +17,7 @@ final class SearchViewController: UIViewController {
 
 //MARK: - Properties
     weak var delegate: SearchViewControllerDelegate?
-    private let searchResultTweets: [TweetModel] = []
+    private let searchResultTweets: [TweetViewModel] = []
 
 //MARK: - SubViews
     let searchController: UISearchController = {
@@ -157,21 +157,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         //Fetching the Search Results data
         Task{
             do {
-                let response = try await APICaller.shared.getSearch(with: query)
-                let results = response.compactMap({
-                    TweetModel(
-                        tweetId: UUID().uuidString,
-                        username: nil,
-                        userHandle: nil,
-                        userEmail: nil,
-                        userAvatar: nil,
-                        text: $0.text,
-                        likers: [],
-                        retweeters: [],
-                        comments: [],
-                        dateCreatedString: nil
-                    )
-                })
+                let results = try await SearchViewModel.fetchSearchData(query: query)
                 resultsController.update(with: results)
             }
             catch {

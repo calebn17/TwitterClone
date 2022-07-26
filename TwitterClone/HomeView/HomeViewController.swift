@@ -26,11 +26,7 @@ final class HomeViewController: UIViewController {
     private var email: String {
         return DatabaseManager.shared.currentUser.userEmail
     }
-    public var tweetResponses: [TweetModel] = []
-    
-    //Temporary collection to hold added comments
-    //Just to demonstrate functionality
-    private var addedComments = [TweetModel]()
+    public var tweetResponses: [TweetViewModel] = []
     
 //MARK: - SubViews
     private let profilePictureImageView: UIImageView = {
@@ -98,13 +94,8 @@ final class HomeViewController: UIViewController {
 //MARK: - Networking
     @objc private func fetchData() {
         Task {
-            do {
-                tweetResponses = try await HomeVCViewModel.fetchData()
-                homeFeedTableView.reloadData()
-            }
-            catch {
-                print("Request failed with error")
-            }
+            tweetResponses = try await HomeVCViewModel.fetchData()
+            homeFeedTableView.reloadData()
         }
     }
 
@@ -180,30 +171,21 @@ extension HomeViewController: TweetTableViewCellDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func didTapCommentButton(owner: TweetModel) {
+    func didTapCommentButton(owner: TweetViewModel) {
         let vc = AddCommentViewController(with: owner)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweet(retweeted: Bool, model: TweetViewModel, completion: @escaping (Bool) -> Void) {
         
         if retweeted {
             let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-                // add user to retweeter collection in TweetModel
-                DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model) { success in
-                    if !success {
-                        print("Something went wrong when retweeting")
-                    }
-                    DatabaseManager.shared.insertNotifications(of: .retweet, tweet: model) { success in
-                        if !success {
-                            print("Something went wrong when updating notifications in DB")
-                        }
-                    }
-                    completion(true)
+                HomeVCViewModel.retweeted(tweet: model) { success in
+                    completion(success == true)
                 }
             }))
             actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
@@ -216,33 +198,20 @@ extension HomeViewController: TweetTableViewCellDelegate {
             present(actionSheet, animated: true, completion: nil)
         }
         else {
-            DatabaseManager.shared.updateRetweetStatus(type: .notRetweeted, tweet: model) { success in
-                if !success {
-                    print("Something went wrong when unretweeting")
-                }
+            HomeVCViewModel.notRetweeted(tweet: model) { success in
+                completion(success == true)
             }
         }
     }
-    
     
     /// User tapped the like button on the tweet
     /// - Parameters:
     ///   - liked: user tapped on the button to like (was in the unlike state before being tapped)
     ///   - model: TweetModel object
-    func didTapLikeButton(liked: Bool, model: TweetModel) {
-        // insert User into the likers collection in the TweetModel and update DB
-        DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model) { success in
+    func didTapLikeButton(liked: Bool, model: TweetViewModel) {
+        HomeVCViewModel.tappedLikeButton(liked: liked, model: model) { success in
             if !success {
-                print("Error occured when updating like status")
-            }
-            if liked {
-                DatabaseManager.shared.insertNotifications(
-                    of: .liked,
-                    tweet: model) { successful in
-                        if !successful {
-                            print("Error occured when inserting notification")
-                        }
-                    }
+                return
             }
         }
     }
@@ -263,32 +232,9 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
     }
     
     func didTapTweetPublishButton(tweetBody: String) {
-        
         Task {
-            let url = try await HomeVCViewModel.fetchProfilePictureURL(user: DatabaseManager.shared.currentUser)
-            
-            //setting addedTweet as a var so I can update the username values
-            let addedTweet = TweetModel(
-                tweetId: UUID().uuidString,
-                username: username,
-                userHandle: userhandle,
-                userEmail: email,
-                userAvatar: url,
-                text: tweetBody,
-                likers: [],
-                retweeters: [],
-                comments: [],
-                dateCreatedString: String.date(from: Date())
-            )
+            let addedTweet = try await HomeVCViewModel.publishTweet(user: currentUser, body: tweetBody)
             tweetResponses.insert(addedTweet, at: 0)
-            DatabaseManager.shared.insertTweet(with: addedTweet) { success in
-                if success {
-                    print("Tweet saved")
-                }
-                else {
-                    print("Tweet was not saved: error")
-                }
-            }
             homeFeedTableView.reloadData()
         }
     }
@@ -296,37 +242,13 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
 
 //MARK: - AddCommentVC Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
-        let commentID = UUID().uuidString
-        let addedComment = TweetModel(
-            tweetId: commentID,
-            username: username,
-            userHandle: userhandle,
-            userEmail: nil,
-            userAvatar: nil,
-            text: tweetBody,
-            likers: [],
-            retweeters: [],
-            comments: [],
-            dateCreatedString: String.date(from: Date())
-        )
-        //for now, will add the new comment to this collection to demonstrate functionality
-        addedComments.append(addedComment)
-        
-        //Will insert this comment under the Parent tweet in the DB, and then will refetch tweet info from DB
-        DatabaseManager.shared.insertComment(tweetId: owner.tweetId, text: tweetBody) { [weak self] success in
-            if !success {
-                print("Could not insert comment")
-            }
-            self?.fetchData()
-            
-            DatabaseManager.shared.insertNotifications(
-                of: .comment,
-                tweet: owner) { successful in
-                    if !successful {
-                        print("Error occured when inserting notification")
-                    }
+    func didTapReplyButton(tweetBody: String, owner: TweetViewModel) {
+        HomeVCViewModel.publishComment(owner: owner, body: tweetBody) { [weak self] success in
+            DispatchQueue.main.async {
+                if success {
+                    self?.fetchData()
                 }
+            }
         }
     }
 }
@@ -358,11 +280,14 @@ extension HomeViewController {
         //forces xcode to use the original image (logo comes out as different color if this isnt done)
         image = image?.withRenderingMode(.alwaysOriginal)
         navigationItem.titleView = twitterIcon
-        
         navigationController?.navigationBar.tintColor = .white
         navigationItem.title = ""
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: #selector(didTapLeftNavBarButton))
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "person"),
+            style: .done,
+            target: self,
+            action: #selector(didTapLeftNavBarButton)
+        )
     }
     
     private func configureHomeFeedTableView() {

@@ -12,7 +12,6 @@ struct User: Codable, Equatable {
     let userName: String
     let userHandle: String
     let userEmail: String
-    
 }
 
 struct UserInfo: Codable {

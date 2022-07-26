@@ -9,9 +9,9 @@ import UIKit
 
 //MARK: - Protocol
 protocol TweetTableViewCellDelegate: AnyObject {
-    func didTapCommentButton(owner: TweetModel)
-    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void)
-    func didTapLikeButton(liked: Bool, model: TweetModel)
+    func didTapCommentButton(owner: TweetViewModel)
+    func didTapRetweet(retweeted: Bool, model: TweetViewModel, completion: @escaping (Bool) -> Void)
+    func didTapLikeButton(liked: Bool, model: TweetViewModel)
     func didTapShareButton()
     func didTapProfilePicture(user: User)
 }
@@ -21,7 +21,7 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Properties
     static let identifier = "HomeTweetTableViewCell"
     public weak var delegate: TweetTableViewCellDelegate?
-    private var model: TweetModel?
+    private var model: TweetViewModel?
     private var likesCount = 0
     private var commentsCount = 0
     private var retweetsCount = 0
@@ -178,7 +178,7 @@ class TweetTableViewCell: UITableViewCell {
     }
     
 //MARK: - Configure
-    public func configure(with model: TweetModel){
+    public func configure(with model: TweetViewModel){
         self.model = model
         
         if let image = model.userAvatar {

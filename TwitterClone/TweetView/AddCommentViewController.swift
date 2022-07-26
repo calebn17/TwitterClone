@@ -9,14 +9,14 @@ import UIKit
 
 //MARK: - Protocol
 protocol AddCommentViewControllerDelegate: AnyObject {
-    func didTapReplyButton(tweetBody: String, owner: TweetModel)
+    func didTapReplyButton(tweetBody: String, owner: TweetViewModel)
 }
 
 final class AddCommentViewController: UIViewController {
     
 //MARK: - Properties
     public weak var delegate: AddCommentViewControllerDelegate?
-    private var tweet: TweetModel
+    private var tweet: TweetViewModel
     private var tweetBody: String?
     
 //MARK: - SubViews
@@ -57,7 +57,7 @@ final class AddCommentViewController: UIViewController {
     }()
     
 //MARK: - Init
-    init(with owner: TweetModel) {
+    init(with owner: TweetViewModel) {
         self.tweet = owner
         super.init(nibName: nil, bundle: nil)
     }

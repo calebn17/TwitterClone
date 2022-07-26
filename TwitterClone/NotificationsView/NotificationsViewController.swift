@@ -104,20 +104,15 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let viewModel = models[indexPath.row].model
-        Task {
-            do {
-                guard let tweet = try await DatabaseManager.shared.getTweet(with: viewModel.tweetId) else {
-                    print("Error when getting tweet and pushing selectedTweetVC")
-                    return
-                }
-                let vc = SelectedTweetViewController(with: tweet)
-                navigationController?.pushViewController(vc, animated: true)
-            }
-            catch {
-                print("Error when getting tweet and pushing selectedTweetVC")
-            }
-        }
         
+        Task {
+            guard let tweet = try await NotificationsViewModel.getTweet(viewModel: viewModel) else {
+                print("Error when getting tweet and pushing selectedTweetVC")
+                return
+            }
+            let vc = SelectedTweetViewController(with: tweet)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

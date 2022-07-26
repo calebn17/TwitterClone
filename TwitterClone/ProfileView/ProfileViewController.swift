@@ -16,7 +16,7 @@ class ProfileViewController: UIViewController {
         return DatabaseManager.shared.currentUser == user
     }
     private var profileInfo: ProfileHeaderViewModel?
-    private var tweets = [TweetModel]()
+    private var tweets = [TweetViewModel]()
     
 //MARK: - SubViews
     private var headerView: ProfileHeaderView?
@@ -82,9 +82,9 @@ class ProfileViewController: UIViewController {
         Task {
             do {
                 // Fetching user profile info
-                guard let profileInfo = try await ProfileHeaderViewModel.getProfileHeaderViewModel(user: self.user) else {return}
+                guard let profileInfo = try await ProfileViewModel.getProfileHeaderViewModel(user: self.user) else {return}
                 // Fetching tweets that will populate the tableView
-                tweets = try await ProfileHeaderViewModel.getProfileTweets(user: self.user)
+                tweets = try await ProfileViewModel.getProfileTweets(user: self.user)
                 headerView?.configure(with: profileInfo)
                 tableView.reloadData()
             }
@@ -164,7 +164,7 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
     }
     
     func didTapOnFollowButton(didFollow: Bool) {
-        ProfileHeaderViewModel.updateRelationship(targetUser: user, didFollow: didFollow) {[weak self] success in
+        ProfileViewModel.updateRelationship(targetUser: user, didFollow: didFollow) {[weak self] success in
             DispatchQueue.main.async {
                 if !success {
                     print("Something went wrong when updating relationship")
@@ -178,7 +178,7 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
 //MARK: - EditProfileVC Methods
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func tappedSaveButton(bio: String) {
-        ProfileHeaderViewModel.setProfileBio(bio: bio) {[weak self] success in
+        ProfileViewModel.setProfileBio(bio: bio) {[weak self] success in
             DispatchQueue.main.async {
                 if !success {
                     print("Something went wrong when updating bio")

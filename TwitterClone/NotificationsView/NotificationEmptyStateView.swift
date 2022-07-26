@@ -47,7 +47,6 @@ class NotificationEmptyStateView: UIView {
     private func addConstraints() {
         
         let size: CGFloat = 200
-        
         let emptyStateImageViewConstraints = [
             emptyStateImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -20),
             emptyStateImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -56,10 +55,8 @@ class NotificationEmptyStateView: UIView {
         ]
         let titleLabelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: emptyStateImageView.bottomAnchor, constant: 10),
-            //titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 70),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ]
-        
         NSLayoutConstraint.activate(emptyStateImageViewConstraints)
         NSLayoutConstraint.activate(titleLabelConstraints)
     }

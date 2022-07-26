@@ -17,7 +17,7 @@ public enum NotificationActions: Int {
 struct NotificationsViewModel: Codable {
     let senderUserName: String
     let action: NotificationActions.RawValue
-    let model: TweetModel
+    let model: TweetViewModel
     let dateString: String
     
     static func fetchData() async throws -> [NotificationsViewModel] {
@@ -28,5 +28,10 @@ struct NotificationsViewModel: Codable {
         })
         
         return notifications
+    }
+    
+    static func getTweet(viewModel: TweetViewModel) async throws -> TweetViewModel? {
+        let tweet = try await DatabaseManager.shared.getTweet(with: viewModel.tweetId)
+        return tweet
     }
 }
