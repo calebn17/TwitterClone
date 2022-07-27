@@ -28,6 +28,13 @@ class ProfileViewController: UIViewController {
         return table
     }()
     
+    private let spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.tintColor = .label
+        spinner.startAnimating()
+        return spinner
+    }()
+    
 //MARK: - Init
     init(with user: User) {
         self.user = user
@@ -46,6 +53,7 @@ class ProfileViewController: UIViewController {
         configureTableView()
         configureNavBar()
         configureHeaderView()
+        view.addSubview(spinner)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +64,8 @@ class ProfileViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        spinner.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        spinner.center = view.center
     }
 
 //MARK: - Configure
@@ -85,13 +95,26 @@ class ProfileViewController: UIViewController {
                 guard let profileInfo = try await ProfileViewModel.getProfileHeaderViewModel(user: self.user) else {return}
                 // Fetching tweets that will populate the tableView
                 tweets = try await ProfileViewModel.getProfileTweets(user: self.user)
+                spinner.stopAnimating()
+                spinner.isHidden = true
                 headerView?.configure(with: profileInfo)
-                tableView.reloadData()
+                configureUI()
             }
             catch {
                 print("Error when fetching user info in profile vc")
             }
         }
+    }
+    
+    private func configureUI() {
+        if profileInfo != nil {
+            tableView.isHidden = true
+            headerView?.isHidden = true
+        } else {
+            tableView.isHidden = false
+            headerView?.isHidden = false
+        }
+        tableView.reloadData()
     }
     
     

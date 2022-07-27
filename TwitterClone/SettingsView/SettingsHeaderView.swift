@@ -29,7 +29,6 @@ class SettingsHeaderView: UIView {
     
     private let followingButton: CustomButton = {
         let button = CustomButton()
-        button.setTitle("# Following", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
         button.layer.masksToBounds = false
         return button
@@ -37,7 +36,6 @@ class SettingsHeaderView: UIView {
     
     private let followersButton: CustomButton = {
         let button = CustomButton()
-        button.setTitle("# Followers", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
         button.layer.masksToBounds = false
         return button
@@ -45,14 +43,12 @@ class SettingsHeaderView: UIView {
     
     public let userNameButton: CustomButton = {
         let button = CustomButton()
-        button.setTitle("User Name", for: .normal)
         button.setTitleColor(.label, for: .normal)
         return button
     }()
     
     public let userHandleButton: CustomButton = {
         let button = CustomButton()
-        button.setTitle("@userHandle", for: .normal)
         button.setTitleColor(.tertiaryLabel, for: .normal)
         button.layer.masksToBounds = false
         return button

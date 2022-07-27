@@ -41,7 +41,6 @@ class ProfileHeaderView: UIView {
         label.font = .systemFont(ofSize: 20, weight: .heavy)
         label.textColor = .label
         label.numberOfLines = 1
-        label.text = "name"
         return label
     }()
     
@@ -50,7 +49,6 @@ class ProfileHeaderView: UIView {
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.textColor = .tertiaryLabel
         label.numberOfLines = 1
-        label.text = "@handle"
         return label
     }()
     
@@ -59,7 +57,6 @@ class ProfileHeaderView: UIView {
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
         label.numberOfLines = 0
-        label.text = "This is a little bit of information about myself!"
         return label
     }()
     
@@ -68,7 +65,6 @@ class ProfileHeaderView: UIView {
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
         label.numberOfLines = 0
-        label.text = "# following"
         return label
     }()
     
@@ -77,7 +73,6 @@ class ProfileHeaderView: UIView {
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
         label.numberOfLines = 0
-        label.text = "# followers"
         return label
     }()
     
@@ -89,7 +84,7 @@ class ProfileHeaderView: UIView {
         button.layer.cornerRadius = K.userImageSize/2.4
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.systemBackground.cgColor
-        button.isHidden = false
+        button.isHidden = true
         return button
     }()
    

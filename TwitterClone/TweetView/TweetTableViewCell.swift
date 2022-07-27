@@ -27,13 +27,16 @@ class TweetTableViewCell: UITableViewCell {
     private var retweetsCount = 0
     private var isCurrentlyLikedByCurrentUser = false
     private var isRetweetedByCurrentUser = false
+    private var isCommentedByCurrentUser = false
+    private var currentUser: User {
+        return DatabaseManager.shared.currentUser
+    }
     
 //MARK: - SubViews
     private let userNameLabel: CustomLabel = {
         let label = CustomLabel()
         label.textColor = .label
         label.textAlignment = .left
-        label.text = "Username"
         return label
     }()
     
@@ -56,7 +59,6 @@ class TweetTableViewCell: UITableViewCell {
     private let userHandleLabel: CustomLabel = {
         let label = CustomLabel()
         label.textColor = .systemGray
-        label.text = "@userHandle"
         return label
     }()
     
@@ -94,7 +96,6 @@ class TweetTableViewCell: UITableViewCell {
     
     private let commentCountLabel: CustomLabel = {
         let label = CustomLabel()
-        label.text = "10"
         label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 15)
         return label
@@ -102,7 +103,6 @@ class TweetTableViewCell: UITableViewCell {
     
     private let likesCountLabel: CustomLabel = {
         let label = CustomLabel()
-        label.text = "12"
         label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 15)
         return label
@@ -110,7 +110,6 @@ class TweetTableViewCell: UITableViewCell {
     
     private let retweetsCountLabel: CustomLabel = {
         let label = CustomLabel()
-        label.text = "14"
         label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 15)
         return label
@@ -161,6 +160,9 @@ class TweetTableViewCell: UITableViewCell {
         likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         retweetButton.tintColor = .label
         userImage.image = nil
+        likeButton.tintColor = .label
+        commentButton.tintColor = .label
+        retweetButton.tintColor = .label
     }
     
 //MARK: - Configure
@@ -174,6 +176,10 @@ class TweetTableViewCell: UITableViewCell {
         
         commentsCount = model.comments.count
         commentCountLabel.text = String(commentsCount)
+        if model.comments.contains(where: { $0.username == currentUser.userName }) {
+            commentButton.tintColor = .systemCyan
+            isCommentedByCurrentUser = true
+        }
         
         likesCount = model.likers.count
         likesCountLabel.text = String(likesCount)

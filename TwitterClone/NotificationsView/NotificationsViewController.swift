@@ -35,12 +35,20 @@ final class NotificationsViewController: UIViewController {
         button.layer.cornerRadius = K.addButtonSize/2
         return button
     }()
+    
+    private let spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.startAnimating()
+        spinner.tintColor = .label
+        return spinner
+    }()
  
 //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         self.tabBarController?.tabBar.isTranslucent = false
+        view.addSubview(spinner)
         configureNavbar()
         configureHeaderView()
         configureTableView()
@@ -65,6 +73,8 @@ final class NotificationsViewController: UIViewController {
         Task {
             do {
                 models = try await NotificationsViewModel.fetchData()
+                spinner.stopAnimating()
+                spinner.isHidden = true
                 emptyStateCheck()
                 notificationsTableView.reloadData()
             }
