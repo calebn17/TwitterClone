@@ -16,9 +16,7 @@ class ProfileViewController: UIViewController {
     }
     private var profileInfo: ProfileHeaderViewModel?
     private var tweets = [TweetViewModel]()
-    
-    private let profileCoordinator = SettingsProfileCoordinator(navigationController: UINavigationController())
-    weak var coordinator: SettingsProfileCoordinator?
+    weak var coordinator: ProfileCoordinator?
     
 //MARK: - SubViews
     private var headerView: ProfileHeaderView?
@@ -51,7 +49,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        profileCoordinator.start()
         fetchData()
         configureTableView()
         configureNavBar()

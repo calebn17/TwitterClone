@@ -38,9 +38,9 @@ class SettingsCoordinator: NSObject, Coordinator {
     
 //MARK: - Settings TableView Routes
     func tappedOnProfilePageCell(user: User) {
-        let child = SettingsProfileCoordinator(navigationController: navigationController)
+        let child = ProfileCoordinator(navigationController: navigationController, user: user)
         childCoordinators.append(child)
-        child.parentCoordinator = self
+        child.parentSettingsCoordinator = self
         child.start()
     }
     

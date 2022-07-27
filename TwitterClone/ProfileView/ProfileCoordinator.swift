@@ -8,18 +8,20 @@
 import Foundation
 import UIKit
 
-class SettingsProfileCoordinator: Coordinator {
-    weak var parentCoordinator: SettingsCoordinator?
+class ProfileCoordinator: Coordinator {
+    weak var parentSettingsCoordinator: SettingsCoordinator?
+    weak var parentHomeCoordinator: HomeCoordinator?
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-    var currentUser: User { return ProfileViewModel().currentUser }
+    var user: User
     
-    init(navigationController: UINavigationController){
+    init(navigationController: UINavigationController, user: User ){
         self.navigationController = navigationController
+        self.user = user
     }
     
     func start() {
-        let vc = ProfileViewController(with: currentUser)
+        let vc = ProfileViewController(with: user)
         vc.coordinator = self
         navigationController.pushViewController(vc, animated: true)
     }

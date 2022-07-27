@@ -34,7 +34,7 @@
 		AF76FDA6289021FC005B09A6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF76FDA5289021FC005B09A6 /* CustomImageView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
 		AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */; };
-		AFA5E9F32891E9CA00092DBC /* SettingsProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F22891E9CA00092DBC /* SettingsProfileCoordinator.swift */; };
+		AFA5E9F32891E9CA00092DBC /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */; };
 		AFA5E9F52891ED4500092DBC /* TweetProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */; };
 		AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */; };
 		AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */; };
@@ -97,7 +97,7 @@
 		AF76FDA5289021FC005B09A6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
 		AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyTableViewCell.swift; sourceTree = "<group>"; };
-		AFA5E9F22891E9CA00092DBC /* SettingsProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProfileCoordinator.swift; sourceTree = "<group>"; };
+		AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
 		AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetProfileCoordinator.swift; sourceTree = "<group>"; };
 		AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderViewModel.swift; sourceTree = "<group>"; };
@@ -259,7 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */,
-				AFA5E9F22891E9CA00092DBC /* SettingsProfileCoordinator.swift */,
+				AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */,
 				AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */,
 				AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */,
 				AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */,
@@ -519,7 +519,7 @@
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
 				AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */,
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
-				AFA5E9F32891E9CA00092DBC /* SettingsProfileCoordinator.swift in Sources */,
+				AFA5E9F32891E9CA00092DBC /* ProfileCoordinator.swift in Sources */,
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AFC809E82888263600B90540 /* CustomTextField.swift in Sources */,
