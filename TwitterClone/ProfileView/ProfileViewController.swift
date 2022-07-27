@@ -12,8 +12,7 @@ class ProfileViewController: UIViewController {
 //MARK: - Properties
     private let user: User
     var isCurrentUser: Bool {
-        print(DatabaseManager.shared.currentUser == user)
-        return DatabaseManager.shared.currentUser == user
+        return ProfileViewModel().currentUser == user
     }
     private var profileInfo: ProfileHeaderViewModel?
     private var tweets = [TweetViewModel]()

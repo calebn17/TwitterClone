@@ -143,7 +143,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
             present(actionSheet, animated: true, completion: nil)
         }
         else {
-            DatabaseManager.shared.updateRetweetStatus(type: .notRetweeted, tweet: model) { success in
+            DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: model) { success in
                 if !success {
                     completion(false)
                     print("Something went wrong when unretweeting")
@@ -162,7 +162,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
         }
     }
     
-    func didTapShareButton() {
+    func didTapShareButton(tweet: TweetViewModel) {
         let firstAction = "This Tweet"
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true

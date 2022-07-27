@@ -19,7 +19,7 @@ class ProfileHeaderView: UIView {
     weak var delegate: ProfileHeaderViewDelegate?
     private let imageSize: CGFloat = K.userImageSize
     private var currentUser: User {
-        return DatabaseManager.shared.currentUser
+        return ProfileViewModel().currentUser
     }
     private var model: ProfileHeaderViewModel?
     

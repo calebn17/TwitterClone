@@ -10,6 +10,8 @@ import UIKit
 
 struct HomeVCViewModel {
     
+    var currentUser: User { return DatabaseManager.shared.currentUser }
+    
     static func fetchData() async throws -> [TweetViewModel] {
         //let responseTweets = try await APICaller.shared.getSearch(with: "news")
         let dbTweets = try await DatabaseManager.shared.getTweets()
@@ -113,8 +115,8 @@ struct HomeVCViewModel {
         }
     }
     
-    static func notRetweeted(tweet: TweetViewModel, completion: @escaping (Bool) -> Void) {
-        DatabaseManager.shared.updateRetweetStatus(type: .notRetweeted, tweet: tweet) { success in
+    static func unRetweeted(tweet: TweetViewModel, completion: @escaping (Bool) -> Void) {
+        DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: tweet) { success in
             if !success {
                 print("Something went wrong when unretweeting")
             }

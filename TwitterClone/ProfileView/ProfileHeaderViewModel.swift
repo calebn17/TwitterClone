@@ -14,5 +14,7 @@ struct ProfileHeaderViewModel: Codable {
     var followers: [String]
     var following: [String]
     var profileImage: URL?
+    
+    var currentUser: User { return DatabaseManager.shared.currentUser }
 }
 

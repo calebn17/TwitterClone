@@ -9,6 +9,8 @@ import Foundation
 
 struct ProfileViewModel {
     
+    var currentUser: User { return DatabaseManager.shared.currentUser }
+    
     static func getProfileHeaderViewModel(user: User) async throws -> ProfileHeaderViewModel? {
         let userHeaderInfo = try await DatabaseManager.shared.getUserInfo(user: user)
         let profilePictureURL = try await StorageManager.shared.downloadProfilePicture(user: user)

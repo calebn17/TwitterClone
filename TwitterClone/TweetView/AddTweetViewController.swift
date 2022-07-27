@@ -48,7 +48,7 @@ final class AddTweetViewController: UIViewController {
         icon.backgroundColor = .systemGray
         icon.setTitleColor(.label, for: .disabled)
         icon.setTitle("  Tweet  ", for: .normal)
-        icon.layer.cornerRadius = 13
+        icon.layer.cornerRadius = 18
         icon.isEnabled = false
         return icon
     }()

@@ -19,9 +19,14 @@ class SearchCoordinator: Coordinator {
     
     func start() {
         let vc = SearchViewController()
+        vc.coordinator = self
         vc.navigationItem.backButtonDisplayMode = .minimal
         navigationController.pushViewController(vc, animated: false)
     }
     
-    
+    func tappedOnProfileIcon(user: User) {
+        let vc = ProfileViewController(with: user)
+        vc.title = user.userName
+        navigationController.pushViewController(vc, animated: true)
+    }
 }

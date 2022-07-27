@@ -217,7 +217,7 @@ final class DatabaseManager {
 //MARK: - Retweet
     enum RetweetStatus {
         case retweeted
-        case notRetweeted
+        case unRetweeted
     }
     
     func updateRetweetStatus(
@@ -238,7 +238,7 @@ final class DatabaseManager {
                         if !tweetModel.retweeters.contains(currentUser.userName) {
                             tweetModel.retweeters.append(currentUser.userName)
                         }
-                    case .notRetweeted:
+                    case .unRetweeted:
                         if tweetModel.retweeters.contains(currentUser.userName) {
                             tweetModel.retweeters.removeAll(where: {$0 == currentUser.userName})
                         }

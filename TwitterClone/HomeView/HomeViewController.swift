@@ -15,16 +15,7 @@ final class HomeViewController: UIViewController {
     weak var coordinator: HomeCoordinator?
     
     private var currentUser: User {
-        return DatabaseManager.shared.currentUser
-    }
-    private var username: String {
-        return DatabaseManager.shared.currentUser.userName
-    }
-    private var userhandle: String {
-        return DatabaseManager.shared.currentUser.userHandle
-    }
-    private var email: String {
-        return DatabaseManager.shared.currentUser.userEmail
+        return HomeVCViewModel().currentUser
     }
     public var tweetResponses: [TweetViewModel] = []
     
@@ -75,7 +66,7 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 30)
+        homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 20)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -100,27 +91,17 @@ final class HomeViewController: UIViewController {
     }
     
     private func handleNotAuthenticated() {
-        //check Auth status
         if Auth.auth().currentUser == nil {
-            //Show Login
-            let loginVC = LoginViewController()
-            loginVC.modalPresentationStyle = .fullScreen
-            present(loginVC, animated: false)
+            coordinator?.presentLoginVC(sender: self)
         }
     }
     
     @objc private func didTapAddTweetButton() {
-        //present the addTweetViewController
-        let vc = AddTweetViewController()
-        vc.modalPresentationStyle = .fullScreen
-        vc.delegate = self
-        present(vc, animated: true, completion: nil)
+        coordinator?.tappedOnAddTweetButton(sender: self)
     }
     
     @objc private func didTapLeftNavBarButton() {
-        let vc = ProfileViewController(with: currentUser)
-        vc.title = "Profile"
-        navigationController?.pushViewController(vc, animated: true)
+        coordinator?.tappedLeftNavBarButton(user: currentUser)
     }
 }
 
@@ -146,12 +127,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        //push a new VC and pass the tweet that was selected and it's comments
-        let vc = SelectedTweetViewController(with: tweetResponses[indexPath.row])
-        vc.title = "Tweet"
-        //dont make the root controller the "vc". it will inherit the nav bar from the parent
-        navigationController?.pushViewController(vc, animated: true)
-        //show(vc, sender: self)
+        coordinator?.tappedOnTweetCell(tweet: tweetResponses[indexPath.row])
     }
 }
 
@@ -159,42 +135,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 extension HomeViewController: TweetTableViewCellDelegate {
     
     func didTapProfilePicture(user: User) {
-        let vc = ProfileViewController(with: user)
-        vc.title = user.userName
-        navigationController?.pushViewController(vc, animated: true)
+        coordinator?.tappedOnProfilePicture(user: user)
     }
     
     func didTapCommentButton(owner: TweetViewModel) {
-        let vc = AddCommentViewController(with: owner)
-        vc.modalPresentationStyle = .fullScreen
-        vc.delegate = self
-        present(vc, animated: true, completion: nil)
+        coordinator?.tappedOnCommentButton(sender: self, tweet: owner)
     }
     
     func didTapRetweet(retweeted: Bool, model: TweetViewModel, completion: @escaping (Bool) -> Void) {
-        
-        if retweeted {
-            let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-                HomeVCViewModel.retweeted(tweet: model) { success in
-                    completion(success == true)
-                }
-            }))
-            actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
-                //need to pass in the text body here
-                let vc = AddTweetViewController()
-                vc.modalPresentationStyle = .fullScreen
-                self?.present(vc, animated: true, completion: nil)
-                completion(false)
-            }))
-            present(actionSheet, animated: true, completion: nil)
-        }
-        else {
-            HomeVCViewModel.notRetweeted(tweet: model) { success in
-                completion(success == true)
-            }
-        }
+        coordinator?.tappedOnRetweetbutton(
+            sender: self,
+            tweet: model,
+            retweeted: retweeted,
+            completion: { success in
+            completion(success == true)
+        })
     }
     
     /// User tapped the like button on the tweet
@@ -209,11 +164,8 @@ extension HomeViewController: TweetTableViewCellDelegate {
         }
     }
     
-    func didTapShareButton() {
-        let firstAction = "This Tweet"
-        let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
-        shareAction.isModalInPresentation = true
-        present(shareAction, animated: true, completion: nil)
+    func didTapShareButton(tweet: TweetViewModel) {
+        coordinator?.tappedOnShareButton(sender: self, tweet: tweet)
     }
 }
 
