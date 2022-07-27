@@ -1,42 +1,38 @@
 //
-//  TabBarViewController.swift
+//  TabBarCoordinatorController.swift
 //  TwitterClone
 //
-//  Created by Caleb Ngai on 5/5/22.
+//  Created by Caleb Ngai on 7/27/22.
 //
 
+import Foundation
 import UIKit
 
-final class TabBarViewController: UITabBarController {
+final class MainTabBarController: UITabBarController {
+    
+    let home = HomeCoordinator(navigationController: UINavigationController())
+    let search = SearchCoordinator(navigationController: UINavigationController())
+    let notifications = NotificationsCoordinator(navigationController: UINavigationController())
+    let settings = SettingsCoordinator(navigationController: UINavigationController())
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-       
-        let vc1 = HomeViewController()
-        let vc2 = SearchViewController()
-        let vc3 = NotificationsViewController()
-        let vc4 = SettingsViewController()
         
-        vc1.title = "Home"
-        vc2.title = "Search"
-        vc3.title = "Notifications"
-        vc4.title = "Settings"
+        home.start()
+        search.start()
+        notifications.start()
+        settings.start()
         
-        vc1.navigationItem.largeTitleDisplayMode = .never
-        vc2.navigationItem.largeTitleDisplayMode = .never
-        vc3.navigationItem.largeTitleDisplayMode = .never
-        vc4.navigationItem.largeTitleDisplayMode = .never
+        let nav1 = home.navigationController
+        let nav2 = search.navigationController
+        let nav3 = notifications.navigationController
+        let nav4 = settings.navigationController
         
-        vc1.navigationItem.backButtonDisplayMode  = .minimal
-        vc2.navigationItem.backButtonDisplayMode  = .minimal
-        vc3.navigationItem.backButtonDisplayMode  = .minimal
-        vc4.navigationItem.backButtonDisplayMode  = .minimal
-        
-        let nav1 = UINavigationController(rootViewController: vc1)
-        let nav2 = UINavigationController(rootViewController: vc2)
-        let nav3 = UINavigationController(rootViewController: vc3)
-        let nav4 = UINavigationController(rootViewController: vc4)
+        nav1.navigationItem.largeTitleDisplayMode = .never
+        nav2.navigationItem.largeTitleDisplayMode = .never
+        nav3.navigationItem.largeTitleDisplayMode = .never
+        nav4.navigationItem.largeTitleDisplayMode = .never
         
         nav1.navigationBar.tintColor = .white
         nav2.navigationBar.tintColor = .white

@@ -37,6 +37,12 @@
 		AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */; };
 		AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */; };
 		AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */; };
+		AFC0EACA28916EA200C498AE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EAC928916EA200C498AE /* Coordinator.swift */; };
+		AFC0EACC28916F4700C498AE /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EACB28916F4700C498AE /* HomeCoordinator.swift */; };
+		AFC0EACE2891747600C498AE /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EACD2891747600C498AE /* MainTabBarController.swift */; };
+		AFC0EAD0289176C300C498AE /* NotificationsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EACF289176C300C498AE /* NotificationsCoordinator.swift */; };
+		AFC0EAD2289177C900C498AE /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EAD1289177C900C498AE /* SearchCoordinator.swift */; };
+		AFC0EAD42891784100C498AE /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EAD32891784100C498AE /* SettingsCoordinator.swift */; };
 		AFC809E82888263600B90540 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC809E72888263600B90540 /* CustomTextField.swift */; };
 		AFCC323428380F2700C0B01C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323328380F2600C0B01C /* LoginViewController.swift */; };
 		AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCC323528380F3600C0B01C /* RegisterViewController.swift */; };
@@ -92,6 +98,12 @@
 		AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		AFC0EAC928916EA200C498AE /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		AFC0EACB28916F4700C498AE /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		AFC0EACD2891747600C498AE /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		AFC0EACF289176C300C498AE /* NotificationsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCoordinator.swift; sourceTree = "<group>"; };
+		AFC0EAD1289177C900C498AE /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		AFC0EAD32891784100C498AE /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		AFC809E72888263600B90540 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		AFCC323328380F2600C0B01C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		AFCC323528380F3600C0B01C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				AF2DED752824BCCF002E9264 /* TabBarViewController.swift */,
+				AFC0EACD2891747600C498AE /* MainTabBarController.swift */,
 			);
 			path = TabBarView;
 			sourceTree = "<group>";
@@ -171,9 +184,18 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
+		AFC0EAC828916E8D00C498AE /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				AFC0EAC928916EA200C498AE /* Coordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		AFC9877A288F5C3400B2DAF8 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				AFC0EACB28916F4700C498AE /* HomeCoordinator.swift */,
 				AF2DED772824BD4A002E9264 /* HomeViewController.swift */,
 				705E79AA2867BD87003AEA17 /* HomeVCViewModel.swift */,
 			);
@@ -183,6 +205,7 @@
 		AFD43BDE288F5D7300D1377E /* NotificationsView */ = {
 			isa = PBXGroup;
 			children = (
+				AFC0EACF289176C300C498AE /* NotificationsCoordinator.swift */,
 				AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */,
 				AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */,
 				AFDC2C762869D6BA007DCDF5 /* NotificationViewModel.swift */,
@@ -196,6 +219,7 @@
 		AFD43BDF288F5D9F00D1377E /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
+				AFC0EAD1289177C900C498AE /* SearchCoordinator.swift */,
 				AF2DED792824BD58002E9264 /* SearchViewController.swift */,
 				AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */,
 				3BC26E082829528C00A56D5C /* SearchResultsViewController.swift */,
@@ -206,6 +230,7 @@
 		AFD43BE0288F5DC300D1377E /* SettingsView */ = {
 			isa = PBXGroup;
 			children = (
+				AFC0EAD32891784100C498AE /* SettingsCoordinator.swift */,
 				AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */,
 				AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */,
 				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
@@ -311,6 +336,7 @@
 		AFDBA2252824B98B00085DDC /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
+				AFC0EAC828916E8D00C498AE /* Coordinator */,
 				AFD43BE4288F5EEB00D1377E /* OnboardingViews */,
 				AFD43BE3288F5EA100D1377E /* TweetView */,
 				AFD43BE2288F5E5300D1377E /* ProfileView */,
@@ -454,12 +480,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFCC323428380F2700C0B01C /* LoginViewController.swift in Sources */,
+				AFC0EAD2289177C900C498AE /* SearchCoordinator.swift in Sources */,
 				AFD853C32825784E00D080D4 /* TweetTableViewCell.swift in Sources */,
 				7038FEAC28305E4E00715D54 /* Extensions.swift in Sources */,
 				AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */,
 				AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */,
 				AFDC2C772869D6BA007DCDF5 /* NotificationViewModel.swift in Sources */,
 				AFDBA2312824B98B00085DDC /* TwitterClone.xcdatamodeld in Sources */,
+				AFC0EACC28916F4700C498AE /* HomeCoordinator.swift in Sources */,
 				AFCEE1CD288993D800B6D187 /* ProfileHeaderView.swift in Sources */,
 				AF1B4C1A283EE93100AC2510 /* SelectedTweetViewController.swift in Sources */,
 				7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */,
@@ -477,6 +505,7 @@
 				3BC26E0B282970C400A56D5C /* UserModels.swift in Sources */,
 				AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */,
 				705E79AB2867BD87003AEA17 /* HomeVCViewModel.swift in Sources */,
+				AFC0EACE2891747600C498AE /* MainTabBarController.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF76FDA428901E59005B09A6 /* CustomButton.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
@@ -487,6 +516,7 @@
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AFC809E82888263600B90540 /* CustomTextField.swift in Sources */,
 				AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */,
+				AFC0EACA28916EA200C498AE /* Coordinator.swift in Sources */,
 				AFDAF8272889C23200F2BBA0 /* CustomLabel.swift in Sources */,
 				AF76FDA6289021FC005B09A6 /* CustomImageView.swift in Sources */,
 				AF1B4C1C283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift in Sources */,
@@ -498,9 +528,11 @@
 				AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */,
 				AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */,
 				AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */,
+				AFC0EAD42891784100C498AE /* SettingsCoordinator.swift in Sources */,
 				AFCEE1CB28898F7E00B6D187 /* ProfileViewController.swift in Sources */,
 				AFFFD4AC2888F87900270E6E /* SettingsAndPrivacyViewModel.swift in Sources */,
 				AFE173E62888CC70004EACB7 /* SettingsViewModel.swift in Sources */,
+				AFC0EAD0289176C300C498AE /* NotificationsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

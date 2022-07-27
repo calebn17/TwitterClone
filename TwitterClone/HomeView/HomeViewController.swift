@@ -12,7 +12,7 @@ import FirebaseAuth
 final class HomeViewController: UIViewController {
 
 //MARK: - Properties
-    static let shared = HomeViewController()
+    weak var coordinator: HomeCoordinator?
     
     private var currentUser: User {
         return DatabaseManager.shared.currentUser
