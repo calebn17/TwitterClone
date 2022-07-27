@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class NotificationsCoordinator: Coordinator {
-    var childrenCoordinators: [Coordinator] = []
+    var childCoordinators: [Coordinator] = []
     
     var navigationController: UINavigationController
     
@@ -19,7 +19,13 @@ class NotificationsCoordinator: Coordinator {
     
     func start() {
         let vc = NotificationsViewController()
+        vc.coordinator = self
         vc.navigationItem.backButtonDisplayMode = .minimal
         navigationController.pushViewController(vc, animated: false)
+    }
+    
+    func tappedOnNotification(tweet: TweetViewModel) {
+        let vc = SelectedTweetViewController(with: tweet)
+        navigationController.pushViewController(vc, animated: true)
     }
 }

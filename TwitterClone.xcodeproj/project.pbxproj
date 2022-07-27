@@ -34,6 +34,8 @@
 		AF76FDA6289021FC005B09A6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF76FDA5289021FC005B09A6 /* CustomImageView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
 		AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */; };
+		AFA5E9F32891E9CA00092DBC /* SettingsProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F22891E9CA00092DBC /* SettingsProfileCoordinator.swift */; };
+		AFA5E9F52891ED4500092DBC /* TweetProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */; };
 		AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */; };
 		AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */; };
 		AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */; };
@@ -95,6 +97,8 @@
 		AF76FDA5289021FC005B09A6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
 		AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyTableViewCell.swift; sourceTree = "<group>"; };
+		AFA5E9F22891E9CA00092DBC /* SettingsProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProfileCoordinator.swift; sourceTree = "<group>"; };
+		AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetProfileCoordinator.swift; sourceTree = "<group>"; };
 		AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -255,6 +259,8 @@
 			isa = PBXGroup;
 			children = (
 				AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */,
+				AFA5E9F22891E9CA00092DBC /* SettingsProfileCoordinator.swift */,
+				AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */,
 				AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */,
 				AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */,
 				AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */,
@@ -493,6 +499,7 @@
 				7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */,
 				3BC26E092829528C00A56D5C /* SearchResultsViewController.swift in Sources */,
 				7038FEAA2830597200715D54 /* SettingsHeaderView.swift in Sources */,
+				AFA5E9F52891ED4500092DBC /* TweetProfileCoordinator.swift in Sources */,
 				AFD853BD2825682800D080D4 /* Response.swift in Sources */,
 				AFD853BA2825632E00D080D4 /* APICaller.swift in Sources */,
 				AFCEE1CF28899CBE00B6D187 /* EditProfileViewController.swift in Sources */,
@@ -512,6 +519,7 @@
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
 				AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */,
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
+				AFA5E9F32891E9CA00092DBC /* SettingsProfileCoordinator.swift in Sources */,
 				708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */,
 				AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */,
 				AFC809E82888263600B90540 /* CustomTextField.swift in Sources */,

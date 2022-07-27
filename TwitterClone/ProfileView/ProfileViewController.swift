@@ -17,6 +17,9 @@ class ProfileViewController: UIViewController {
     private var profileInfo: ProfileHeaderViewModel?
     private var tweets = [TweetViewModel]()
     
+    private let profileCoordinator = SettingsProfileCoordinator(navigationController: UINavigationController())
+    weak var coordinator: SettingsProfileCoordinator?
+    
 //MARK: - SubViews
     private var headerView: ProfileHeaderView?
     
@@ -48,6 +51,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        profileCoordinator.start()
         fetchData()
         configureTableView()
         configureNavBar()
@@ -120,11 +124,7 @@ class ProfileViewController: UIViewController {
 //MARK: - Actions 
     
     @objc private func didTapEditButton() {
-        let vc = EditProfileViewController()
-        vc.delegate = self
-        vc.title = "Edit Profile"
-        let navVC = UINavigationController(rootViewController: vc)
-        present(navVC, animated: true)
+        coordinator?.tappedEditButton(sender: self)
     }
 }
 
@@ -150,10 +150,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         let tweet = tweets[indexPath.row]
-        let vc = SelectedTweetViewController(with: tweet)
-        navigationController?.pushViewController(vc, animated: true)
+        coordinator?.tappedOnTweetCell(tweet: tweet)
     }
 }
 
@@ -161,28 +159,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: ProfileHeaderViewDelegate {
     func didTapOnProfilePicture() {
         guard isCurrentUser else {return}
-        
-        let sheet = UIAlertController(title: "Change your profile picture", message: "Update your profile picture", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        sheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
-            DispatchQueue.main.async {
-                let picker = UIImagePickerController()
-                picker.sourceType = .camera
-                picker.allowsEditing = true
-                picker.delegate = self
-                self?.present(picker, animated: true)
-            }
-        }))
-        sheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { [weak self] _ in
-            DispatchQueue.main.async {
-                let picker = UIImagePickerController()
-                picker.sourceType = .photoLibrary
-                picker.allowsEditing = true
-                picker.delegate = self
-                self?.present(picker, animated: true)
-            }
-        }))
-        present(sheet, animated: true)
+        coordinator?.tappedOnProfilePicture(sender: self)
     }
     
     func didTapOnFollowButton(didFollow: Bool) {

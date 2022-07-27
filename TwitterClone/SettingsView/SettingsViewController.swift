@@ -12,6 +12,7 @@ import SafariServices
 final class SettingsViewController: UIViewController {
     
  //MARK: - Properties
+    weak var coordinator: SettingsCoordinator?
     
     struct Constants {
         static let rowHeight: CGFloat = 70
@@ -91,48 +92,20 @@ final class SettingsViewController: UIViewController {
 //MARK: - Actions
     
     private func presentProfilePage() {
-        let vc = ProfileViewController(with: currentUser)
-        vc.title = "Profile"
-        navigationController?.pushViewController(vc, animated: true)
+        coordinator?.tappedOnProfilePageCell(user: currentUser)
     }
     
     ///Called when user clicks on the help cell
     private func presentHelpPage(){
-        guard let url = URL(string: "https://help.twitter.com/en") else {return}
-        let vc = SFSafariViewController(url: url)
-        present(vc, animated: true, completion: nil)
+        coordinator?.tappedOnHelpPageCell(sender: self)
     }
     
     private func presentSettingsAndPrivacyPage() {
-        let vc = SettingsAndPrivacyViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        coordinator?.tappedOnSettingsAndPrivacyPage()
     }
     
     private func didTapSignOut() {
-        
-        let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
-            AuthManager.shared.logOut {[weak self] success in
-                DispatchQueue.main.async {
-                    if success {
-                        //present login screen
-                        let loginVC = LoginViewController()
-                        loginVC.modalPresentationStyle = .fullScreen
-                        self?.present(loginVC, animated: true) {
-                            //completion handler here makes the app go back to the homescreen (behind the login screen) and makes the selected tab match the homescreen
-                            self?.navigationController?.popToRootViewController(animated: false)
-                            self?.tabBarController?.selectedIndex = 0
-                        }
-                    }
-                    else {
-                        //error when logging out
-                        fatalError("Could not log out user")
-                    }
-                }
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
+        coordinator?.tappedSignOut(sender: self)
     }
 }
 

@@ -11,6 +11,7 @@ import UIKit
 final class NotificationsViewController: UIViewController {
     
 //MARK: - Properties
+    weak var coordinator: NotificationsCoordinator?
     // emptyImageView and headerView need to start off as optional so that I can initialize it with a
     // frame later to properly call the views with all their subviews
     private var emptyImageView: NotificationEmptyStateView?
@@ -118,8 +119,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
                 print("Error when getting tweet and pushing selectedTweetVC")
                 return
             }
-            let vc = SelectedTweetViewController(with: tweet)
-            navigationController?.pushViewController(vc, animated: true)
+            coordinator?.tappedOnNotification(tweet: tweet)
         }
     }
 }
