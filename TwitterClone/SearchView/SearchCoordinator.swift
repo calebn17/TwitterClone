@@ -20,6 +20,7 @@ class SearchCoordinator: Coordinator {
     func start() {
         let vc = SearchViewController()
         vc.coordinator = self
+        vc.navigationItem.largeTitleDisplayMode = .never
         vc.navigationItem.backButtonDisplayMode = .minimal
         navigationController.pushViewController(vc, animated: false)
     }

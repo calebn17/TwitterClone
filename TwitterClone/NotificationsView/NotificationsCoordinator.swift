@@ -19,6 +19,8 @@ class NotificationsCoordinator: Coordinator {
     
     func start() {
         let vc = NotificationsViewController()
+        vc.navigationItem.largeTitleDisplayMode = .never
+        vc.navigationItem.backButtonDisplayMode = .minimal
         vc.coordinator = self
         vc.navigationItem.backButtonDisplayMode = .minimal
         navigationController.pushViewController(vc, animated: false)

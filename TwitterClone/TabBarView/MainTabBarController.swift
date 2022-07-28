@@ -29,11 +29,6 @@ final class MainTabBarController: UITabBarController {
         let nav3 = notifications.navigationController
         let nav4 = settings.navigationController
         
-        nav1.navigationItem.largeTitleDisplayMode = .never
-        nav2.navigationItem.largeTitleDisplayMode = .never
-        nav3.navigationItem.largeTitleDisplayMode = .never
-        nav4.navigationItem.largeTitleDisplayMode = .never
-        
         nav1.navigationBar.tintColor = .white
         nav2.navigationBar.tintColor = .white
         nav3.navigationBar.tintColor = .white

@@ -22,6 +22,7 @@ class SettingsCoordinator: NSObject, Coordinator {
         let vc = SettingsViewController()
         vc.coordinator = self
         navigationController.delegate = self
+        vc.navigationItem.largeTitleDisplayMode = .never
         vc.navigationItem.backButtonDisplayMode = .minimal
         navigationController.pushViewController(vc, animated: false)
         
@@ -40,7 +41,6 @@ class SettingsCoordinator: NSObject, Coordinator {
     func tappedOnProfilePageCell(user: User) {
         let child = ProfileCoordinator(navigationController: navigationController, user: user)
         childCoordinators.append(child)
-        child.parentSettingsCoordinator = self
         child.start()
     }
     
@@ -59,14 +59,16 @@ class SettingsCoordinator: NSObject, Coordinator {
         let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
             AuthManager.shared.logOut {[weak sender] success in
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     if success {
-                        let loginVC = LoginViewController()
-                        loginVC.modalPresentationStyle = .fullScreen
-                        sender?.present(loginVC, animated: true) {
-                            sender?.navigationController?.popToRootViewController(animated: false)
-                            sender?.tabBarController?.selectedIndex = 0
-                        }
+                        guard let strongSender = sender,
+                              let navC = self?.navigationController else {return}
+                        let child = LoginCoordinator(
+                            navigationController: navC,
+                            sender: strongSender
+                        )
+                        self?.childCoordinators.append(child)
+                        child.start()
                     }
                     else {
                         //error when logging out
@@ -97,6 +99,9 @@ extension SettingsCoordinator: UINavigationControllerDelegate {
         if let profileVC = fromViewController as? ProfileViewController {
             // We're popping a buy view controller; end its coordinator
             childDidFinish(profileVC.coordinator)
+        }
+        else if let loginVC = fromViewController as? LoginViewController {
+            childDidFinish(loginVC.coordinator)
         }
     }
 }

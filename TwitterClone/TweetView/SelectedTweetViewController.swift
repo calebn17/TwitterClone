@@ -37,7 +37,6 @@ class SelectedTweetViewController: UIViewController {
 //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Tweet"
         view.backgroundColor = .systemBackground
         configureTableView()
     }

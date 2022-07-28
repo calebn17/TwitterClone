@@ -20,6 +20,7 @@ class HomeCoordinator: NSObject, Coordinator {
     func start() {
         let vc = HomeViewController()
         vc.coordinator = self
+        vc.navigationItem.largeTitleDisplayMode = .never
         vc.navigationItem.backButtonDisplayMode = .minimal
         navigationController.pushViewController(vc, animated: false)
     }
@@ -41,9 +42,9 @@ class HomeCoordinator: NSObject, Coordinator {
     }
     
     func presentLoginVC(sender: HomeViewController) {
-        let vc = LoginViewController()
-        vc.modalPresentationStyle = .fullScreen
-        sender.present(vc, animated: false)
+        let child = LoginCoordinator(navigationController: navigationController, sender: sender)
+        childCoordinators.append(child)
+        child.start()
     }
     
     func tappedOnAddTweetButton(sender: HomeViewController) {
@@ -56,14 +57,12 @@ class HomeCoordinator: NSObject, Coordinator {
 //MARK: - TweetCell Routes
     func tappedOnTweetCell(tweet: TweetViewModel) {
         let vc = SelectedTweetViewController(with: tweet)
-        vc.title = "Tweet"
         navigationController.pushViewController(vc, animated: true)
     }
     
     func tappedOnProfilePicture(user: User) {
         let child = ProfileCoordinator(navigationController: navigationController, user: user)
         childCoordinators.append(child)
-        child.parentHomeCoordinator = self
         child.start()
     }
     
@@ -126,10 +125,13 @@ extension HomeCoordinator: UINavigationControllerDelegate {
             return
         }
 
-        // We’re still here – it means we’re popping the view controller, so we can check whether it’s a buy view controller
+        // We’re still here – it means we’re popping the view controller, so we can check whether it’s a profile view controller
         if let profileVC = fromViewController as? ProfileViewController {
             // We're popping a buy view controller; end its coordinator
             childDidFinish(profileVC.coordinator)
+        }
+        else if let loginVC = fromViewController as? LoginViewController {
+            childDidFinish(loginVC.coordinator)
         }
     }
 }

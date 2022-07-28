@@ -10,6 +10,8 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
+    weak var coordinator: LoginCoordinator?
+    
 //MARK: - Subviews
     
     private let logo: CustomImageView = {
@@ -105,18 +107,14 @@ class LoginViewController: UIViewController {
         
         //login functionality
         AuthManager.shared.loginUser(email: email.lowercased(), password: password) {[weak self] success in
+            guard let strongSelf = self else {return}
             DispatchQueue.main.async {
                 if success {
-                    //user logged in
-                    NotificationCenter.default.post(name: Notification.Name("login"), object: nil)
-                    //dismisses the LoginVC so the HomeVC will be shown
-                    self?.dismiss(animated: true, completion: nil)
+                    self?.coordinator?.successfulLogin(sender: strongSelf)
                 }
                 else {
                     //error occured
-                    let alert = UIAlertController(title: "Log In Error", message: "We were unable to log you in.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-                    self?.present(alert, animated: true)
+                    self?.coordinator?.presentLoginErrorAlert(sender: strongSelf)
                     AuthManager.shared.logOut { success in
                         if !success {
                             print("couldnt log out")
@@ -128,10 +126,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapRegisterButton() {
-        let vc = RegisterViewController()
-        vc.delegate = self
-        let navVC = UINavigationController(rootViewController: vc)
-        present(navVC, animated: true, completion: nil)
+        coordinator?.tappedOnRegisterButton(sender: self)
     }
 }
 

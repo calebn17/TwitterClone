@@ -17,6 +17,7 @@ final class RegisterViewController: UIViewController {
 //MARK: - Properties
     weak var delegate: RegisterViewControllerDelegate?
     private var image: UIImage?
+    weak var coordinator: RegisterCoordinator?
 
 
 //MARK: - SubViews
@@ -113,27 +114,7 @@ final class RegisterViewController: UIViewController {
     
 //MARK: - Actions
     @objc private func didTapProfileImage() {
-        let sheet = UIAlertController(title: "Change your profile picture", message: "Update your profile picture", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        sheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
-            DispatchQueue.main.async {
-                let picker = UIImagePickerController()
-                picker.sourceType = .camera
-                picker.allowsEditing = true
-                picker.delegate = self
-                self?.present(picker, animated: true)
-            }
-        }))
-        sheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { [weak self] _ in
-            DispatchQueue.main.async {
-                let picker = UIImagePickerController()
-                picker.sourceType = .photoLibrary
-                picker.allowsEditing = true
-                picker.delegate = self
-                self?.present(picker, animated: true)
-            }
-        }))
-        present(sheet, animated: true)
+        coordinator?.tappedOnProfileImage(sender: self)
     }
     
     @objc private func didTapRegisterButton() {
@@ -163,9 +144,9 @@ final class RegisterViewController: UIViewController {
         AuthManager.shared.registerNewUser(newUser: newUser, password: password) {[weak self] registered in
             DispatchQueue.main.async {
                 if registered {
-                    self?.dismiss(animated: true)
-                    NotificationCenter.default.post(name: Notification.Name("login"), object: nil)
-                    self?.delegate?.didRegisterSuccessfully()
+                    guard let strongSelf = self else {return}
+                    self?.coordinator?.registerSuccessfully(sender: strongSelf)
+                    
                 }
                 else {
                     //something failed
@@ -173,7 +154,6 @@ final class RegisterViewController: UIViewController {
                 }
             }
         }
-        
         StorageManager.shared.uploadProfilePicture(user: newUser, data: image.pngData()) {success in
             DispatchQueue.main.async {
                 if !success {

@@ -34,8 +34,10 @@
 		AF76FDA6289021FC005B09A6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF76FDA5289021FC005B09A6 /* CustomImageView.swift */; };
 		AF8C41B7283581130005E023 /* SettingsAndPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */; };
 		AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */; };
+		AF98444C2892E58000852141 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF98444B2892E58000852141 /* LoginCoordinator.swift */; };
 		AFA5E9F32891E9CA00092DBC /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */; };
 		AFA5E9F52891ED4500092DBC /* TweetProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */; };
+		AFB71055289323FE00559A3A /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB71054289323FE00559A3A /* RegisterCoordinator.swift */; };
 		AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */; };
 		AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */; };
 		AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */; };
@@ -97,8 +99,10 @@
 		AF76FDA5289021FC005B09A6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		AF8C41B6283581130005E023 /* SettingsAndPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyViewController.swift; sourceTree = "<group>"; };
 		AF8C41B9283582040005E023 /* SettingsAndPrivacyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAndPrivacyTableViewCell.swift; sourceTree = "<group>"; };
+		AF98444B2892E58000852141 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
 		AFA5E9F42891ED4500092DBC /* TweetProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetProfileCoordinator.swift; sourceTree = "<group>"; };
+		AFB71054289323FE00559A3A /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
 		AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -287,6 +291,8 @@
 			children = (
 				AFCC323528380F3600C0B01C /* RegisterViewController.swift */,
 				AFCC323328380F2600C0B01C /* LoginViewController.swift */,
+				AF98444B2892E58000852141 /* LoginCoordinator.swift */,
+				AFB71054289323FE00559A3A /* RegisterCoordinator.swift */,
 			);
 			path = OnboardingViews;
 			sourceTree = "<group>";
@@ -516,6 +522,8 @@
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF76FDA428901E59005B09A6 /* CustomButton.swift in Sources */,
 				AF2DED782824BD4A002E9264 /* HomeViewController.swift in Sources */,
+				AFB71055289323FE00559A3A /* RegisterCoordinator.swift in Sources */,
+				AF98444C2892E58000852141 /* LoginCoordinator.swift in Sources */,
 				3BC26E05282949D000A56D5C /* Constants.swift in Sources */,
 				AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */,
 				AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */,
