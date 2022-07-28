@@ -8,10 +8,6 @@
 import Foundation
 
 struct TweetModel: Codable {
-    
-}
-
-struct TweetViewModel: Codable {
     let tweetId: String
     var username: String
     var userHandle: String
@@ -20,12 +16,15 @@ struct TweetViewModel: Codable {
     let text: String?
     var likers: [String]
     var retweeters: [String]
-    var comments: [TweetViewModel]
+    var comments: [TweetModel]
     let dateCreatedString: String?
-    
+}
+
+struct TweetViewModel {
+   
     var currentUser: User { return DatabaseManager.shared.currentUser }
     
-    static func fetchProfilePictureURL(tweet: TweetViewModel) async throws -> URL? {
+    static func fetchProfilePictureURL(tweet: TweetModel) async throws -> URL? {
         let user = User(
             id: nil,
             userName: tweet.username,

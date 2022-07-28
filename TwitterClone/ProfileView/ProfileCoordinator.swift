@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 class ProfileCoordinator: Coordinator {
-    weak var parentSettingsCoordinator: SettingsCoordinator?
-    weak var parentHomeCoordinator: HomeCoordinator?
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var user: User
@@ -29,12 +27,13 @@ class ProfileCoordinator: Coordinator {
     func tappedEditButton(sender: ProfileViewController) {
         let vc = EditProfileViewController()
         vc.delegate = sender
+        vc.coordinator = self
         vc.title = "Edit Profile"
         let navVC = UINavigationController(rootViewController: vc)
         sender.present(navVC, animated: true)
     }
     
-    func tappedOnTweetCell(tweet: TweetViewModel) {
+    func tappedOnTweetCell(tweet: TweetModel) {
         let vc = SelectedTweetViewController(with: tweet)
         navigationController.pushViewController(vc, animated: true)
     }
@@ -67,4 +66,7 @@ class ProfileCoordinator: Coordinator {
         sender.present(sheet, animated: true)
     }
     
+    func dismissEditProfileModal(sender: EditProfileViewController) {
+        sender.dismiss(animated: true, completion: nil)
+    }
 }

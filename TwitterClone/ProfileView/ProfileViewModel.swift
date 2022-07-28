@@ -48,7 +48,7 @@ struct ProfileViewModel {
         }
     }
    
-    static func getProfileTweets(user: User) async throws -> [TweetViewModel] {
+    static func getProfileTweets(user: User) async throws -> [TweetModel] {
         let allTweets = try await DatabaseManager.shared.getTweets()
         print(user.userName)
         let filteredTweets = allTweets.filter { tweet in

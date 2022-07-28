@@ -124,7 +124,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         Task{
             do {
                 let results = try await SearchViewModel.fetchSearchData(query: query)
-                resultsController.update(with: results)
+                resultsController.updateUI(with: results)
             }
             catch {
                 print("Request to search failed")
@@ -135,6 +135,6 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let resultsController = searchController.searchResultsController as? SearchResultsViewController
         else {return}
-        resultsController.update(with: [])
+        resultsController.updateUI(with: [])
     }
 }

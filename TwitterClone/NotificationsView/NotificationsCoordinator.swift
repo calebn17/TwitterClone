@@ -26,7 +26,7 @@ class NotificationsCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: false)
     }
     
-    func tappedOnNotification(tweet: TweetViewModel) {
+    func tappedOnNotification(tweet: TweetModel) {
         let vc = SelectedTweetViewController(with: tweet)
         navigationController.pushViewController(vc, animated: true)
     }

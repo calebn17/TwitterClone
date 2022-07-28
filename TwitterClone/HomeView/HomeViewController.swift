@@ -15,9 +15,9 @@ final class HomeViewController: UIViewController {
     weak var coordinator: HomeCoordinator?
     
     private var currentUser: User {
-        return HomeVCViewModel().currentUser
+        return HomeViewModel().currentUser
     }
-    public var tweetResponses: [TweetViewModel] = []
+    public var tweetResponses: [TweetModel] = []
     
 //MARK: - SubViews
     private let profilePictureImageView: CustomImageView = {
@@ -59,7 +59,7 @@ final class HomeViewController: UIViewController {
         //configureProfileImage()
         configureHomeFeedTableView()
         configureAddTweetButton()
-        fetchData()
+        updateUI()
         configurePullToRefresh()
     }
     
@@ -71,13 +71,13 @@ final class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         handleNotAuthenticated()
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: Notification.Name("login"), object: nil)
     }
     
 //MARK: - Networking
-    @objc private func fetchData() {
+    @objc private func updateUI() {
         Task {
-            tweetResponses = try await HomeVCViewModel.fetchData()
+            tweetResponses = try await HomeViewModel.fetchData()
             homeFeedTableView.reloadData()
         }
     }
@@ -85,7 +85,7 @@ final class HomeViewController: UIViewController {
 //MARK: - Actions
     @objc private func didPullToRefresh(_ sender: UIRefreshControl) {
         sender.beginRefreshing()
-        fetchData()
+        updateUI()
         sender.endRefreshing()
     }
     
@@ -138,11 +138,11 @@ extension HomeViewController: TweetTableViewCellDelegate {
         coordinator?.tappedOnProfilePicture(user: user)
     }
     
-    func didTapCommentButton(owner: TweetViewModel) {
+    func didTapCommentButton(owner: TweetModel) {
         coordinator?.tappedOnCommentButton(sender: self, tweet: owner)
     }
     
-    func didTapRetweet(retweeted: Bool, model: TweetViewModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
         coordinator?.tappedOnRetweetbutton(
             sender: self,
             tweet: model,
@@ -152,15 +152,15 @@ extension HomeViewController: TweetTableViewCellDelegate {
         })
     }
     
-    func didTapLikeButton(liked: Bool, model: TweetViewModel) {
-        HomeVCViewModel.tappedLikeButton(liked: liked, model: model) { success in
+    func didTapLikeButton(liked: Bool, model: TweetModel) {
+        HomeViewModel.tappedLikeButton(liked: liked, model: model) { success in
             if !success {
                 print("Something went wrong went liking")
             }
         }
     }
     
-    func didTapShareButton(tweet: TweetViewModel) {
+    func didTapShareButton(tweet: TweetModel) {
         coordinator?.tappedOnShareButton(sender: self, tweet: tweet)
     }
 }
@@ -174,7 +174,7 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
     
     func didTapTweetPublishButton(tweetBody: String) {
         Task {
-            let addedTweet = try await HomeVCViewModel.publishTweet(user: currentUser, body: tweetBody)
+            let addedTweet = try await HomeViewModel.publishTweet(user: currentUser, body: tweetBody)
             tweetResponses.insert(addedTweet, at: 0)
             homeFeedTableView.reloadData()
         }
@@ -183,11 +183,11 @@ extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControll
 
 //MARK: - AddCommentVC Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String, owner: TweetViewModel) {
-        HomeVCViewModel.publishComment(owner: owner, body: tweetBody) { [weak self] success in
+    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
+        HomeViewModel.publishComment(owner: owner, body: tweetBody) { [weak self] success in
             DispatchQueue.main.async {
                 if success {
-                    self?.fetchData()
+                    self?.updateUI()
                 }
             }
         }

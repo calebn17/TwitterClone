@@ -56,7 +56,7 @@ class HomeCoordinator: NSObject, Coordinator {
     }
     
 //MARK: - TweetCell Routes
-    func tappedOnTweetCell(tweet: TweetViewModel) {
+    func tappedOnTweetCell(tweet: TweetModel) {
         let vc = SelectedTweetViewController(with: tweet)
         navigationController.pushViewController(vc, animated: true)
     }
@@ -67,7 +67,7 @@ class HomeCoordinator: NSObject, Coordinator {
         child.start()
     }
     
-    func tappedOnCommentButton(sender: HomeViewController, tweet: TweetViewModel) {
+    func tappedOnCommentButton(sender: HomeViewController, tweet: TweetModel) {
         let vc = AddCommentViewController(with: tweet)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = sender
@@ -76,7 +76,7 @@ class HomeCoordinator: NSObject, Coordinator {
     
     func tappedOnRetweetbutton(
         sender: HomeViewController,
-        tweet: TweetViewModel,
+        tweet: TweetModel,
         retweeted: Bool,
         completion: @escaping (Bool) -> Void)
     {
@@ -86,7 +86,7 @@ class HomeCoordinator: NSObject, Coordinator {
                 completion(false)
             }))
             actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-                HomeVCViewModel.retweeted(tweet: tweet) { success in
+                HomeViewModel.retweeted(tweet: tweet) { success in
                     completion(success == true)
                 }
             }))
@@ -100,13 +100,13 @@ class HomeCoordinator: NSObject, Coordinator {
             sender.present(actionSheet, animated: true, completion: nil)
         }
         else {
-            HomeVCViewModel.unRetweeted(tweet: tweet) { success in
+            HomeViewModel.unRetweeted(tweet: tweet) { success in
                 completion(success == true)
             }
         }
     }
     
-    func tappedOnShareButton(sender: HomeViewController, tweet: TweetViewModel) {
+    func tappedOnShareButton(sender: HomeViewController, tweet: TweetModel) {
         let firstAction = "Checkout \(tweet.username)'s tweet!"
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true

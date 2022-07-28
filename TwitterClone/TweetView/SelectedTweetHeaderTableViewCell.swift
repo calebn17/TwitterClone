@@ -10,7 +10,7 @@ import UIKit
 protocol SelectedTweetHeaderTableViewCellDelegate: AnyObject {
     func didTapHeaderCommentButton()
     //func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping)
-    func didTapHeaderLikeButton(liked: Bool, model: TweetViewModel)
+    func didTapHeaderLikeButton(liked: Bool, model: TweetModel)
     func didTapHeaderShareButton()
 }
 
@@ -20,7 +20,7 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
     
     static let identifier = "SelectedTweetHeaderTableViewCell"
     public weak var delegate: SelectedTweetHeaderTableViewCellDelegate?
-    private var tweet: TweetViewModel?
+    private var tweet: TweetModel?
     private var isCurrentlyLikedByCurrentUser = false
     private var isRetweetedByCurrentUser = false
     
@@ -135,7 +135,7 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
     }
 
 //MARK: - Configure
-    public func configure(with tweet: TweetViewModel) {
+    public func configure(with tweet: TweetModel) {
         self.tweet = tweet
         configureUserImage(with: tweet)
         tweetBodyLabel.text = tweet.text
@@ -145,7 +145,7 @@ class SelectedTweetHeaderTableViewCell: UITableViewCell {
         profileImageView.sd_setImage(with: tweet.userAvatar, completed: nil)
     }
     
-    private func configureUserImage(with model: TweetViewModel) {
+    private func configureUserImage(with model: TweetModel) {
         Task {
             if let imageUrl = try await TweetViewModel.fetchProfilePictureURL(tweet: model) {
                 profileImageView.sd_setImage(with: imageUrl, completed: nil)

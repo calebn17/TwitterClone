@@ -14,7 +14,7 @@
 		7038FEAA2830597200715D54 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEA92830597200715D54 /* SettingsHeaderView.swift */; };
 		7038FEAC28305E4E00715D54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAB28305E4E00715D54 /* Extensions.swift */; };
 		7038FEAE28306C0D00715D54 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */; };
-		705E79AB2867BD87003AEA17 /* HomeVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705E79AA2867BD87003AEA17 /* HomeVCViewModel.swift */; };
+		705E79AB2867BD87003AEA17 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705E79AA2867BD87003AEA17 /* HomeViewModel.swift */; };
 		708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F128317A2200978DD6 /* AddTweetViewController.swift */; };
 		708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F32831A0E200978DD6 /* AddCommentViewController.swift */; };
 		AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */; };
@@ -78,7 +78,7 @@
 		7038FEA92830597200715D54 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		7038FEAB28305E4E00715D54 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
-		705E79AA2867BD87003AEA17 /* HomeVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVCViewModel.swift; sourceTree = "<group>"; };
+		705E79AA2867BD87003AEA17 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		708C50F128317A2200978DD6 /* AddTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTweetViewController.swift; sourceTree = "<group>"; };
 		708C50F32831A0E200978DD6 /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_All_TableViewCell.swift; sourceTree = "<group>"; };
@@ -203,7 +203,7 @@
 			children = (
 				AFC0EACB28916F4700C498AE /* HomeCoordinator.swift */,
 				AF2DED772824BD4A002E9264 /* HomeViewController.swift */,
-				705E79AA2867BD87003AEA17 /* HomeVCViewModel.swift */,
+				705E79AA2867BD87003AEA17 /* HomeViewModel.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -275,8 +275,8 @@
 			children = (
 				AF1B4C19283EE93100AC2510 /* SelectedTweetViewController.swift */,
 				AF1B4C1B283EEBEB00AC2510 /* SelectedTweetHeaderTableViewCell.swift */,
-				AF2153EC2888FF4A00766354 /* TweetViewModel.swift */,
 				AFD853C22825784E00D080D4 /* TweetTableViewCell.swift */,
+				AF2153EC2888FF4A00766354 /* TweetViewModel.swift */,
 				708C50F128317A2200978DD6 /* AddTweetViewController.swift */,
 				708C50F32831A0E200978DD6 /* AddCommentViewController.swift */,
 			);
@@ -345,7 +345,6 @@
 		AFDBA2252824B98B00085DDC /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
-				AFC0EAC828916E8D00C498AE /* Coordinator */,
 				AFD43BE4288F5EEB00D1377E /* OnboardingViews */,
 				AFD43BE3288F5EA100D1377E /* TweetView */,
 				AFD43BE2288F5E5300D1377E /* ProfileView */,
@@ -357,6 +356,7 @@
 				AF8C41B8283581D00005E023 /* CustomViews */,
 				AFD853BB2825680600D080D4 /* Models */,
 				AFD853B82825631C00D080D4 /* Managers */,
+				AFC0EAC828916E8D00C498AE /* Coordinator */,
 				3BC26E03282949BA00A56D5C /* Resources */,
 				AFD43BE5288F5F4700D1377E /* Launch */,
 				AFDBA2372824B98D00085DDC /* Info.plist */,
@@ -513,7 +513,7 @@
 				AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */,
 				3BC26E0B282970C400A56D5C /* UserModels.swift in Sources */,
 				AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */,
-				705E79AB2867BD87003AEA17 /* HomeVCViewModel.swift in Sources */,
+				705E79AB2867BD87003AEA17 /* HomeViewModel.swift in Sources */,
 				AFC0EACE2891747600C498AE /* MainTabBarController.swift in Sources */,
 				AFDBA2292824B98B00085DDC /* SceneDelegate.swift in Sources */,
 				AF76FDA428901E59005B09A6 /* CustomButton.swift in Sources */,

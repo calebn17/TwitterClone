@@ -11,10 +11,10 @@ struct SearchViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
     
-    static func fetchSearchData(query: String) async throws -> [TweetViewModel] {
+    static func fetchSearchData(query: String) async throws -> [TweetModel] {
         let response = try await APICaller.shared.getSearch(with: query)
         let results = response.compactMap({
-            TweetViewModel(
+            TweetModel(
                 tweetId: UUID().uuidString,
                 username: "",
                 userHandle: "",

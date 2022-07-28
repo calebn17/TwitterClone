@@ -16,7 +16,7 @@ final class NotificationsViewController: UIViewController {
     // frame later to properly call the views with all their subviews
     private var emptyImageView: NotificationEmptyStateView?
     private var headerView: NotificationsHeaderView?
-    private var models = [NotificationsViewModel]()
+    private var models = [NotificationsModel]()
     
 //MARK: - SubViews
     private let notificationsTableView: UITableView = {
@@ -118,10 +118,10 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let viewModel = models[indexPath.row].model
+        let model = models[indexPath.row].model
         
         Task {
-            guard let tweet = try await NotificationsViewModel.getTweet(viewModel: viewModel) else {
+            guard let tweet = try await NotificationsViewModel.getTweet(model: model) else {
                 print("Error when getting tweet and pushing selectedTweetVC")
                 return
             }

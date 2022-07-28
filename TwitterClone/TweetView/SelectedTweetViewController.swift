@@ -10,8 +10,8 @@ import UIKit
 class SelectedTweetViewController: UIViewController {
     
 //MARK: - Properties
-    private var tweet: TweetViewModel
-    private var comments: [TweetViewModel]
+    private var tweet: TweetModel
+    private var comments: [TweetModel]
     private var headerView: SelectedTweetHeaderTableViewCell?
     
 //MARK: - SubViews
@@ -24,7 +24,7 @@ class SelectedTweetViewController: UIViewController {
     }()
 
 //MARK: - Init
-    init(with tweet: TweetViewModel){
+    init(with tweet: TweetModel){
         self.tweet = tweet
         self.comments = tweet.comments
         super.init(nibName: nil, bundle: nil)
@@ -92,7 +92,7 @@ extension SelectedTweetViewController: SelectedTweetHeaderTableViewCellDelegate 
         
     }
     
-    func didTapHeaderLikeButton(liked: Bool, model: TweetViewModel) {
+    func didTapHeaderLikeButton(liked: Bool, model: TweetModel) {
         
     }
     
@@ -109,14 +109,14 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
    
-    func didTapCommentButton(owner: TweetViewModel) {
+    func didTapCommentButton(owner: TweetModel) {
         let vc = AddCommentViewController(with: owner)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(retweeted: Bool, model: TweetViewModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
         
         if retweeted {
             let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
@@ -152,7 +152,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
         }
     }
     
-    func didTapLikeButton(liked: Bool, model: TweetViewModel) {
+    func didTapLikeButton(liked: Bool, model: TweetModel) {
         // insert User into the likers collection in the TweetModel and update DB
         DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model) { success in
             if !success {
@@ -161,7 +161,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
         }
     }
     
-    func didTapShareButton(tweet: TweetViewModel) {
+    func didTapShareButton(tweet: TweetModel) {
         let firstAction = "This Tweet"
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true
@@ -171,7 +171,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
 
 //MARK: - AddCommentViewControllerDelegate Methods
 extension SelectedTweetViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String, owner: TweetViewModel) {
+    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
         //
     }
 }

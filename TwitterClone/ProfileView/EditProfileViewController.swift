@@ -16,7 +16,7 @@ class EditProfileViewController: UIViewController {
 
 //MARK: - Properties
     weak var delegate: EditProfileViewControllerDelegate?
-    
+    weak var coordinator: ProfileCoordinator?
     struct K {
         static let textViewPlaceholder = "Add your bio..."
     }
@@ -63,7 +63,7 @@ class EditProfileViewController: UIViewController {
 //MARK: - Actions
     
     @objc private func didTapCloseButton() {
-        dismiss(animated: true, completion: nil)
+        coordinator?.dismissEditProfileModal(sender: self)
     }
     
     @objc private func didTapDone() {

@@ -9,10 +9,10 @@ import UIKit
 
 //MARK: - Protocol
 protocol TweetTableViewCellDelegate: AnyObject {
-    func didTapCommentButton(owner: TweetViewModel)
-    func didTapRetweet(retweeted: Bool, model: TweetViewModel, completion: @escaping (Bool) -> Void)
-    func didTapLikeButton(liked: Bool, model: TweetViewModel)
-    func didTapShareButton(tweet: TweetViewModel)
+    func didTapCommentButton(owner: TweetModel)
+    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void)
+    func didTapLikeButton(liked: Bool, model: TweetModel)
+    func didTapShareButton(tweet: TweetModel)
     func didTapProfilePicture(user: User)
 }
 ///Individual Tweet Cell
@@ -21,14 +21,14 @@ class TweetTableViewCell: UITableViewCell {
 //MARK: - Properties
     static let identifier = "HomeTweetTableViewCell"
     public weak var delegate: TweetTableViewCellDelegate?
-    private var model: TweetViewModel?
+    private var model: TweetModel?
     private var likesCount = 0
     private var commentsCount = 0
     private var retweetsCount = 0
     private var isCurrentlyLikedByCurrentUser = false
     private var isRetweetedByCurrentUser = false
     private var isCommentedByCurrentUser = false
-    private var currentUser: User { return DatabaseManager.shared.currentUser }
+    private var currentUser: User { return TweetViewModel().currentUser }
     
 //MARK: - SubViews
     private let userNameLabel: CustomLabel = {
@@ -164,7 +164,7 @@ class TweetTableViewCell: UITableViewCell {
     }
     
 //MARK: - Configure
-    public func configure(with model: TweetViewModel){
+    public func configure(with model: TweetModel){
         self.model = model
         configureUserImage(with: model)
 
@@ -196,7 +196,7 @@ class TweetTableViewCell: UITableViewCell {
         }
     }
     
-    private func configureUserImage(with model: TweetViewModel) {
+    private func configureUserImage(with model: TweetModel) {
         Task {
             if let imageUrl = try await TweetViewModel.fetchProfilePictureURL(tweet: model) {
                 userImage.sd_setImage(with: imageUrl, completed: nil)

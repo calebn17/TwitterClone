@@ -7,14 +7,12 @@
 
 import Foundation
 
-struct ProfileHeaderViewModel: Codable {
+struct ProfileHeaderViewModel {
     let userName: String
     let userHandle: String
     var bio: String
     var followers: [String]
     var following: [String]
     var profileImage: URL?
-    
-    var currentUser: User { return DatabaseManager.shared.currentUser }
 }
 

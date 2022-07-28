@@ -119,7 +119,7 @@ final class DatabaseManager {
     
 //MARK: - Tweets
     func insertTweet(
-        with tweet: TweetViewModel,
+        with tweet: TweetModel,
         completion: @escaping (Bool) -> Void) {
         guard let username = UserDefaults.standard.string(forKey: Cache.username) else {return}
         
@@ -139,8 +139,8 @@ final class DatabaseManager {
     }
     
     ///Fetches Tweets from DB
-    func getTweets() async throws -> [TweetViewModel] {
-        let resultTweets: [TweetViewModel] = try await withCheckedThrowingContinuation({ continuation in
+    func getTweets() async throws -> [TweetModel] {
+        let resultTweets: [TweetModel] = try await withCheckedThrowingContinuation({ continuation in
             tweetRef.getDocuments { snapshot, error in
                 guard let tweets = snapshot?.documents,
                       error == nil
@@ -148,7 +148,7 @@ final class DatabaseManager {
                     continuation.resume(throwing: error!)
                     return
                 }
-                let tweetModels = tweets.compactMap({ TweetViewModel(with: $0.data()) })
+                let tweetModels = tweets.compactMap({ TweetModel(with: $0.data()) })
                 continuation.resume(returning: tweetModels)
             }
         })
@@ -160,8 +160,8 @@ final class DatabaseManager {
         }
     }
     
-    func getTweet(with id: String) async throws -> TweetViewModel? {
-        let resultTweet: TweetViewModel? = try await withCheckedThrowingContinuation({ continuation in
+    func getTweet(with id: String) async throws -> TweetModel? {
+        let resultTweet: TweetModel? = try await withCheckedThrowingContinuation({ continuation in
             tweetRef.document(id).getDocument { snapshot, error in
                 guard let tweetData = snapshot?.data(),
                       error == nil
@@ -169,7 +169,7 @@ final class DatabaseManager {
                     continuation.resume(throwing: error!)
                     return
                 }
-                continuation.resume(returning: TweetViewModel(with: tweetData))
+                continuation.resume(returning: TweetModel(with: tweetData))
             }
         })
         return resultTweet
@@ -184,7 +184,7 @@ final class DatabaseManager {
     
     func updateLikeStatus(
         type: LikeStatus,
-        tweet: TweetViewModel,
+        tweet: TweetModel,
         completion: @escaping (Bool) -> Void) {
             
             let ref = tweetRef.document(tweet.tweetId)
@@ -222,7 +222,7 @@ final class DatabaseManager {
     
     func updateRetweetStatus(
         type: RetweetStatus,
-        tweet: TweetViewModel,
+        tweet: TweetModel,
         completion: @escaping (Bool) -> Void) {
             
             let ref = tweetRef.document(tweet.tweetId)
@@ -263,9 +263,9 @@ final class DatabaseManager {
                 return
             }
             
-            var tweet = TweetViewModel(with: data)
+            var tweet = TweetModel(with: data)
             tweet?.comments.append(
-                TweetViewModel(
+                TweetModel(
                     tweetId: UUID().uuidString,
                     username: self?.currentUser.userName ?? "",
                     userHandle: self?.currentUser.userHandle ?? "",
@@ -285,12 +285,12 @@ final class DatabaseManager {
     
 //MARK: - Notifications
    
-    func insertNotifications(of type: NotificationActions, tweet: TweetViewModel, completion: @escaping (Bool) -> Void ) {
+    func insertNotifications(of type: NotificationActions, tweet: TweetModel, completion: @escaping (Bool) -> Void ) {
         let receiverUsername = tweet.username
         let notificationId = UUID().uuidString
         
         let ref = userRef.document(receiverUsername).collection("notifications").document(notificationId)
-        guard let data = NotificationsViewModel(
+        guard let data = NotificationsModel(
             senderUserName: currentUser.userName,
             action: type.rawValue,
             model: tweet,
@@ -305,12 +305,12 @@ final class DatabaseManager {
         }
     }
     
-    func getNotifications() async throws -> [NotificationsViewModel] {
+    func getNotifications() async throws -> [NotificationsModel] {
         let ref = userRef.document(currentUser.userName).collection("notifications")
         
-        let result: [NotificationsViewModel] = try await withCheckedThrowingContinuation({ continuation in
+        let result: [NotificationsModel] = try await withCheckedThrowingContinuation({ continuation in
             ref.getDocuments { snapshot, error in
-                guard let notifications = snapshot?.documents.compactMap({NotificationsViewModel(with: $0.data())}),
+                guard let notifications = snapshot?.documents.compactMap({NotificationsModel(with: $0.data())}),
                       error == nil else {
                           continuation.resume(throwing: error!)
                           return

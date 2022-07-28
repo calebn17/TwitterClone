@@ -14,13 +14,16 @@ public enum NotificationActions: Int {
     case followed = 4
 }
 
-struct NotificationsViewModel: Codable {
+struct NotificationsModel: Codable {
     let senderUserName: String
     let action: NotificationActions.RawValue
-    let model: TweetViewModel
+    let model: TweetModel
     let dateString: String
+}
+
+struct NotificationsViewModel {
     
-    static func fetchData() async throws -> [NotificationsViewModel] {
+    static func fetchData() async throws -> [NotificationsModel] {
         var notifications = try await DatabaseManager.shared.getNotifications()
         
         notifications.sort(by: {
@@ -30,8 +33,8 @@ struct NotificationsViewModel: Codable {
         return notifications
     }
     
-    static func getTweet(viewModel: TweetViewModel) async throws -> TweetViewModel? {
-        let tweet = try await DatabaseManager.shared.getTweet(with: viewModel.tweetId)
+    static func getTweet(model: TweetModel) async throws -> TweetModel? {
+        let tweet = try await DatabaseManager.shared.getTweet(with: model.tweetId)
         return tweet
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class SearchResultsViewController: UIViewController {
 
 //MARK: - Properties
-    private var searchResultTweets: [TweetViewModel] = []
+    private var searchResultTweets: [TweetModel] = []
     
 //MARK: - SubViews
     private let searchResultsTableView: UITableView = {
@@ -40,7 +40,7 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.dataSource = self
     }
     
-    func update(with results: [TweetViewModel]) {
+    func updateUI(with results: [TweetModel]) {
         searchResultTweets = results
         searchResultsTableView.reloadData()
     }

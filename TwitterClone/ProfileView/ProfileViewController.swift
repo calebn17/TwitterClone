@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
         return ProfileViewModel().currentUser == user
     }
     private var profileInfo: ProfileHeaderViewModel?
-    private var tweets = [TweetViewModel]()
+    private var tweets = [TweetModel]()
     weak var coordinator: ProfileCoordinator?
     
 //MARK: - SubViews
@@ -49,7 +49,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        fetchData()
+        updateUI()
         configureTableView()
         configureNavBar()
         configureHeaderView()
@@ -58,7 +58,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fetchData()
+        updateUI()
     }
     
     override func viewDidLayoutSubviews() {
@@ -88,7 +88,7 @@ class ProfileViewController: UIViewController {
     }
     
 //MARK: - Networking
-    private func fetchData() {
+    private func updateUI() {
         Task {
             do {
                 // Fetching user profile info
@@ -165,7 +165,7 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
                 if !success {
                     print("Something went wrong when updating relationship")
                 }
-                self?.fetchData()
+                self?.updateUI()
             }
         }
     }
@@ -179,7 +179,7 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
                 if !success {
                     print("Something went wrong when updating bio")
                 }
-                self?.fetchData()
+                self?.updateUI()
             }
         }
     }
@@ -198,7 +198,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         ProfileViewModel.uploadProfilePicture(user: user, data: image.pngData()) {[weak self] success in
             if success {
                 self?.tweets = []
-                self?.fetchData()
+                self?.updateUI()
             }
         }
     }
