@@ -28,9 +28,7 @@ class TweetTableViewCell: UITableViewCell {
     private var isCurrentlyLikedByCurrentUser = false
     private var isRetweetedByCurrentUser = false
     private var isCommentedByCurrentUser = false
-    private var currentUser: User {
-        return DatabaseManager.shared.currentUser
-    }
+    private var currentUser: User { return DatabaseManager.shared.currentUser }
     
 //MARK: - SubViews
     private let userNameLabel: CustomLabel = {

@@ -53,7 +53,6 @@ final class HomeViewController: UIViewController {
 //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //let tabBarHeight = tabBarController?.tabBar.height
         self.tabBarController?.tabBar.isTranslucent = false
         view.backgroundColor = .systemBackground
         configureNavbar()
@@ -115,18 +114,19 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell
-        else {return UITableViewCell()}
-                
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: TweetTableViewCell.identifier,
+            for: indexPath
+        ) as? TweetTableViewCell else {
+            return UITableViewCell()
+        }
         cell.delegate = self
         cell.configure(with: tweetResponses[indexPath.row])
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         coordinator?.tappedOnTweetCell(tweet: tweetResponses[indexPath.row])
     }
 }
@@ -152,14 +152,10 @@ extension HomeViewController: TweetTableViewCellDelegate {
         })
     }
     
-    /// User tapped the like button on the tweet
-    /// - Parameters:
-    ///   - liked: user tapped on the button to like (was in the unlike state before being tapped)
-    ///   - model: TweetModel object
     func didTapLikeButton(liked: Bool, model: TweetViewModel) {
         HomeVCViewModel.tappedLikeButton(liked: liked, model: model) { success in
             if !success {
-                return
+                print("Something went wrong went liking")
             }
         }
     }

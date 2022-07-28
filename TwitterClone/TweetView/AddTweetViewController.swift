@@ -75,38 +75,7 @@ final class AddTweetViewController: UIViewController {
     }
  
 //MARK: - Configure
-    private func addConstraints() {
-        let userImageViewConstraints = [
-            userImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            userImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            userImageView.widthAnchor.constraint(equalToConstant: K.userImageSize),
-            userImageView.heightAnchor.constraint(equalToConstant: K.userImageSize)
-        ]
-        let chooseAudiencebuttonConstraints = [
-            chooseAudienceButton.leadingAnchor.constraint(equalTo: userImageView.trailingAnchor, constant: 10),
-            chooseAudienceButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            chooseAudienceButton.heightAnchor.constraint(equalToConstant: K.userImageSize/1.5)
-        ]
-        let tweetTextFieldConstraints = [
-            tweetTextField.leadingAnchor.constraint(equalTo: chooseAudienceButton.leadingAnchor),
-            tweetTextField.topAnchor.constraint(equalTo: chooseAudienceButton.bottomAnchor, constant: 10),
-            tweetTextField.widthAnchor.constraint(equalToConstant: 350)
-        ]
-        let tweetPublishButtonConstraints = [
-            tweetPublishButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            tweetPublishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
-        ]
-        let cancelButtonConstraints = [
-            cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
-        ]
-        
-        NSLayoutConstraint.activate(userImageViewConstraints)
-        NSLayoutConstraint.activate(chooseAudiencebuttonConstraints)
-        NSLayoutConstraint.activate(tweetTextFieldConstraints)
-        NSLayoutConstraint.activate(tweetPublishButtonConstraints)
-        NSLayoutConstraint.activate(cancelButtonConstraints)
-    }
+    
     
     private func addSubViews() {
         view.addSubview(userImageView)
@@ -167,7 +136,40 @@ extension AddTweetViewController: UITextFieldDelegate {
         tweetPublishButton.backgroundColor = .systemCyan
         tweetPublishButton.isEnabled = true
     }
-    
-    
-    
+}
+
+//MARK: - Constraints
+extension AddTweetViewController {
+    private func addConstraints() {
+        let userImageViewConstraints = [
+            userImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            userImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            userImageView.widthAnchor.constraint(equalToConstant: K.userImageSize),
+            userImageView.heightAnchor.constraint(equalToConstant: K.userImageSize)
+        ]
+        let chooseAudiencebuttonConstraints = [
+            chooseAudienceButton.leadingAnchor.constraint(equalTo: userImageView.trailingAnchor, constant: 10),
+            chooseAudienceButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            chooseAudienceButton.heightAnchor.constraint(equalToConstant: K.userImageSize/1.5)
+        ]
+        let tweetTextFieldConstraints = [
+            tweetTextField.leadingAnchor.constraint(equalTo: chooseAudienceButton.leadingAnchor),
+            tweetTextField.topAnchor.constraint(equalTo: chooseAudienceButton.bottomAnchor, constant: 10),
+            tweetTextField.widthAnchor.constraint(equalToConstant: 350)
+        ]
+        let tweetPublishButtonConstraints = [
+            tweetPublishButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            tweetPublishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+        ]
+        let cancelButtonConstraints = [
+            cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
+        ]
+        
+        NSLayoutConstraint.activate(userImageViewConstraints)
+        NSLayoutConstraint.activate(chooseAudiencebuttonConstraints)
+        NSLayoutConstraint.activate(tweetTextFieldConstraints)
+        NSLayoutConstraint.activate(tweetPublishButtonConstraints)
+        NSLayoutConstraint.activate(cancelButtonConstraints)
+    }
 }

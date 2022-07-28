@@ -13,15 +13,14 @@ final class SettingsViewController: UIViewController {
     
  //MARK: - Properties
     weak var coordinator: SettingsCoordinator?
-    
     struct Constants {
         static let rowHeight: CGFloat = 70
     }
-    private var settingsModel: [SettingsViewModel] {
+    private var settingsModel: [SettingsModel] {
         return SettingsViewModel.configureSettingsSections()
     }
     private var currentUser: User {
-        return DatabaseManager.shared.currentUser
+        return SettingsViewModel().currentUser
     }
     
 //MARK: - SubViews
@@ -62,7 +61,6 @@ final class SettingsViewController: UIViewController {
         view.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         fetchHeaderViewData()
-        
     }
     
     @objc private func fetchHeaderViewData() {
@@ -78,15 +76,6 @@ final class SettingsViewController: UIViewController {
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         settingsTableView.separatorColor = UIColor.clear
-        guard let headerView = headerView else {return}
-        
-        let settingsTableViewConstraints = [
-            settingsTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
-        ]
-        NSLayoutConstraint.activate(settingsTableViewConstraints)
     }
     
 //MARK: - Actions
@@ -112,10 +101,6 @@ final class SettingsViewController: UIViewController {
 //MARK: - TableView Methods
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settingsModel.count
@@ -192,6 +177,13 @@ extension SettingsViewController {
             headerView.heightAnchor.constraint(equalToConstant: 150),
             headerView.widthAnchor.constraint(equalToConstant: view.width)
         ]
+        let settingsTableViewConstraints = [
+            settingsTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
+        ]
+        NSLayoutConstraint.activate(settingsTableViewConstraints)
         NSLayoutConstraint.activate(headerViewConstraints)
     }
 }

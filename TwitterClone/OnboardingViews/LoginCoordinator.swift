@@ -29,6 +29,7 @@ class LoginCoordinator: NSObject, Coordinator {
     }
     
     func start() {
+        navigationController.delegate = self
         let vc = LoginViewController()
         vc.coordinator = self
         vc.modalPresentationStyle = .fullScreen

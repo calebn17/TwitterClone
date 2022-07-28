@@ -7,25 +7,30 @@
 
 import Foundation
 
-struct SettingsViewModel {
+struct SettingsModel {
     let title: String
     let icon: String?
+}
+
+struct SettingsViewModel {
     
-    static func configureSettingsSections() -> [SettingsViewModel] {
-        var settingsModel = [SettingsViewModel]()
+    var currentUser: User { return DatabaseManager.shared.currentUser }
+    
+    static func configureSettingsSections() -> [SettingsModel] {
+        var settingsModel = [SettingsModel]()
         
-        settingsModel.append(SettingsViewModel(title: "Profile", icon: "person"))
-        settingsModel.append(SettingsViewModel(title: "Lists", icon: "list.bullet.rectangle"))
-        settingsModel.append(SettingsViewModel(title: "Topics", icon: "text.bubble"))
-        settingsModel.append(SettingsViewModel(title: "Bookmarks", icon: "bookmark"))
-        settingsModel.append(SettingsViewModel(title: "TwitterBlue", icon: "b.square"))
-        settingsModel.append(SettingsViewModel(title: "Moments", icon: "bolt"))
-        settingsModel.append(SettingsViewModel(title: "Purchases", icon: "cart"))
-        settingsModel.append(SettingsViewModel(title: "Monetization", icon: "dollarsign.square"))
-        settingsModel.append(SettingsViewModel(title: "Twitter for Professionals", icon: "airplane"))
-        settingsModel.append(SettingsViewModel(title: "Settings and privacy", icon: nil))
-        settingsModel.append(SettingsViewModel(title: "Help Center", icon: nil))
-        settingsModel.append(SettingsViewModel(title: "Sign Out", icon: nil))
+        settingsModel.append(SettingsModel(title: "Profile", icon: "person"))
+        settingsModel.append(SettingsModel(title: "Lists", icon: "list.bullet.rectangle"))
+        settingsModel.append(SettingsModel(title: "Topics", icon: "text.bubble"))
+        settingsModel.append(SettingsModel(title: "Bookmarks", icon: "bookmark"))
+        settingsModel.append(SettingsModel(title: "TwitterBlue", icon: "b.square"))
+        settingsModel.append(SettingsModel(title: "Moments", icon: "bolt"))
+        settingsModel.append(SettingsModel(title: "Purchases", icon: "cart"))
+        settingsModel.append(SettingsModel(title: "Monetization", icon: "dollarsign.square"))
+        settingsModel.append(SettingsModel(title: "Twitter for Professionals", icon: "airplane"))
+        settingsModel.append(SettingsModel(title: "Settings and privacy", icon: nil))
+        settingsModel.append(SettingsModel(title: "Help Center", icon: nil))
+        settingsModel.append(SettingsModel(title: "Sign Out", icon: nil))
         
         return settingsModel
     }

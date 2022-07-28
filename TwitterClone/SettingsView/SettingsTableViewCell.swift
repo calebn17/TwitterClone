@@ -62,7 +62,7 @@ class SettingsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(labelConstraints)
     }
     
-    public func configure(with model: SettingsViewModel) {
+    public func configure(with model: SettingsModel) {
         label.text = model.title
         iconImageView.image = UIImage(systemName: model.icon ?? "")
         

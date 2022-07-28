@@ -18,6 +18,7 @@ class HomeCoordinator: NSObject, Coordinator {
     }
     
     func start() {
+        navigationController.delegate = self
         let vc = HomeViewController()
         vc.coordinator = self
         vc.navigationItem.largeTitleDisplayMode = .never

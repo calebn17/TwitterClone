@@ -53,7 +53,8 @@ final class NotificationsViewController: UIViewController {
         configureNavbar()
         configureHeaderView()
         configureTableView()
-        fetchData()
+        configureConstraints()
+        updateUI()
         configureEmptyStateView()
         emptyStateCheck()
         configurePullToRefresh()
@@ -65,11 +66,16 @@ final class NotificationsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateUI),
+            name: Notification.Name("login"),
+            object: nil
+        )
     }
 
 //MARK: - Networking
-    @objc private func fetchData() {
+    @objc private func updateUI() {
         //DB Call
         Task {
             do {
@@ -89,7 +95,7 @@ final class NotificationsViewController: UIViewController {
     
     @objc private func didPullToRefresh(_ sender: UIRefreshControl) {
         sender.beginRefreshing()
-        fetchData()
+        updateUI()
         sender.endRefreshing()
     }
 }
@@ -128,55 +134,42 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 extension NotificationsViewController: NotificationsHeaderViewDelegate {
     func tappedAllButton() {
         // Show all notifications
-        
     }
     
     func tappedMentionsButton() {
         // Show only mention notifications
-        
     }
 }
 
 //MARK: - Configure/Constraints
 extension NotificationsViewController {
     private func configureNavbar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .done, target: self, action: nil)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "person"),
+            style: .done,
+            target: self,
+            action: nil
+        )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "gear"),
+            style: .done,
+            target: self,
+            action: nil
+        )
     }
 
     private func configureHeaderView() {
-        //With the way I'm doing things, I need to initialize the headerView with a frame (x,y are not super important because I'm using AutoLayout but I do need to set the width and height)
-        //If I don't init it with a frame, it will show as a generic view with none of it's defined subviews
         headerView = NotificationsHeaderView(frame: CGRect(x: 0, y: 0, width: view.width, height: 50))
         guard let headerView = headerView else {return}
         view.addSubview(headerView)
         headerView.delegate = self
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let headerViewConstraints = [
-            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 100),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 50),
-            headerView.widthAnchor.constraint(equalToConstant: view.width)
-        ]
-        NSLayoutConstraint.activate(headerViewConstraints)
     }
     
     private func configureTableView() {
         view.addSubview(notificationsTableView)
         notificationsTableView.delegate = self
         notificationsTableView.dataSource = self
-        guard let headerView = headerView else {return}
-        
-        //Seems like in order to keep the tableView from overlapping the tabbar, I need to include a safeAreaInset value to either the top or bottom anchor constraint (in the constant)
-        let notificationsTableViewConstraints = [
-            notificationsTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            notificationsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            notificationsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            notificationsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
-        ]
-        NSLayoutConstraint.activate(notificationsTableViewConstraints)
     }
     
     private func configureEmptyStateView() {
@@ -202,6 +195,26 @@ extension NotificationsViewController {
         let control = UIRefreshControl()
         control.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         notificationsTableView.refreshControl = control
+    }
+    
+    private func configureConstraints() {
+        guard let headerView = headerView else {return}
+        //Seems like in order to keep the tableView from overlapping the tabbar, I need to include a safeAreaInset value to either the top or bottom anchor constraint (in the constant)
+        let notificationsTableViewConstraints = [
+            notificationsTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            notificationsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            notificationsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            notificationsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom)
+        ]
+        let headerViewConstraints = [
+            headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top + 100),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 50),
+            headerView.widthAnchor.constraint(equalToConstant: view.width)
+        ]
+        NSLayoutConstraint.activate(headerViewConstraints)
+        NSLayoutConstraint.activate(notificationsTableViewConstraints)
     }
 }
 
