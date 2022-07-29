@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Notifications_All_TableViewCell: UITableViewCell {
+final class Notifications_All_TableViewCell: UITableViewCell {
 
 //MARK: - Setup
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsAndPrivacyViewController: UIViewController {
+final class SettingsAndPrivacyViewController: UIViewController {
     
 //MARK: - Properties
     private var models: [SettingsAndPrivacyViewModel] {

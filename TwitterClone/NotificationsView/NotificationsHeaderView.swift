@@ -12,7 +12,7 @@ protocol NotificationsHeaderViewDelegate: AnyObject {
     func tappedMentionsButton()
 }
 
-class NotificationsHeaderView: UIView {
+final class NotificationsHeaderView: UIView {
     
 //MARK: - Setup
     

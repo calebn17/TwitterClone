@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SafariServices
 
-class SettingsCoordinator: NSObject, Coordinator {
+final class SettingsCoordinator: NSObject, Coordinator {
     var childCoordinators: [Coordinator] = []
     
     var navigationController: UINavigationController

@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-class ProfileCoordinator: Coordinator {
+final class ProfileCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-    var user: User
+    private var user: User
     
     init(navigationController: UINavigationController, user: User ){
         self.navigationController = navigationController

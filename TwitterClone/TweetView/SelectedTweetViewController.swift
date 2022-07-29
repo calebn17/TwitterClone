@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SelectedTweetViewController: UIViewController {
+final class SelectedTweetViewController: UIViewController {
     
 //MARK: - Properties
     private var tweet: TweetModel

@@ -12,7 +12,7 @@ protocol SettingsHeaderViewDelegate: AnyObject {
     func didTapAccountsButton()
 }
 
-class SettingsHeaderView: UIView {
+final class SettingsHeaderView: UIView {
 
 //MARK: - Properties
     

@@ -13,7 +13,7 @@ protocol ProfileHeaderViewDelegate: AnyObject {
     func didTapOnProfilePicture()
 }
 
-class ProfileHeaderView: UIView {
+final class ProfileHeaderView: UIView {
 
 //MARK: - Properties
     weak var delegate: ProfileHeaderViewDelegate?

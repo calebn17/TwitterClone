@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsAndPrivacyTableViewCell: UITableViewCell {
+final class SettingsAndPrivacyTableViewCell: UITableViewCell {
     
 //MARK: - Properties
     

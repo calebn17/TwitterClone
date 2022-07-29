@@ -12,7 +12,7 @@ protocol EditProfileViewControllerDelegate: AnyObject {
     func tappedSaveButton(bio: String)
 }
 
-class EditProfileViewController: UIViewController {
+final class EditProfileViewController: UIViewController {
 
 //MARK: - Properties
     weak var delegate: EditProfileViewControllerDelegate?

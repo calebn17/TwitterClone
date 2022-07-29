@@ -8,7 +8,7 @@
 import UIKit
 
 ///Search Results Screen
-class SearchResultsViewController: UIViewController {
+final class SearchResultsViewController: UIViewController {
 
 //MARK: - Properties
     private var searchResultTweets: [TweetModel] = []

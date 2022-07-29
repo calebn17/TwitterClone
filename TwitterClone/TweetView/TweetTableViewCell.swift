@@ -16,7 +16,7 @@ protocol TweetTableViewCellDelegate: AnyObject {
     func didTapProfilePicture(user: User)
 }
 ///Individual Tweet Cell
-class TweetTableViewCell: UITableViewCell {
+final class TweetTableViewCell: UITableViewCell {
 
 //MARK: - Properties
     static let identifier = "HomeTweetTableViewCell"

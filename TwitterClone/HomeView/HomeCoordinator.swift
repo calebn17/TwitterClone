@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeCoordinator: NSObject, Coordinator {
+final class HomeCoordinator: NSObject, Coordinator {
     var childCoordinators = [Coordinator]()
     
     var navigationController: UINavigationController

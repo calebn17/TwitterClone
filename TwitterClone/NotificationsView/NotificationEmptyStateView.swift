@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotificationEmptyStateView: UIView {
+final class NotificationEmptyStateView: UIView {
 
 //MARK: - Setup
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Notifications_Mentions_TableViewCell: UITableViewCell {
+final class Notifications_Mentions_TableViewCell: UITableViewCell {
 
     static let identifier = "Notifications_Mentions_TableViewCell"
     

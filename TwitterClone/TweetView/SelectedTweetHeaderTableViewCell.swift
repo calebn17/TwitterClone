@@ -14,7 +14,7 @@ protocol SelectedTweetHeaderTableViewCellDelegate: AnyObject {
     func didTapHeaderShareButton()
 }
 
-class SelectedTweetHeaderTableViewCell: UITableViewCell {
+final class SelectedTweetHeaderTableViewCell: UITableViewCell {
 
 //MARK: - Properties
     

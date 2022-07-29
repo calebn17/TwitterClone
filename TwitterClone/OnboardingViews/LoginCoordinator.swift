@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class LoginCoordinator: NSObject, Coordinator {
+final class LoginCoordinator: NSObject, Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var sender: AnyObject

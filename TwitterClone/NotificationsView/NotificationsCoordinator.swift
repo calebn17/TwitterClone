@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NotificationsCoordinator: Coordinator {
+final class NotificationsCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     
     var navigationController: UINavigationController
