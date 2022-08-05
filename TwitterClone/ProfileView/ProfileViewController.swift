@@ -154,12 +154,12 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: - HeaderView Methods
 extension ProfileViewController: ProfileHeaderViewDelegate {
-    func didTapOnProfilePicture() {
+    func profileHeaderViewDidTapOnProfilePicture() {
         guard isCurrentUser else {return}
         coordinator?.tappedOnProfilePicture(sender: self)
     }
     
-    func didTapOnFollowButton(didFollow: Bool) {
+    func profileHeaderViewDidTapOnFollowButton(didFollow: Bool) {
         ProfileViewModel.updateRelationship(targetUser: user, didFollow: didFollow) {[weak self] success in
             DispatchQueue.main.async {
                 if !success {
@@ -173,14 +173,10 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
 
 //MARK: - EditProfileVC Methods
 extension ProfileViewController: EditProfileViewControllerDelegate {
-    func tappedSaveButton(bio: String) {
-        ProfileViewModel.setProfileBio(bio: bio) {[weak self] success in
-            DispatchQueue.main.async {
-                if !success {
-                    print("Something went wrong when updating bio")
-                }
-                self?.updateUI()
-            }
+    func editProfileViewControllerTappedSaveButton(bio: String) {
+        Task {
+            try await ProfileViewModel.setProfileBio(bio: bio)
+            self.updateUI()
         }
     }
 }
@@ -195,11 +191,10 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         picker.dismiss(animated: true, completion: nil)
         
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
-        ProfileViewModel.uploadProfilePicture(user: user, data: image.pngData()) {[weak self] success in
-            if success {
-                self?.tweets = []
-                self?.updateUI()
-            }
+        Task {
+            try await ProfileViewModel.uploadProfilePicture(user: user, data: image.pngData())
+            self.tweets = []
+            self.updateUI()
         }
     }
 }

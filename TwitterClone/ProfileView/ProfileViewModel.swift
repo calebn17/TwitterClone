@@ -38,14 +38,8 @@ struct ProfileViewModel {
         }
     }
     
-    static func setProfileBio(bio: String, completion: @escaping (Bool) -> Void) {
-        DatabaseManager.shared.insertUserBio(bio: bio) { success in
-            if !success {
-                print("Error when inserting profile info into database")
-                completion(false)
-            }
-            completion(true)
-        }
+    static func setProfileBio(bio: String) async throws {
+        try await DatabaseManager.shared.insertUserBio(bio: bio)
     }
    
     static func getProfileTweets(user: User) async throws -> [TweetModel] {
@@ -74,9 +68,7 @@ struct ProfileViewModel {
         }
     }
     
-    static func uploadProfilePicture(user: User, data: Data?, completion: @escaping (Bool) -> Void) {
-        StorageManager.shared.uploadProfilePicture(user: user, data: data) { success in
-            completion(success == true)
-        }
+    static func uploadProfilePicture(user: User, data: Data?) async throws {
+        try await StorageManager.shared.uploadProfilePicture(user: user, data: data)
     }
 }

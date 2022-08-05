@@ -91,7 +91,7 @@ final class LoginViewController: UIViewController {
  
 //MARK: - Actions
     
-    @objc private func didTapLoginButton(){
+    @objc private func didTapLoginButton() {
         
         //dissmiss the keyboard. making sure both fields are not focused on with the cursor
         passwordField.resignFirstResponder()
@@ -105,26 +105,19 @@ final class LoginViewController: UIViewController {
               !password.trimmingCharacters(in: .whitespaces).isEmpty,
               password.count >= 4 else {return}
         
-        //login functionality
-        AuthManager.shared.loginUser(email: email.lowercased(), password: password) {[weak self] success in
-            guard let strongSelf = self else {return}
-            DispatchQueue.main.async {
-                if success {
-                    self?.coordinator?.successfulLogin(sender: strongSelf)
-                }
-                else {
-                    //error occured
-                    self?.coordinator?.presentLoginErrorAlert(sender: strongSelf)
-                    AuthManager.shared.logOut { success in
-                        if !success {
-                            print("couldnt log out")
-                        }
-                    }
-                }
+        Task {
+            do {
+                try await AuthManager.shared.loginUser(email: email.lowercased(), password: password)
+                self.coordinator?.successfulLogin(sender: self)
+            }
+            catch {
+                //error occured
+                self.coordinator?.presentLoginErrorAlert(sender: self)
+                try await AuthManager.shared.logOut()
             }
         }
     }
-    
+
     @objc private func didTapRegisterButton() {
         coordinator?.tappedOnRegisterButton(sender: self)
     }

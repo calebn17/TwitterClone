@@ -9,8 +9,8 @@ import UIKit
 import SDWebImage
 
 protocol ProfileHeaderViewDelegate: AnyObject {
-    func didTapOnFollowButton(didFollow: Bool)
-    func didTapOnProfilePicture()
+    func profileHeaderViewDidTapOnFollowButton(didFollow: Bool)
+    func profileHeaderViewDidTapOnProfilePicture()
 }
 
 final class ProfileHeaderView: UIView {
@@ -172,7 +172,7 @@ final class ProfileHeaderView: UIView {
 //MARK: - Actions
     
     @objc private func didTapProfilePicture() {
-        delegate?.didTapOnProfilePicture()
+        delegate?.profileHeaderViewDidTapOnProfilePicture()
     }
     
     @objc private func didTapFollowButton() {
@@ -183,12 +183,12 @@ final class ProfileHeaderView: UIView {
             // Already following -> unfollow
             print("unfollowing")
             configureFollowButtonState(showFollow: true)
-            delegate?.didTapOnFollowButton(didFollow: false)
+            delegate?.profileHeaderViewDidTapOnFollowButton(didFollow: false)
         } else {
             // Not following -> follow
             print("following")
             configureFollowButtonState(showFollow: false)
-            delegate?.didTapOnFollowButton(didFollow: true)
+            delegate?.profileHeaderViewDidTapOnFollowButton(didFollow: true)
         }
     }
     

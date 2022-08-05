@@ -9,7 +9,7 @@ import UIKit
 
 //MARK: - Protocol
 protocol EditProfileViewControllerDelegate: AnyObject {
-    func tappedSaveButton(bio: String)
+    func editProfileViewControllerTappedSaveButton(bio: String)
 }
 
 final class EditProfileViewController: UIViewController {
@@ -76,7 +76,7 @@ final class EditProfileViewController: UIViewController {
               !textView.text.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
-        delegate?.tappedSaveButton(bio: bio)
+        delegate?.editProfileViewControllerTappedSaveButton(bio: bio)
     }
 }
 

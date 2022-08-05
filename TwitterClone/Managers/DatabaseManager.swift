@@ -39,34 +39,26 @@ final class DatabaseManager {
     /// - Parameters
     /// - email: String representing email
     /// - username: String representing username
-    func canCreateNewUser(with newUser: User, completion: (Bool) -> Void) {
-        completion(true)
+    func canCreateNewUser(with newUser: User) async throws -> Bool {
+        return true
     }
     
     /// Inserts user to DB
     /// - Parameters
     /// - newUser: new user's User object
-    func insertUser(
-        newUser: User,
-        completion: @escaping (Bool) -> Void) {
-            
-            let newUserInfo = UserInfo(
-                id: nil,
-                userName: newUser.userName,
-                userHandle: newUser.userHandle,
-                userEmail: newUser.userEmail,
-                bio: " ",
-                followers: [],
-                following: []
-            )
-            guard let data = newUserInfo.asDictionary() else {
-                completion(false)
-                return
-            }
-            userRef.document(newUser.userName).setData(data) { error in
-                completion(error == nil)
-            }
-        }
+    func insertUser(newUser: User) async throws {
+        let newUserInfo = UserInfo(
+            id: nil,
+            userName: newUser.userName,
+            userHandle: newUser.userHandle,
+            userEmail: newUser.userEmail,
+            bio: " ",
+            followers: [],
+            following: []
+        )
+        guard let data = newUserInfo.asDictionary() else {return}
+        try await userRef.document(newUser.userName).setData(data)
+    }
     
     ///Fetches a User's username from the DB
     ///- Parameters
@@ -101,20 +93,11 @@ final class DatabaseManager {
         return result
     }
     
-    func insertUserBio(bio: String, completion: @escaping (Bool) -> Void) {
-        Task {
-            do {
-                var userInfo = try await getUserInfo(user: currentUser)
-                userInfo.bio = bio
-                guard let data = userInfo.asDictionary() else {
-                    completion(false)
-                    return
-                }
-                userRef.document(currentUser.userName).setData(data) { error in
-                    completion(error == nil)
-                }
-            }
-        }
+    func insertUserBio(bio: String) async throws {
+        var userInfo = try await getUserInfo(user: currentUser)
+        userInfo.bio = bio
+        guard let data = userInfo.asDictionary() else {return}
+        try await userRef.document(currentUser.userName).setData(data)
     }
     
 //MARK: - Tweets

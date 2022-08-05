@@ -140,27 +140,11 @@ final class RegisterViewController: UIViewController {
             userHandle: userHandle.lowercased(),
             userEmail: email.lowercased()
         )
-            
-        AuthManager.shared.registerNewUser(newUser: newUser, password: password) {[weak self] registered in
-            DispatchQueue.main.async {
-                if registered {
-                    guard let strongSelf = self else {return}
-                    self?.coordinator?.registerSuccessfully(sender: strongSelf)
-                    
-                }
-                else {
-                    //something failed
-                    print("failed to register")
-                }
-            }
+        Task {
+            try await OnboardingViewModel.registerNewUser(user: newUser, password: password, data: image.pngData())
+            self.coordinator?.registerSuccessfully(sender: self)
         }
-        StorageManager.shared.uploadProfilePicture(user: newUser, data: image.pngData()) {success in
-            DispatchQueue.main.async {
-                if !success {
-                    print("Something went wrong when uploading profile picture")
-                }
-            }
-        }
+        
     }
     
     @objc private func didTapCloseButton() {

@@ -7,7 +7,6 @@
 
 import Foundation
 import FirebaseStorage
-import Foundation
 
 public class StorageManager {
     
@@ -16,16 +15,10 @@ public class StorageManager {
     private init() {}
     
 //MARK: - Profile Picture
-    
-    func uploadProfilePicture(user: User, data: Data?, completion: @escaping (Bool) -> Void) {
-        guard let data = data else {
-            completion(false)
-            return
-        }
-        storage.child("\(user.userName)/profile_picture.png").putData(data, metadata: nil) { _, error in
-            completion(error == nil)
-        }
-    }
+
+    func uploadProfilePicture(user: User, data: Data?) async throws {
+        guard let data = data else {return}
+        storage.child("\(user.userName)/profile_picture.png").putData(data)    }
     
     func downloadProfilePicture(user: User) async throws -> URL? {
         let url: URL? = try await storage.child("\(user.userName)/profile_picture.png").downloadURL()

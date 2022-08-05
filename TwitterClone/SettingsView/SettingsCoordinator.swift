@@ -58,29 +58,18 @@ final class SettingsCoordinator: NSObject, Coordinator {
     func tappedSignOut(sender: SettingsViewController) {
         let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
-            AuthManager.shared.logOut {[weak sender] success in
-                DispatchQueue.main.async { [weak self] in
-                    if success {
-                        guard let strongSender = sender,
-                              let navC = self?.navigationController else {return}
-                        let child = LoginCoordinator(
-                            navigationController: navC,
-                            sender: strongSender
-                        )
-                        self?.childCoordinators.append(child)
-                        child.start()
-                    }
-                    else {
-                        //error when logging out
-                        fatalError("Could not log out user")
-                    }
+            Task {
+                try await AuthManager.shared.logOut()
+                let child = LoginCoordinator(navigationController: self.navigationController, sender: sender)
+                self.childCoordinators.append(child)
+                DispatchQueue.main.async {
+                    child.start()
                 }
             }
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         sender.present(alert, animated: true, completion: nil)
     }
-    
 }
 
 extension SettingsCoordinator: UINavigationControllerDelegate {
