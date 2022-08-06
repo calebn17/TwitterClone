@@ -101,24 +101,11 @@ final class DatabaseManager {
     }
     
 //MARK: - Tweets
-    func insertTweet(
-        with tweet: TweetModel,
-        completion: @escaping (Bool) -> Void) {
+    func insertTweet(with tweet: TweetModel) async throws {
         guard let username = UserDefaults.standard.string(forKey: Cache.username) else {return}
-        
-        //inserting tweet id in the tweet's user's metadata
-        guard let data = tweet.asDictionary() else {
-            completion(false)
-            return
-        }
-        userRef.document(username).collection("tweets").document(tweet.tweetId).setData(data) { error in
-            completion(error == nil)
-        }
-        
-        //inserting tweet in the tweet collection
-        tweetRef.document(tweet.tweetId).setData(data) { error in
-            completion(error == nil)
-        }
+        guard let data = tweet.asDictionary() else {return}
+        try await userRef.document(username).collection("tweets").document(tweet.tweetId).setData(data)
+        try await tweetRef.document(tweet.tweetId).setData(data)
     }
     
     ///Fetches Tweets from DB
@@ -165,37 +152,26 @@ final class DatabaseManager {
         case unliked
     }
     
-    func updateLikeStatus(
-        type: LikeStatus,
-        tweet: TweetModel,
-        completion: @escaping (Bool) -> Void) {
-            
-            let ref = tweetRef.document(tweet.tweetId)
-            
-            Task {
-                do {
-                    guard var tweetModel = try await getTweet(with: tweet.tweetId) else {
-                        completion(false)
-                        return
-                    }
-                    switch type {
-                    case .liked:
-                        if !tweetModel.likers.contains(currentUser.userName) {
-                            tweetModel.likers.append(currentUser.userName)
-                        }
-                    case .unliked:
-                        if tweetModel.likers.contains(currentUser.userName) {
-                            tweetModel.likers.removeAll(where: {$0 == currentUser.userName})
-                        }
-                    }
-                    try await ref.setData(tweetModel.asDictionary() ?? [:] )
-                    completion(true)
+    func updateLikeStatus(type: LikeStatus, tweet: TweetModel) async throws{
+        let ref = tweetRef.document(tweet.tweetId)
+        do {
+            guard var tweetModel = try await getTweet(with: tweet.tweetId) else {return}
+            switch type {
+            case .liked:
+                if !tweetModel.likers.contains(currentUser.userName) {
+                    tweetModel.likers.append(currentUser.userName)
                 }
-                catch {
-                    print("Could not update like status: \(error.localizedDescription)")
+            case .unliked:
+                if tweetModel.likers.contains(currentUser.userName) {
+                    tweetModel.likers.removeAll(where: {$0 == currentUser.userName})
                 }
             }
+            try await ref.setData(tweetModel.asDictionary() ?? [:] )
         }
+        catch {
+            print("Could not update like status: \(error.localizedDescription)")
+        }
+    }
 
 //MARK: - Retweet
     enum RetweetStatus {
@@ -203,72 +179,54 @@ final class DatabaseManager {
         case unRetweeted
     }
     
-    func updateRetweetStatus(
-        type: RetweetStatus,
-        tweet: TweetModel,
-        completion: @escaping (Bool) -> Void) {
-            
-            let ref = tweetRef.document(tweet.tweetId)
-            
-            Task {
-                do {
-                    guard var tweetModel = try await getTweet(with: tweet.tweetId) else {
-                        completion(false)
-                        return
-                    }
-                    switch type {
-                    case .retweeted:
-                        if !tweetModel.retweeters.contains(currentUser.userName) {
-                            tweetModel.retweeters.append(currentUser.userName)
-                        }
-                    case .unRetweeted:
-                        if tweetModel.retweeters.contains(currentUser.userName) {
-                            tweetModel.retweeters.removeAll(where: {$0 == currentUser.userName})
-                        }
-                    }
-                    try await ref.setData(tweetModel.asDictionary() ?? [:] )
-                    completion(true)
+    func updateRetweetStatus(type: RetweetStatus, tweet: TweetModel) async throws {
+        let ref = tweetRef.document(tweet.tweetId)
+        do {
+            guard var tweetModel = try await getTweet(with: tweet.tweetId) else {return}
+            switch type {
+            case .retweeted:
+                if !tweetModel.retweeters.contains(currentUser.userName) {
+                    tweetModel.retweeters.append(currentUser.userName)
                 }
-                catch {
-                    print("Could not update retweet status: \(error.localizedDescription)")
+            case .unRetweeted:
+                if tweetModel.retweeters.contains(currentUser.userName) {
+                    tweetModel.retweeters.removeAll(where: {$0 == currentUser.userName})
                 }
             }
+            try await ref.setData(tweetModel.asDictionary() ?? [:] )
         }
+        catch {
+            print("Could not update retweet status: \(error.localizedDescription)")
+        }
+    }
     
 //MARK: - Comment
-    func insertComment(tweetId: String, text: String, completion: @escaping (Bool) -> Void) {
+    func insertComment(tweetId: String, text: String) async throws {
         let ref = tweetRef.document(tweetId)
-        ref.getDocument { [weak self] snapshot, error in
-            guard let data = snapshot?.data(),
-                  error == nil
-            else {
-                completion(false)
-                return
-            }
-            
-            var tweet = TweetModel(with: data)
-            tweet?.comments.append(
-                TweetModel(
-                    tweetId: UUID().uuidString,
-                    username: self?.currentUser.userName ?? "",
-                    userHandle: self?.currentUser.userHandle ?? "",
-                    userEmail: self?.currentUser.userEmail ?? "",
-                    userAvatar: nil,
-                    text: text,
-                    likers: [],
-                    retweeters: [],
-                    comments: [],
-                    dateCreatedString: String.date(from: Date())
-                )
+        let snapshot = try await ref.getDocument()
+        guard let data = snapshot.data() else {return}
+        
+        var tweet = TweetModel(with: data)
+        tweet?.comments.append(
+            TweetModel(
+                tweetId: UUID().uuidString,
+                username: currentUser.userName,
+                userHandle: currentUser.userHandle,
+                userEmail: currentUser.userEmail,
+                userAvatar: nil,
+                text: text,
+                likers: [],
+                retweeters: [],
+                comments: [],
+                dateCreatedString: String(describing: Date().timeIntervalSince1970)
             )
-            ref.setData(tweet?.asDictionary() ?? [:])
-            completion(true)
-        }
+        )
+        try await ref.setData(tweet?.asDictionary() ?? [:])
     }
     
 //MARK: - Notifications
    
-    func insertNotifications(of type: NotificationActions, tweet: TweetModel, completion: @escaping (Bool) -> Void ) {
+    func insertNotifications(of type: NotificationActions, tweet: TweetModel) async throws {
         let receiverUsername = tweet.username
         let notificationId = UUID().uuidString
         
@@ -277,15 +235,10 @@ final class DatabaseManager {
             senderUserName: currentUser.userName,
             action: type.rawValue,
             model: tweet,
-            dateString: String.date(from: Date()) ?? Date().timeIntervalSince1970.formatted()
-        ).asDictionary() else {
-            completion(false)
-            return
-        }
+            dateString: String(describing: Date().timeIntervalSince1970)
+        ).asDictionary() else {return}
         
-        ref.setData(data) { error in
-            completion(error == nil)
-        }
+        try await ref.setData(data)
     }
     
     func getNotifications() async throws -> [NotificationsModel] {
@@ -306,31 +259,21 @@ final class DatabaseManager {
     
 //MARK: - Relationships
     
-    func updateRelationship(targetUser: User, didFollow: Bool, completion: @escaping (Bool) -> Void) {
+    func updateRelationship(targetUser: User, didFollow: Bool) async throws {
         
         if didFollow {
             Task {
                 // Add current user to target user's followers list
                 var targetUserInfo = try await getUserInfo(user: targetUser)
                 targetUserInfo.followers.append(currentUser.userName)
-                guard let targetUserData = targetUserInfo.asDictionary() else {
-                    completion(false)
-                    return
-                }
-                userRef.document(targetUser.userName).setData(targetUserData) { error in
-                    completion(error == nil)
-                }
+                guard let targetUserData = targetUserInfo.asDictionary() else {return}
+                try await userRef.document(targetUser.userName).setData(targetUserData)
                 
                 // Add target user to current user's following list
                 var currentUserInfo = try await getUserInfo(user: currentUser)
                 currentUserInfo.following.append(targetUser.userName)
-                guard let currentUserData = currentUserInfo.asDictionary() else {
-                    completion(false)
-                    return
-                }
-                userRef.document(currentUser.userName).setData(currentUserData) { error in
-                    completion(error == nil)
-                }
+                guard let currentUserData = currentUserInfo.asDictionary() else {return}
+                try await userRef.document(currentUser.userName).setData(currentUserData)
             }
         }
         else {
@@ -338,24 +281,14 @@ final class DatabaseManager {
                 // Remove current user from target user's followers list
                 var targetUserInfo = try await getUserInfo(user: targetUser)
                 targetUserInfo.followers.removeAll(where: { $0 == currentUser.userName})
-                guard let targetUserData = targetUserInfo.asDictionary() else {
-                    completion(false)
-                    return
-                }
-                userRef.document(targetUser.userName).setData(targetUserData) { error in
-                    completion(error == nil)
-                }
+                guard let targetUserData = targetUserInfo.asDictionary() else {return}
+                try await userRef.document(targetUser.userName).setData(targetUserData)
                 
                 // Remove target user from current user's following list
                 var currentUserInfo = try await getUserInfo(user: currentUser)
                 currentUserInfo.following.removeAll(where: { $0 == targetUser.userName})
-                guard let currentUserData = currentUserInfo.asDictionary() else {
-                    completion(false)
-                    return
-                }
-                userRef.document(currentUser.userName).setData(currentUserData) { error in
-                    completion(error == nil)
-                }
+                guard let currentUserData = currentUserInfo.asDictionary() else {return}
+                try await userRef.document(currentUser.userName).setData(currentUserData)
             }
         }
     }

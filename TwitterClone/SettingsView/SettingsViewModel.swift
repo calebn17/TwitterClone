@@ -12,9 +12,31 @@ struct SettingsModel {
     let icon: String?
 }
 
+struct SettingsHeaderViewModel {
+    let profilePictureURL: URL?
+    let username: String
+    let userhandle: String
+    let followers: [String]
+    let following: [String]
+}
+
 struct SettingsViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
+    var headerViewModel = Observable<SettingsHeaderViewModel>(nil)
+    
+    func fetchData(user: User) async throws {
+        let userInfo = try await DatabaseManager.shared.getUserInfo(user: user)
+        let url = try await StorageManager.shared.downloadProfilePicture(user: user)
+        let viewModel = SettingsHeaderViewModel(
+            profilePictureURL: url,
+            username: user.userName,
+            userhandle: user.userHandle,
+            followers: userInfo.followers,
+            following: userInfo.following
+        )
+        headerViewModel.value = viewModel
+    }
     
     static func configureSettingsSections() -> [SettingsModel] {
         var settingsModel = [SettingsModel]()

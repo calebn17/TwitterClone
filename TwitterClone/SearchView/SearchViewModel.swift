@@ -10,8 +10,9 @@ import Foundation
 struct SearchViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
+    var searchData = Observable<[TweetModel]>([])
     
-    static func fetchSearchData(query: String) async throws -> [TweetModel] {
+    func fetchSearchData(query: String) async throws {
         let response = try await APICaller.shared.getSearch(with: query)
         let results = response.compactMap({
             TweetModel(
@@ -27,6 +28,6 @@ struct SearchViewModel {
                 dateCreatedString: nil
             )
         })
-        return results
+        searchData.value = results
     }
 }

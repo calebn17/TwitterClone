@@ -86,8 +86,9 @@ final class HomeCoordinator: NSObject, Coordinator {
                 completion(false)
             }))
             actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-                HomeViewModel.retweeted(tweet: tweet) { success in
-                    completion(success == true)
+                Task {
+                    try await HomeViewModel.retweeted(tweet: tweet)
+                    completion(true)
                 }
             }))
             actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak sender] _ in
@@ -100,8 +101,9 @@ final class HomeCoordinator: NSObject, Coordinator {
             sender.present(actionSheet, animated: true, completion: nil)
         }
         else {
-            HomeViewModel.unRetweeted(tweet: tweet) { success in
-                completion(success == true)
+            Task {
+                try await HomeViewModel.unRetweeted(tweet: tweet)
+                completion(true)
             }
         }
     }

@@ -7,17 +7,12 @@
 
 import UIKit
 
-//MARK: - Protocol
-protocol SearchViewControllerDelegate: AnyObject {
-    func didTapPublishTweet(tweetBody: String, publishedFromSearchVC sender: SearchViewController)
-}
-
 ///Search Screen
 final class SearchViewController: UIViewController {
 
 //MARK: - Properties
     weak var coordinator: SearchCoordinator?
-    weak var delegate: SearchViewControllerDelegate?
+    private var viewModel = SearchViewModel()
     private let searchResultTweets: [TweetViewModel] = []
     private var currentUser = SearchViewModel().currentUser
 
@@ -68,15 +63,12 @@ final class SearchViewController: UIViewController {
     }
     
     private func configurePlaceholderImageView() {
-        if searchResultTweets.isEmpty {
-            view.addSubview(searchTableViewPlaceholderImage)
-            
-            let searchTableViewPlacholderImageConstraints = [
-                searchTableViewPlaceholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                searchTableViewPlaceholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ]
-            NSLayoutConstraint.activate(searchTableViewPlacholderImageConstraints)
-        }
+        view.addSubview(searchTableViewPlaceholderImage)
+        let searchTableViewPlacholderImageConstraints = [
+            searchTableViewPlaceholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchTableViewPlaceholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(searchTableViewPlacholderImageConstraints)
     }
         
     private func configureNavbar() {
@@ -96,6 +88,19 @@ final class SearchViewController: UIViewController {
         navigationItem.title = ""
     }
     
+//MARK: - Networking
+    
+    private func fetchData(with query: String) {
+        Task{
+            do {
+                try await viewModel.fetchSearchData(query: query)
+            }
+            catch {
+                print("Request to search failed")
+            }
+        }
+    }
+    
 //MARK: - Actions
     
     @objc private func didTapProfileIcon() {
@@ -105,10 +110,9 @@ final class SearchViewController: UIViewController {
 
 //MARK: - SearchBar Methods
 
-extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    
+extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate, UITextFieldDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        //
+        //required by UISearchResultsUpdating
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -120,14 +124,13 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
                   return
               }
         
-        //Fetching the Search Results data
-        Task{
-            do {
-                let results = try await SearchViewModel.fetchSearchData(query: query)
-                resultsController.updateUI(with: results)
-            }
-            catch {
-                print("Request to search failed")
+        fetchData(with: query)
+        
+        // Update resultsVC UI
+        viewModel.searchData.bind { tweets in
+            DispatchQueue.main.async {
+                guard let tweets = tweets else {return}
+                resultsController.updateUI(with: tweets)
             }
         }
     }
@@ -136,5 +139,16 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         guard let resultsController = searchController.searchResultsController as? SearchResultsViewController
         else {return}
         resultsController.updateUI(with: [])
+        configurePlaceholderImageView()
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let resultsController = searchController.searchResultsController as? SearchResultsViewController
+        else {return false}
+        DispatchQueue.main.async {[weak self] in
+            resultsController.updateUI(with: [])
+            self?.configurePlaceholderImageView()
+        }
+        return true
     }
 }

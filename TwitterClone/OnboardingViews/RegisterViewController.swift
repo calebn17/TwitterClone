@@ -124,6 +124,7 @@ final class RegisterViewController: UIViewController {
         
         guard let email = emailField.text,
               !email.trimmingCharacters(in: .whitespaces).isEmpty,
+              email.contains("@"), email.contains("."),
               let password = passwordField.text,
               !password.trimmingCharacters(in: .whitespaces).isEmpty,
               password.count >= 4,
@@ -144,7 +145,6 @@ final class RegisterViewController: UIViewController {
             try await OnboardingViewModel.registerNewUser(user: newUser, password: password, data: image.pngData())
             self.coordinator?.registerSuccessfully(sender: self)
         }
-        
     }
     
     @objc private func didTapCloseButton() {

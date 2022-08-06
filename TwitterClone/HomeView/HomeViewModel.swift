@@ -11,8 +11,9 @@ import UIKit
 struct HomeViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
-    
-    static func fetchData() async throws -> [TweetModel] {
+    var tweetModels = Observable<[TweetModel]>([])
+
+    func fetchData() async throws {
         //let responseTweets = try await APICaller.shared.getSearch(with: "news")
         let dbTweets = try await DatabaseManager.shared.getTweets()
         
@@ -30,7 +31,7 @@ struct HomeViewModel {
 //                dateCreatedString: nil
 //            )
 //        })
-        return dbTweets //+ apiTweets
+        tweetModels.value =  dbTweets //+ apiTweets
     }
     
     static func fetchProfilePictureURL(user: User) async throws -> URL? {
@@ -38,7 +39,7 @@ struct HomeViewModel {
         return url
     }
     
-    static func publishTweet(user: User, body: String) async throws -> TweetModel {
+    func publishTweet(user: User, body: String) async throws {
         let url = try await HomeViewModel.fetchProfilePictureURL(user: user)
         
         //setting addedTweet as a var so I can update the username values
@@ -52,75 +53,28 @@ struct HomeViewModel {
             likers: [],
             retweeters: [],
             comments: [],
-            dateCreatedString: String.date(from: Date())
+            dateCreatedString: String(describing: Date().timeIntervalSince1970)
         )
-        DatabaseManager.shared.insertTweet(with: addedTweet) { success in
-            if success {
-                print("Tweet saved")
-            }
-            else {
-                print("Tweet was not saved: error")
-            }
-        }
-        return addedTweet
+        try await DatabaseManager.shared.insertTweet(with: addedTweet)
+        tweetModels.value?.insert(addedTweet, at: 0)
     }
     
-    static func publishComment(owner: TweetModel, body: String, completion: @escaping (Bool) -> Void) {
-        
-        DatabaseManager.shared.insertComment(tweetId: owner.tweetId, text: body) { success in
-            if !success {
-                print("Could not insert comment")
-            }
-            
-            DatabaseManager.shared.insertNotifications(
-                of: .comment,
-                tweet: owner) { successful in
-                    if !successful {
-                        print("Error occured when inserting notification")
-                    }
-                    completion(true)
-                }
-        }
+    static func publishComment(owner: TweetModel, body: String) async throws {
+        try await DatabaseManager.shared.insertComment(tweetId: owner.tweetId, text: body)
+        try await DatabaseManager.shared.insertNotifications(of: .comment, tweet: owner)
     }
     
-    static func tappedLikeButton(liked: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
-        DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model) { success in
-            if !success {
-                print("Error occured when updating like status")
-            }
-            if liked {
-                DatabaseManager.shared.insertNotifications(
-                    of: .liked,
-                    tweet: model) { successful in
-                        if !successful {
-                            print("Error occured when inserting notification")
-                        }
-                        completion(true)
-                    }
-            }
-        }
+    static func tappedLikeButton(liked: Bool, model: TweetModel) async throws {
+        try await DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model)
+        try await DatabaseManager.shared.insertNotifications(of: .liked, tweet: model)
     }
     
-    static func retweeted(tweet: TweetModel, completion: @escaping (Bool) -> Void) {
-        DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: tweet) { success in
-            if !success {
-                print("Something went wrong when retweeting")
-            }
-            DatabaseManager.shared.insertNotifications(of: .retweet, tweet: tweet) { success in
-                if !success {
-                    print("Something went wrong when updating notifications in DB")
-                }
-            }
-            completion(true)
-        }
+    static func retweeted(tweet: TweetModel) async throws {
+        try await DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: tweet)
+        try await DatabaseManager.shared.insertNotifications(of: .retweet, tweet: tweet)
     }
     
-    static func unRetweeted(tweet: TweetModel, completion: @escaping (Bool) -> Void) {
-        DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: tweet) { success in
-            if !success {
-                print("Something went wrong when unretweeting")
-            }
-            completion(true)
-        }
+    static func unRetweeted(tweet: TweetModel) async throws {
+        try await DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: tweet)
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 
 //MARK: - Protocol
 protocol AddCommentViewControllerDelegate: AnyObject {
-    func didTapReplyButton(tweetBody: String, owner: TweetModel)
+    func addCommentViewControllerDidTapReplyButton(tweetBody: String, owner: TweetModel)
 }
 
 final class AddCommentViewController: UIViewController {
@@ -90,7 +90,7 @@ final class AddCommentViewController: UIViewController {
                   let tweet = self?.tweet
             else {return}
             
-            self?.delegate?.didTapReplyButton(tweetBody: tweetBody, owner: tweet)
+            self?.delegate?.addCommentViewControllerDidTapReplyButton(tweetBody: tweetBody, owner: tweet)
         }
     }
     

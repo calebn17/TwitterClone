@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 
 protocol SettingsHeaderViewDelegate: AnyObject {
-    func didTapAccountsButton()
+    func settingsHeaderViewDidTapAccountsButton()
 }
 
 final class SettingsHeaderView: UIView {
@@ -105,7 +105,7 @@ final class SettingsHeaderView: UIView {
     
 //MARK: - Action Methods
     @objc private func didTapAccountsButton() {
-        delegate?.didTapAccountsButton()
+        delegate?.settingsHeaderViewDidTapAccountsButton()
     }
 }
 

@@ -13,12 +13,9 @@ final class HomeViewController: UIViewController {
 
 //MARK: - Properties
     weak var coordinator: HomeCoordinator?
-    
-    private var currentUser: User {
-        return HomeViewModel().currentUser
-    }
-    public var tweetResponses: [TweetModel] = []
-    
+    private var viewModel = HomeViewModel()
+    private var currentUser: User { return HomeViewModel().currentUser }
+
 //MARK: - SubViews
     private let profilePictureImageView: CustomImageView = {
         let imageView = CustomImageView(frame: .zero)
@@ -60,32 +57,34 @@ final class HomeViewController: UIViewController {
         configureHomeFeedTableView()
         configureAddTweetButton()
         updateUI()
+        fetchData()
         configurePullToRefresh()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 20)
+        homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 40)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         handleNotAuthenticated()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: Notification.Name("login"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
     }
     
+    
+    
 //MARK: - Networking
-    @objc private func updateUI() {
+    @objc private func fetchData() {
         Task {
-            tweetResponses = try await HomeViewModel.fetchData()
-            homeFeedTableView.reloadData()
+            try await viewModel.fetchData()
         }
     }
 
 //MARK: - Actions
     @objc private func didPullToRefresh(_ sender: UIRefreshControl) {
         sender.beginRefreshing()
-        updateUI()
+        fetchData()
         sender.endRefreshing()
     }
     
@@ -109,7 +108,7 @@ final class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweetResponses.count
+        return viewModel.tweetModels.value?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -117,32 +116,33 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TweetTableViewCell.identifier,
             for: indexPath
-        ) as? TweetTableViewCell else {
-            return UITableViewCell()
-        }
+        ) as? TweetTableViewCell,
+              let model = viewModel.tweetModels.value?[indexPath.row]
+        else { return UITableViewCell() }
         cell.delegate = self
-        cell.configure(with: tweetResponses[indexPath.row])
+        cell.configure(with: model)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        coordinator?.tappedOnTweetCell(tweet: tweetResponses[indexPath.row])
+        guard let model = viewModel.tweetModels.value?[indexPath.row] else {return}
+        coordinator?.tappedOnTweetCell(tweet: model)
     }
 }
 
 //MARK: - TweetCell Action Methods
 extension HomeViewController: TweetTableViewCellDelegate {
     
-    func didTapProfilePicture(user: User) {
+    func tweetTableViewCellDidTapProfilePicture(user: User) {
         coordinator?.tappedOnProfilePicture(user: user)
     }
     
-    func didTapCommentButton(owner: TweetModel) {
+    func tweetTableViewCellDidTapCommentButton(owner: TweetModel) {
         coordinator?.tappedOnCommentButton(sender: self, tweet: owner)
     }
     
-    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
+    func tweetTableViewCellDidTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
         coordinator?.tappedOnRetweetbutton(
             sender: self,
             tweet: model,
@@ -152,44 +152,32 @@ extension HomeViewController: TweetTableViewCellDelegate {
         })
     }
     
-    func didTapLikeButton(liked: Bool, model: TweetModel) {
-        HomeViewModel.tappedLikeButton(liked: liked, model: model) { success in
-            if !success {
-                print("Something went wrong went liking")
-            }
+    func tweetTableViewCellDidTapLikeButton(liked: Bool, model: TweetModel) {
+        Task {
+            try await HomeViewModel.tappedLikeButton(liked: liked, model: model)
         }
     }
     
-    func didTapShareButton(tweet: TweetModel) {
+    func tweetTableViewCellDidTapShareButton(tweet: TweetModel) {
         coordinator?.tappedOnShareButton(sender: self, tweet: tweet)
     }
 }
 
 //MARK: - AddTweetViewVC Methods
-extension HomeViewController: AddTweetViewControllerDelegate, SearchViewControllerDelegate {
-    
-    func didTapPublishTweet(tweetBody: String, publishedFromSearchVC sender: SearchViewController) {
-        didTapTweetPublishButton(tweetBody: tweetBody)
-    }
-    
-    func didTapTweetPublishButton(tweetBody: String) {
+extension HomeViewController: AddTweetViewControllerDelegate {
+    func addTweetViewControllerDidTapTweetPublishButton(tweetBody: String) {
         Task {
-            let addedTweet = try await HomeViewModel.publishTweet(user: currentUser, body: tweetBody)
-            tweetResponses.insert(addedTweet, at: 0)
-            homeFeedTableView.reloadData()
+            try await viewModel.publishTweet(user: currentUser, body: tweetBody)
         }
     }
 }
 
 //MARK: - AddCommentVC Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
-        HomeViewModel.publishComment(owner: owner, body: tweetBody) { [weak self] success in
-            DispatchQueue.main.async {
-                if success {
-                    self?.updateUI()
-                }
-            }
+    func addCommentViewControllerDidTapReplyButton(tweetBody: String, owner: TweetModel) {
+        Task {
+            try await HomeViewModel.publishComment(owner: owner, body: tweetBody)
+            fetchData()
         }
     }
 }
@@ -253,5 +241,13 @@ extension HomeViewController {
         let control = UIRefreshControl()
         control.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
         homeFeedTableView.refreshControl = control
+    }
+    
+    private func updateUI() {
+        viewModel.tweetModels.bind {[weak self] _ in
+            DispatchQueue.main.async {
+                self?.homeFeedTableView.reloadData()
+            }
+        }
     }
 }

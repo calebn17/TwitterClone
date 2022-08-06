@@ -102,21 +102,20 @@ extension SelectedTweetViewController: SelectedTweetHeaderTableViewCellDelegate 
 }
 
 extension SelectedTweetViewController: TweetTableViewCellDelegate {
-    
-    func didTapProfilePicture(user: User) {
+    func tweetTableViewCellDidTapProfilePicture(user: User) {
         let vc = ProfileViewController(with: user)
         vc.title = user.userName
         navigationController?.pushViewController(vc, animated: true)
     }
    
-    func didTapCommentButton(owner: TweetModel) {
+    func tweetTableViewCellDidTapCommentButton(owner: TweetModel) {
         let vc = AddCommentViewController(with: owner)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
-    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
+    func tweetTableViewCellDidTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
         
         if retweeted {
             let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
@@ -124,11 +123,8 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
                 completion(false)
             }))
             actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
-                DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model) { success in
-                    if !success {
-                        completion(false)
-                        print("Something went wrong when retweeting")
-                    }
+                Task {
+                    try await DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model)
                     completion(true)
                 }
             }))
@@ -142,26 +138,21 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
             present(actionSheet, animated: true, completion: nil)
         }
         else {
-            DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: model) { success in
-                if !success {
-                    completion(false)
-                    print("Something went wrong when unretweeting")
-                }
+            Task {
+                try await DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: model)
                 completion(true)
             }
         }
     }
     
-    func didTapLikeButton(liked: Bool, model: TweetModel) {
+    func tweetTableViewCellDidTapLikeButton(liked: Bool, model: TweetModel) {
         // insert User into the likers collection in the TweetModel and update DB
-        DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model) { success in
-            if !success {
-                print("Error occured when updating like status")
-            }
+        Task {
+            try await DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model)
         }
     }
     
-    func didTapShareButton(tweet: TweetModel) {
+    func tweetTableViewCellDidTapShareButton(tweet: TweetModel) {
         let firstAction = "This Tweet"
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true
@@ -171,7 +162,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
 
 //MARK: - AddCommentViewControllerDelegate Methods
 extension SelectedTweetViewController: AddCommentViewControllerDelegate {
-    func didTapReplyButton(tweetBody: String, owner: TweetModel) {
-        //
+    func addCommentViewControllerDidTapReplyButton(tweetBody: String, owner: TweetModel) {
+        
     }
 }

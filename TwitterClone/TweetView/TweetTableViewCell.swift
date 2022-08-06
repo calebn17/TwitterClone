@@ -9,11 +9,15 @@ import UIKit
 
 //MARK: - Protocol
 protocol TweetTableViewCellDelegate: AnyObject {
-    func didTapCommentButton(owner: TweetModel)
-    func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void)
-    func didTapLikeButton(liked: Bool, model: TweetModel)
-    func didTapShareButton(tweet: TweetModel)
-    func didTapProfilePicture(user: User)
+    func tweetTableViewCellDidTapCommentButton(owner: TweetModel)
+    func tweetTableViewCellDidTapRetweet(
+        retweeted: Bool,
+        model: TweetModel,
+        completion: @escaping (Bool) -> Void
+    )
+    func tweetTableViewCellDidTapLikeButton(liked: Bool, model: TweetModel)
+    func tweetTableViewCellDidTapShareButton(tweet: TweetModel)
+    func tweetTableViewCellDidTapProfilePicture(user: User)
 }
 ///Individual Tweet Cell
 final class TweetTableViewCell: UITableViewCell {
@@ -22,6 +26,7 @@ final class TweetTableViewCell: UITableViewCell {
     static let identifier = "HomeTweetTableViewCell"
     public weak var delegate: TweetTableViewCellDelegate?
     private var model: TweetModel?
+    private var viewModel = TweetViewModel()
     private var likesCount = 0
     private var commentsCount = 0
     private var retweetsCount = 0
@@ -120,6 +125,7 @@ final class TweetTableViewCell: UITableViewCell {
         addSubViews()
         configureConstraints()
         addActions()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -166,7 +172,8 @@ final class TweetTableViewCell: UITableViewCell {
 //MARK: - Configure
     public func configure(with model: TweetModel){
         self.model = model
-        configureUserImage(with: model)
+        fetchUserImage(with: model)
+        updateUserImageUI()
 
         userHandleLabel.text = "@\(model.userHandle)"
         userNameLabel.text = model.username
@@ -196,13 +203,19 @@ final class TweetTableViewCell: UITableViewCell {
         }
     }
     
-    private func configureUserImage(with model: TweetModel) {
-        Task {
-            if let imageUrl = try await TweetViewModel.fetchProfilePictureURL(tweet: model) {
-                userImage.sd_setImage(with: imageUrl, completed: nil)
-            } else {
-                userImage.image = UIImage(systemName: "person.fill")
+    private func updateUserImageUI() {
+        viewModel.profilePictureURL.bind {[weak self] url in
+            DispatchQueue.main.async {
+                guard let url = url else {return}
+                self?.userImage.sd_setImage(with: url, completed: nil)
             }
+        }
+    }
+
+//MARK: - Networking
+    private func fetchUserImage(with model: TweetModel) {
+        Task {
+            try await viewModel.fetchProfilePictureURL(tweet: model)
         }
     }
  
@@ -227,12 +240,12 @@ final class TweetTableViewCell: UITableViewCell {
             userHandle: model.userHandle,
             userEmail: model.userEmail
         )
-        delegate?.didTapProfilePicture(user: user)
+        delegate?.tweetTableViewCellDidTapProfilePicture(user: user)
     }
     
     @objc private func tappedCommentButton() {
         guard let model = self.model else {return}
-        delegate?.didTapCommentButton(owner: model)
+        delegate?.tweetTableViewCellDidTapCommentButton(owner: model)
     }
     
     @objc private func tappedLikeButton() {
@@ -257,7 +270,7 @@ final class TweetTableViewCell: UITableViewCell {
             likesCountLabel.text = String(likesCount)
         }
         
-        delegate?.didTapLikeButton(liked: !isCurrentlyLikedByCurrentUser, model: model)
+        delegate?.tweetTableViewCellDidTapLikeButton(liked: !isCurrentlyLikedByCurrentUser, model: model)
         
         isCurrentlyLikedByCurrentUser = !isCurrentlyLikedByCurrentUser
     }
@@ -267,7 +280,7 @@ final class TweetTableViewCell: UITableViewCell {
         
         // Un-retweet
         if isRetweetedByCurrentUser {
-            delegate?.didTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: {[weak self] success in
+            delegate?.tweetTableViewCellDidTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: {[weak self] success in
                 guard let strongIsRetweetedByCurrentUser = self?.isRetweetedByCurrentUser else {return}
                 if success {
                     self?.isRetweetedByCurrentUser = !strongIsRetweetedByCurrentUser
@@ -281,7 +294,7 @@ final class TweetTableViewCell: UITableViewCell {
         }
         //Retweet
         else {
-            delegate?.didTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: { [weak self] success in
+            delegate?.tweetTableViewCellDidTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: { [weak self] success in
                 DispatchQueue.main.async {
                     guard let strongIsRetweetedByCurrentUser = self?.isRetweetedByCurrentUser else {return}
                     if success {
@@ -297,7 +310,7 @@ final class TweetTableViewCell: UITableViewCell {
     
     @objc private func tappedShareButton() {
         guard let model = self.model else {return}
-        delegate?.didTapShareButton(tweet: model)
+        delegate?.tweetTableViewCellDidTapShareButton(tweet: model)
     }
 }
 

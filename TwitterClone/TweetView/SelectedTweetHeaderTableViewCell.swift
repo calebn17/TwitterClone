@@ -21,6 +21,7 @@ final class SelectedTweetHeaderTableViewCell: UITableViewCell {
     static let identifier = "SelectedTweetHeaderTableViewCell"
     public weak var delegate: SelectedTweetHeaderTableViewCellDelegate?
     private var tweet: TweetModel?
+    private var viewModel = TweetViewModel()
     private var isCurrentlyLikedByCurrentUser = false
     private var isRetweetedByCurrentUser = false
     
@@ -137,21 +138,30 @@ final class SelectedTweetHeaderTableViewCell: UITableViewCell {
 //MARK: - Configure
     public func configure(with tweet: TweetModel) {
         self.tweet = tweet
-        configureUserImage(with: tweet)
+        fetchUserImage(with: tweet)
+        updateUserImageUI()
         tweetBodyLabel.text = tweet.text
         usernameLabel.text = tweet.username
         userHandleLabel.text = "@\(tweet.userHandle)"
-        dateCreatedLabel.text = tweet.dateCreatedString
         profileImageView.sd_setImage(with: tweet.userAvatar, completed: nil)
+        guard let dateString = tweet.dateCreatedString else {return}
+        let date = Date(timeIntervalSince1970: Double(dateString) ?? 0.0)
+        dateCreatedLabel.text = String.date(from: date)
     }
     
-    private func configureUserImage(with model: TweetModel) {
-        Task {
-            if let imageUrl = try await TweetViewModel.fetchProfilePictureURL(tweet: model) {
-                profileImageView.sd_setImage(with: imageUrl, completed: nil)
-            } else {
-                profileImageView.image = UIImage(systemName: "person.fill")
+    private func updateUserImageUI() {
+        viewModel.profilePictureURL.bind {[weak self] url in
+            DispatchQueue.main.async {
+                guard let url = url else {return}
+                self?.profileImageView.sd_setImage(with: url, completed: nil)
             }
+        }
+    }
+    
+//MARK: - Networking
+    private func fetchUserImage(with model: TweetModel) {
+        Task {
+            try await viewModel.fetchProfilePictureURL(tweet: model)
         }
     }
     

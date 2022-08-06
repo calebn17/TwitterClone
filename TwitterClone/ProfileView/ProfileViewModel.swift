@@ -7,42 +7,41 @@
 
 import Foundation
 
+struct ProfileHeaderViewModel {
+    let userName: String
+    let userHandle: String
+    var bio: String
+    var followers: [String]
+    var following: [String]
+    var profileImage: URL?
+}
+
 struct ProfileViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
+    var headerViewModel = Observable<ProfileHeaderViewModel>(nil)
+    var tweets = Observable<[TweetModel]>([])
     
-    static func getProfileHeaderViewModel(user: User) async throws -> ProfileHeaderViewModel? {
+    func getProfileHeaderViewModel(user: User) async throws {
         let userHeaderInfo = try await DatabaseManager.shared.getUserInfo(user: user)
         let profilePictureURL = try await StorageManager.shared.downloadProfilePicture(user: user)
         
-        if let profilePictureURL = profilePictureURL {
-            let result = ProfileHeaderViewModel(
-                userName: userHeaderInfo.userName,
-                userHandle: userHeaderInfo.userHandle,
-                bio: userHeaderInfo.bio,
-                followers: userHeaderInfo.followers,
-                following: userHeaderInfo.following,
-                profileImage: profilePictureURL
-            )
-            return result
-        } else {
-            let result = ProfileHeaderViewModel(
-                userName: userHeaderInfo.userName,
-                userHandle: userHeaderInfo.userHandle,
-                bio: userHeaderInfo.bio,
-                followers: userHeaderInfo.followers,
-                following: userHeaderInfo.following,
-                profileImage: nil
-            )
-            return result
-        }
+        let result = ProfileHeaderViewModel(
+            userName: userHeaderInfo.userName,
+            userHandle: userHeaderInfo.userHandle,
+            bio: userHeaderInfo.bio,
+            followers: userHeaderInfo.followers,
+            following: userHeaderInfo.following,
+            profileImage: profilePictureURL
+        )
+        headerViewModel.value = result
     }
     
     static func setProfileBio(bio: String) async throws {
         try await DatabaseManager.shared.insertUserBio(bio: bio)
     }
    
-    static func getProfileTweets(user: User) async throws -> [TweetModel] {
+    func getProfileTweets(user: User) async throws {
         let allTweets = try await DatabaseManager.shared.getTweets()
         print(user.userName)
         let filteredTweets = allTweets.filter { tweet in
@@ -55,17 +54,11 @@ struct ProfileViewModel {
                 return false
             }
         }
-        return filteredTweets
+        tweets.value = filteredTweets
     }
     
-    static func updateRelationship(targetUser: User, didFollow: Bool, completion: @escaping (Bool) -> Void) {
-        DatabaseManager.shared.updateRelationship(targetUser: targetUser, didFollow: didFollow) { success in
-            if !success {
-                print("Something went wrong when updating relationship")
-                completion(false)
-            }
-            completion(true)
-        }
+    static func updateRelationship(targetUser: User, didFollow: Bool) async throws{
+        try await DatabaseManager.shared.updateRelationship(targetUser: targetUser, didFollow: didFollow)
     }
     
     static func uploadProfilePicture(user: User, data: Data?) async throws {

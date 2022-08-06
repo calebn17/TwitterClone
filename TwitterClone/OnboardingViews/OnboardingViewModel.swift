@@ -14,8 +14,8 @@ struct OnboardingViewModel {
         try await StorageManager.shared.uploadProfilePicture(user: user, data: data)
     }
     
-    static func logIn() async throws {
-        
+    static func logIn(email: String, password: String) async throws {
+        try await AuthManager.shared.loginUser(email: email.lowercased(), password: password.lowercased())
     }
     
     static func logOut() async throws {

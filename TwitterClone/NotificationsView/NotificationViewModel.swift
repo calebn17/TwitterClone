@@ -23,14 +23,16 @@ struct NotificationsModel: Codable {
 
 struct NotificationsViewModel {
     
-    static func fetchData() async throws -> [NotificationsModel] {
+    var notificationModels = Observable<[NotificationsModel]>([])
+    
+    func fetchData() async throws {
         var notifications = try await DatabaseManager.shared.getNotifications()
         
         notifications.sort(by: {
+            
             return $0.dateString > $1.dateString
         })
-        
-        return notifications
+        notificationModels.value = notifications
     }
     
     static func getTweet(model: TweetModel) async throws -> TweetModel? {

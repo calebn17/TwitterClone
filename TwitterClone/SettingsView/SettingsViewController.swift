@@ -13,6 +13,7 @@ final class SettingsViewController: UIViewController {
     
  //MARK: - Properties
     weak var coordinator: SettingsCoordinator?
+    private var viewModel = SettingsViewModel()
     struct Constants {
         static let rowHeight: CGFloat = 70
     }
@@ -42,6 +43,7 @@ final class SettingsViewController: UIViewController {
         configureHeaderView()
         configureTableView()
         constraints()
+        updateUI()
     }
     
     override func viewDidLayoutSubviews() {
@@ -50,7 +52,7 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateHeaderUI), name: Notification.Name("login"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
     }
 
 //MARK: - Configure
@@ -60,10 +62,8 @@ final class SettingsViewController: UIViewController {
         guard let headerView = headerView else {return}
         view.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        updateHeaderUI()
+        fetchData()
     }
-    
-    
     
     private func configureTableView() {
         view.addSubview(settingsTableView)
@@ -72,12 +72,19 @@ final class SettingsViewController: UIViewController {
         settingsTableView.separatorColor = UIColor.clear
     }
     
+    private func updateUI() {
+        viewModel.headerViewModel.bind { headerViewModel in
+            DispatchQueue.main.async {[weak self] in
+                guard let headerViewModel = headerViewModel else {return}
+                self?.headerView?.configure(with: headerViewModel)
+            }
+        }
+    }
+    
 //MARK: - Actions
-    @objc private func updateHeaderUI() {
-        guard let headerView = headerView else {return}
+    @objc private func fetchData() {
         Task {
-            let viewModel = try await SettingsHeaderViewModel.fetchData(user: currentUser)
-            headerView.configure(with: viewModel)
+            try await viewModel.fetchData(user: currentUser)
         }
     }
     
@@ -146,7 +153,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: - Settings Header Methods
 extension SettingsViewController: SettingsHeaderViewDelegate {
-    func didTapAccountsButton() {
+    func settingsHeaderViewDidTapAccountsButton() {
         print("did tap accounts button")
         DispatchQueue.main.async { [weak self] in
             //WIP

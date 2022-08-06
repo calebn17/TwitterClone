@@ -11,11 +11,10 @@ final class ProfileViewController: UIViewController {
 
 //MARK: - Properties
     private let user: User
+    private var viewModel = ProfileViewModel()
     var isCurrentUser: Bool {
-        return ProfileViewModel().currentUser == user
+        return viewModel.currentUser == user
     }
-    private var profileInfo: ProfileHeaderViewModel?
-    private var tweets = [TweetModel]()
     weak var coordinator: ProfileCoordinator?
     
 //MARK: - SubViews
@@ -50,15 +49,17 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         updateUI()
+        fetchData()
         configureTableView()
         configureNavBar()
         configureHeaderView()
         view.addSubview(spinner)
+        handleEmptyStateUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateUI()
+        fetchData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,37 +88,49 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-//MARK: - Networking
-    private func updateUI() {
-        Task {
-            do {
-                // Fetching user profile info
-                guard let profileInfo = try await ProfileViewModel.getProfileHeaderViewModel(user: self.user) else {return}
-                // Fetching tweets that will populate the tableView
-                tweets = try await ProfileViewModel.getProfileTweets(user: self.user)
-                spinner.stopAnimating()
-                spinner.isHidden = true
-                headerView?.configure(with: profileInfo)
-                configureUI()
-            }
-            catch {
-                print("Error when fetching user info in profile vc")
-            }
-        }
-    }
-    
-    private func configureUI() {
-        if profileInfo != nil {
+    private func handleEmptyStateUI() {
+        if viewModel.headerViewModel.value == nil {
             tableView.isHidden = true
             headerView?.isHidden = true
         } else {
+            spinner.stopAnimating()
+            spinner.isHidden = true
             tableView.isHidden = false
             headerView?.isHidden = false
         }
         tableView.reloadData()
     }
     
+    private func updateUI() {
+        viewModel.headerViewModel.bind {[weak self] headerViewModel in
+            DispatchQueue.main.async {
+                guard let headerViewModel = headerViewModel else {return}
+                self?.headerView?.configure(with: headerViewModel)
+            }
+        }
+        
+        viewModel.tweets.bind { _ in
+            DispatchQueue.main.async {[weak self] in
+                self?.handleEmptyStateUI()
+            }
+        }
+    }
     
+//MARK: - Networking
+    private func fetchData() {
+        Task {
+            do {
+                // Fetching user profile info
+                try await viewModel.getProfileHeaderViewModel(user: self.user)
+                // Fetching tweets that will populate the tableView
+                try await viewModel.getProfileTweets(user: self.user)
+            }
+            catch {
+                print("Error when fetching user info in profile vc")
+            }
+        }
+    }
+
 //MARK: - Actions 
     
     @objc private func didTapEditButton() {
@@ -129,25 +142,24 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweets.count
+        return viewModel.tweets.value?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TweetTableViewCell.identifier,
             for: indexPath
-        ) as? TweetTableViewCell else {
-            return UITableViewCell()
-        }
-        let tweet = tweets[indexPath.row]
+        ) as? TweetTableViewCell,
+              let tweet = viewModel.tweets.value?[indexPath.row]
+        else {return UITableViewCell()}
+
         cell.configure(with: tweet)
         return cell
-                
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let tweet = tweets[indexPath.row]
+        guard let tweet = viewModel.tweets.value?[indexPath.row] else {return}
         coordinator?.tappedOnTweetCell(tweet: tweet)
     }
 }
@@ -160,13 +172,9 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
     }
     
     func profileHeaderViewDidTapOnFollowButton(didFollow: Bool) {
-        ProfileViewModel.updateRelationship(targetUser: user, didFollow: didFollow) {[weak self] success in
-            DispatchQueue.main.async {
-                if !success {
-                    print("Something went wrong when updating relationship")
-                }
-                self?.updateUI()
-            }
+        Task {
+            try await ProfileViewModel.updateRelationship(targetUser: user, didFollow: didFollow)
+            fetchData()
         }
     }
 }
@@ -176,7 +184,7 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
     func editProfileViewControllerTappedSaveButton(bio: String) {
         Task {
             try await ProfileViewModel.setProfileBio(bio: bio)
-            self.updateUI()
+            fetchData()
         }
     }
 }
@@ -193,8 +201,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
         Task {
             try await ProfileViewModel.uploadProfilePicture(user: user, data: image.pngData())
-            self.tweets = []
-            self.updateUI()
+            self.fetchData()
         }
     }
 }

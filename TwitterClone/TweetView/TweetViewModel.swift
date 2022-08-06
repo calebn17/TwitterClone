@@ -21,10 +21,11 @@ struct TweetModel: Codable {
 }
 
 struct TweetViewModel {
-   
+    
+    var profilePictureURL = Observable<URL?>(nil)
     var currentUser: User { return DatabaseManager.shared.currentUser }
     
-    static func fetchProfilePictureURL(tweet: TweetModel) async throws -> URL? {
+    func fetchProfilePictureURL(tweet: TweetModel) async throws {
         let user = User(
             id: nil,
             userName: tweet.username,
@@ -32,7 +33,7 @@ struct TweetViewModel {
             userEmail: tweet.userEmail
         )
         let url = try await StorageManager.shared.downloadProfilePicture(user: user)
-        return url
+        profilePictureURL.value = url
     }
 }
 

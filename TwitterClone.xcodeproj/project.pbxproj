@@ -17,6 +17,7 @@
 		705E79AB2867BD87003AEA17 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705E79AA2867BD87003AEA17 /* HomeViewModel.swift */; };
 		708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F128317A2200978DD6 /* AddTweetViewController.swift */; };
 		708C50F42831A0E200978DD6 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708C50F32831A0E200978DD6 /* AddCommentViewController.swift */; };
+		AF04553A289D9DEC00869D95 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF045539289D9DEC00869D95 /* Observable.swift */; };
 		AF0FFFBE28370F4A005406D1 /* Notifications_All_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */; };
 		AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */; };
 		AF15D6ED289D53160010CD70 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15D6EC289D53160010CD70 /* OnboardingViewModel.swift */; };
@@ -28,7 +29,6 @@
 		AF2DED7A2824BD58002E9264 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED792824BD58002E9264 /* SearchViewController.swift */; };
 		AF2DED7C2824BD84002E9264 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */; };
 		AF2DED7E2824BD98002E9264 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */; };
-		AF37160E2889CA06000519D7 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */; };
 		AF6A444628366BAC001F0018 /* NotificationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */; };
 		AF6A444828368069001F0018 /* NotificationEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */; };
 		AF76FDA428901E59005B09A6 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF76FDA328901E59005B09A6 /* CustomButton.swift */; };
@@ -39,7 +39,6 @@
 		AFA5E9F32891E9CA00092DBC /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */; };
 		AFB71055289323FE00559A3A /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB71054289323FE00559A3A /* RegisterCoordinator.swift */; };
 		AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */; };
-		AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */; };
 		AFBC2FCB288F70DB0012120D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */; };
 		AFC0EACA28916EA200C498AE /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EAC928916EA200C498AE /* CoordinatorProtocol.swift */; };
 		AFC0EACC28916F4700C498AE /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0EACB28916F4700C498AE /* HomeCoordinator.swift */; };
@@ -82,6 +81,7 @@
 		705E79AA2867BD87003AEA17 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		708C50F128317A2200978DD6 /* AddTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTweetViewController.swift; sourceTree = "<group>"; };
 		708C50F32831A0E200978DD6 /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
+		AF045539289D9DEC00869D95 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		AF0FFFBD28370F4A005406D1 /* Notifications_All_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_All_TableViewCell.swift; sourceTree = "<group>"; };
 		AF0FFFBF28370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications_Mentions_TableViewCell.swift; sourceTree = "<group>"; };
 		AF15D6EC289D53160010CD70 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
@@ -93,7 +93,6 @@
 		AF2DED792824BD58002E9264 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		AF2DED7B2824BD84002E9264 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
 		AF6A444528366BAC001F0018 /* NotificationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHeaderView.swift; sourceTree = "<group>"; };
 		AF6A444728368069001F0018 /* NotificationEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEmptyStateView.swift; sourceTree = "<group>"; };
 		AF76FDA328901E59005B09A6 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
@@ -104,7 +103,6 @@
 		AFA5E9F22891E9CA00092DBC /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
 		AFB71054289323FE00559A3A /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
 		AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
-		AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderViewModel.swift; sourceTree = "<group>"; };
 		AFBC2FCA288F70DB0012120D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		AFC0EAC928916EA200C498AE /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		AFC0EACB28916F4700C498AE /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
@@ -160,6 +158,8 @@
 				AFDBA22F2824B98B00085DDC /* TwitterClone.xcdatamodeld */,
 				3BC26E04282949D000A56D5C /* Constants.swift */,
 				7038FEAB28305E4E00715D54 /* Extensions.swift */,
+				AF045539289D9DEC00869D95 /* Observable.swift */,
+				AFC0EAC928916EA200C498AE /* CoordinatorProtocol.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -190,14 +190,6 @@
 				AF76FDA5289021FC005B09A6 /* CustomImageView.swift */,
 			);
 			path = CustomViews;
-			sourceTree = "<group>";
-		};
-		AFC0EAC828916E8D00C498AE /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-				AFC0EAC928916EA200C498AE /* CoordinatorProtocol.swift */,
-			);
-			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		AFC9877A288F5C3400B2DAF8 /* HomeView */ = {
@@ -242,7 +234,6 @@
 				AF2DED7D2824BD98002E9264 /* SettingsViewController.swift */,
 				AFE173E52888CC70004EACB7 /* SettingsViewModel.swift */,
 				7038FEA92830597200715D54 /* SettingsHeaderView.swift */,
-				AFBC2FC8288F70080012120D /* SettingsHeaderViewModel.swift */,
 				7038FEAD28306C0D00715D54 /* SettingsTableViewCell.swift */,
 				AFD43BE1288F5E3C00D1377E /* SettingsAndPrivacyView */,
 			);
@@ -266,7 +257,6 @@
 				AFCEE1CA28898F7E00B6D187 /* ProfileViewController.swift */,
 				AFBC2FC6288F6F540012120D /* ProfileViewModel.swift */,
 				AFCEE1CC288993D800B6D187 /* ProfileHeaderView.swift */,
-				AF37160D2889CA06000519D7 /* ProfileHeaderViewModel.swift */,
 				AFCEE1CE28899CBE00B6D187 /* EditProfileViewController.swift */,
 			);
 			path = ProfileView;
@@ -359,7 +349,6 @@
 				AF8C41B8283581D00005E023 /* CustomViews */,
 				AFD853BB2825680600D080D4 /* Models */,
 				AFD853B82825631C00D080D4 /* Managers */,
-				AFC0EAC828916E8D00C498AE /* Coordinator */,
 				3BC26E03282949BA00A56D5C /* Resources */,
 				AFD43BE5288F5F4700D1377E /* Launch */,
 				AFDBA2372824B98D00085DDC /* Info.plist */,
@@ -511,9 +500,9 @@
 				AFDBA2272824B98B00085DDC /* AppDelegate.swift in Sources */,
 				AF2DED762824BCCF002E9264 /* TabBarViewController.swift in Sources */,
 				AF8C41BA283582040005E023 /* SettingsAndPrivacyTableViewCell.swift in Sources */,
-				AF37160E2889CA06000519D7 /* ProfileHeaderViewModel.swift in Sources */,
 				708C50F228317A2200978DD6 /* AddTweetViewController.swift in Sources */,
 				AF0FFFC028370F5D005406D1 /* Notifications_Mentions_TableViewCell.swift in Sources */,
+				AF04553A289D9DEC00869D95 /* Observable.swift in Sources */,
 				3BC26E0B282970C400A56D5C /* UserModels.swift in Sources */,
 				AFDBC41F283BBA7B00F4ED7D /* AuthManager.swift in Sources */,
 				705E79AB2867BD87003AEA17 /* HomeViewModel.swift in Sources */,
@@ -543,7 +532,6 @@
 				AFBC2FC7288F6F550012120D /* ProfileViewModel.swift in Sources */,
 				AFCC323628380F3600C0B01C /* RegisterViewController.swift in Sources */,
 				AFDBC423283BBAB700F4ED7D /* StorageManager.swift in Sources */,
-				AFBC2FC9288F70080012120D /* SettingsHeaderViewModel.swift in Sources */,
 				AFC0EAD42891784100C498AE /* SettingsCoordinator.swift in Sources */,
 				AFCEE1CB28898F7E00B6D187 /* ProfileViewController.swift in Sources */,
 				AFFFD4AC2888F87900270E6E /* SettingsAndPrivacyViewModel.swift in Sources */,

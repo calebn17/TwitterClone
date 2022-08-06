@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
-        
+//        Task {
+//            try await AuthManager.shared.logOut()
+//        }
         let window = UIWindow(frame: UIScreen.main.bounds)
         
         window.rootViewController = MainTabBarController()

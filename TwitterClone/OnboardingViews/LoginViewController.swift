@@ -107,13 +107,12 @@ final class LoginViewController: UIViewController {
         
         Task {
             do {
-                try await AuthManager.shared.loginUser(email: email.lowercased(), password: password)
+                try await OnboardingViewModel.logIn(email: email, password: password)
                 self.coordinator?.successfulLogin(sender: self)
             }
             catch {
-                //error occured
                 self.coordinator?.presentLoginErrorAlert(sender: self)
-                try await AuthManager.shared.logOut()
+                try await OnboardingViewModel.logOut()
             }
         }
     }
