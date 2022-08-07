@@ -35,5 +35,9 @@ struct TweetViewModel {
         let url = try await StorageManager.shared.downloadProfilePicture(user: user)
         profilePictureURL.value = url
     }
+    
+    static func updateLikeStatus(liked: Bool, tweet: TweetModel) async throws {
+        try await DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: tweet)
+    }
 }
 

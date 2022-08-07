@@ -10,6 +10,7 @@ import UIKit
 final class SelectedTweetViewController: UIViewController {
     
 //MARK: - Properties
+    weak var coordinator: SelectedTweetCoordinator?
     private var tweet: TweetModel
     private var comments: [TweetModel]
     private var headerView: SelectedTweetHeaderTableViewCell?
@@ -89,15 +90,12 @@ extension SelectedTweetViewController: UITableViewDelegate, UITableViewDataSourc
 extension SelectedTweetViewController: SelectedTweetHeaderTableViewCellDelegate {
     
     func didTapHeaderCommentButton(_ cell: SelectedTweetHeaderTableViewCell) {
-        
     }
     
     func didTapHeaderLikeButton(_ cell: SelectedTweetHeaderTableViewCell, liked: Bool, model: TweetModel) {
-        
     }
     
     func didTapHeaderShareButton(_ cell: SelectedTweetHeaderTableViewCell) {
-        
     }
 }
 
@@ -152,7 +150,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
     func didTapLikeButton(_ cell: TweetTableViewCell, liked: Bool, model: TweetModel) {
         // insert User into the likers collection in the TweetModel and update DB
         Task {
-            try await DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model)
+            try await TweetViewModel.updateLikeStatus(liked: liked, tweet: model)
         }
     }
     

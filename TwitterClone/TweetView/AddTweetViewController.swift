@@ -75,8 +75,6 @@ final class AddTweetViewController: UIViewController {
     }
  
 //MARK: - Configure
-    
-    
     private func addSubViews() {
         view.addSubview(userImageView)
         view.addSubview(chooseAudienceButton)

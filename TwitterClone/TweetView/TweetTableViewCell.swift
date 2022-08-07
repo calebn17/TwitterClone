@@ -327,7 +327,6 @@ final class TweetTableViewCell: UITableViewCell {
 extension TweetTableViewCell {
     
     private func configureConstraints() {
-        
         let userImageConstraints = [
             userImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             userImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),

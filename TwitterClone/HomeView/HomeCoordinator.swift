@@ -57,8 +57,9 @@ final class HomeCoordinator: NSObject, Coordinator {
     
 //MARK: - TweetCell Routes
     func tappedOnTweetCell(tweet: TweetModel) {
-        let vc = SelectedTweetViewController(with: tweet)
-        navigationController.pushViewController(vc, animated: true)
+        let child = SelectedTweetCoordinator(navigationController: navigationController, tweet: tweet)
+        childCoordinators.append(child)
+        child.start()
     }
     
     func tappedOnProfilePicture(user: User) {
