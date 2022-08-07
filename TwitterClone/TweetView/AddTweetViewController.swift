@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddTweetViewControllerDelegate: AnyObject {
-    func addTweetViewControllerDidTapTweetPublishButton(tweetBody: String)
+    func didTapTweetPublishButton(_ sender: AddTweetViewController, tweetBody: String)
 }
 
 final class AddTweetViewController: UIViewController {
@@ -90,9 +90,10 @@ final class AddTweetViewController: UIViewController {
         dismiss(animated: true) {[weak self] in
             //passing tweet body through
             self?.tweetBody = self?.tweetTextField.text
-            guard let tweetBody = self?.tweetBody else {return}
+            guard let tweetBody = self?.tweetBody,
+                  let strongSelf = self else {return}
             
-            self?.delegate?.addTweetViewControllerDidTapTweetPublishButton(tweetBody: tweetBody)
+            self?.delegate?.didTapTweetPublishButton(strongSelf, tweetBody: tweetBody)
         }
     }
     

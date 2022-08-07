@@ -134,15 +134,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - TweetCell Action Methods
 extension HomeViewController: TweetTableViewCellDelegate {
     
-    func tweetTableViewCellDidTapProfilePicture(user: User) {
+    func didTapProfilePicture(_ cell: TweetTableViewCell, user: User) {
         coordinator?.tappedOnProfilePicture(user: user)
     }
     
-    func tweetTableViewCellDidTapCommentButton(owner: TweetModel) {
+    func didTapCommentButton(_ cell: TweetTableViewCell, owner: TweetModel) {
         coordinator?.tappedOnCommentButton(sender: self, tweet: owner)
     }
     
-    func tweetTableViewCellDidTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
+    func didTapRetweet(_ cell: TweetTableViewCell, retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
         coordinator?.tappedOnRetweetbutton(
             sender: self,
             tweet: model,
@@ -152,20 +152,20 @@ extension HomeViewController: TweetTableViewCellDelegate {
         })
     }
     
-    func tweetTableViewCellDidTapLikeButton(liked: Bool, model: TweetModel) {
+    func didTapLikeButton(_ cell: TweetTableViewCell, liked: Bool, model: TweetModel) {
         Task {
             try await HomeViewModel.tappedLikeButton(liked: liked, model: model)
         }
     }
     
-    func tweetTableViewCellDidTapShareButton(tweet: TweetModel) {
+    func didTapShareButton(_ cell: TweetTableViewCell, tweet: TweetModel) {
         coordinator?.tappedOnShareButton(sender: self, tweet: tweet)
     }
 }
 
 //MARK: - AddTweetViewVC Methods
 extension HomeViewController: AddTweetViewControllerDelegate {
-    func addTweetViewControllerDidTapTweetPublishButton(tweetBody: String) {
+    func didTapTweetPublishButton(_ cell: AddTweetViewController, tweetBody: String) {
         Task {
             try await viewModel.publishTweet(user: currentUser, body: tweetBody)
         }
@@ -174,7 +174,7 @@ extension HomeViewController: AddTweetViewControllerDelegate {
 
 //MARK: - AddCommentVC Methods
 extension HomeViewController: AddCommentViewControllerDelegate {
-    func addCommentViewControllerDidTapReplyButton(tweetBody: String, owner: TweetModel) {
+    func didTapReplyButton(_ cell: AddCommentViewController, tweetBody: String, owner: TweetModel) {
         Task {
             try await HomeViewModel.publishComment(owner: owner, body: tweetBody)
             fetchData()

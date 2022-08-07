@@ -8,10 +8,10 @@
 import UIKit
 
 protocol SelectedTweetHeaderTableViewCellDelegate: AnyObject {
-    func didTapHeaderCommentButton()
+    func didTapHeaderCommentButton(_ cell: SelectedTweetHeaderTableViewCell)
     //func didTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping)
-    func didTapHeaderLikeButton(liked: Bool, model: TweetModel)
-    func didTapHeaderShareButton()
+    func didTapHeaderLikeButton(_ cell: SelectedTweetHeaderTableViewCell, liked: Bool, model: TweetModel)
+    func didTapHeaderShareButton(_ cell: SelectedTweetHeaderTableViewCell)
 }
 
 final class SelectedTweetHeaderTableViewCell: UITableViewCell {
@@ -175,7 +175,7 @@ final class SelectedTweetHeaderTableViewCell: UITableViewCell {
     }
     
     @objc private func didTapCommentButton() {
-        delegate?.didTapHeaderCommentButton()
+        delegate?.didTapHeaderCommentButton(self)
     }
     
 //    @objc private func didTapRetweetButton() {
@@ -204,18 +204,18 @@ final class SelectedTweetHeaderTableViewCell: UITableViewCell {
             let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .label
-            delegate?.didTapHeaderLikeButton(liked: false, model: tweetModel)
+            delegate?.didTapHeaderLikeButton(self, liked: false, model: tweetModel)
         }
         else {
             let image = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize:20))
             likeButton.setImage(image, for: .normal)
             likeButton.tintColor = .red
-            delegate?.didTapHeaderLikeButton(liked: true, model: tweetModel)
+            delegate?.didTapHeaderLikeButton(self, liked: true, model: tweetModel)
         }
     }
     
     @objc private func didTapShareButton() {
-        delegate?.didTapHeaderShareButton()
+        delegate?.didTapHeaderShareButton(self)
     }
 }
 

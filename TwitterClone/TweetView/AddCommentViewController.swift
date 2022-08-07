@@ -9,7 +9,7 @@ import UIKit
 
 //MARK: - Protocol
 protocol AddCommentViewControllerDelegate: AnyObject {
-    func addCommentViewControllerDidTapReplyButton(tweetBody: String, owner: TweetModel)
+    func didTapReplyButton(_ sender: AddCommentViewController, tweetBody: String, owner: TweetModel)
 }
 
 final class AddCommentViewController: UIViewController {
@@ -87,10 +87,11 @@ final class AddCommentViewController: UIViewController {
         dismiss(animated: true) {[weak self] in
             //passing tweet body and parent tweet through
             guard let tweetBody = self?.tweetBody,
-                  let tweet = self?.tweet
+                  let tweet = self?.tweet,
+                  let strongSelf = self
             else {return}
             
-            self?.delegate?.addCommentViewControllerDidTapReplyButton(tweetBody: tweetBody, owner: tweet)
+            self?.delegate?.didTapReplyButton(strongSelf, tweetBody: tweetBody, owner: tweet)
         }
     }
     

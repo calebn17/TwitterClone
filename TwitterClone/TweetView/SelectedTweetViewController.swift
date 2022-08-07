@@ -88,71 +88,75 @@ extension SelectedTweetViewController: UITableViewDelegate, UITableViewDataSourc
 //MARK: - CellDelegate Methods
 extension SelectedTweetViewController: SelectedTweetHeaderTableViewCellDelegate {
     
-    func didTapHeaderCommentButton() {
+    func didTapHeaderCommentButton(_ cell: SelectedTweetHeaderTableViewCell) {
         
     }
     
-    func didTapHeaderLikeButton(liked: Bool, model: TweetModel) {
+    func didTapHeaderLikeButton(_ cell: SelectedTweetHeaderTableViewCell, liked: Bool, model: TweetModel) {
         
     }
     
-    func didTapHeaderShareButton() {
+    func didTapHeaderShareButton(_ cell: SelectedTweetHeaderTableViewCell) {
         
     }
 }
 
 extension SelectedTweetViewController: TweetTableViewCellDelegate {
-    func tweetTableViewCellDidTapProfilePicture(user: User) {
+    func didTapProfilePicture(_ cell: TweetTableViewCell, user: User) {
         let vc = ProfileViewController(with: user)
         vc.title = user.userName
         navigationController?.pushViewController(vc, animated: true)
     }
    
-    func tweetTableViewCellDidTapCommentButton(owner: TweetModel) {
+    func didTapCommentButton(_ cell: TweetTableViewCell, owner: TweetModel) {
         let vc = AddCommentViewController(with: owner)
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
     }
     
-    func tweetTableViewCellDidTapRetweet(retweeted: Bool, model: TweetModel, completion: @escaping (Bool) -> Void) {
-        
-        if retweeted {
-            let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-                completion(false)
-            }))
-            actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
+    func didTapRetweet(
+        _ cell: TweetTableViewCell,
+        retweeted: Bool,
+        model: TweetModel,
+        completion: @escaping (Bool) -> Void) {
+            
+            if retweeted {
+                let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+                actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+                    completion(false)
+                }))
+                actionSheet.addAction(UIAlertAction(title: "Retweet", style: .default, handler: { _ in
+                    Task {
+                        try await DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model)
+                        completion(true)
+                    }
+                }))
+                actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
+                    //need to pass in the comment's text body here
+                    let vc = AddTweetViewController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self?.present(vc, animated: true, completion: nil)
+                    completion(false)
+                }))
+                present(actionSheet, animated: true, completion: nil)
+            }
+            else {
                 Task {
-                    try await DatabaseManager.shared.updateRetweetStatus(type: .retweeted, tweet: model)
+                    try await DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: model)
                     completion(true)
                 }
-            }))
-            actionSheet.addAction(UIAlertAction(title: "Quote", style: .default, handler: {[weak self] _ in
-                //need to pass in the comment's text body here
-                let vc = AddTweetViewController()
-                vc.modalPresentationStyle = .fullScreen
-                self?.present(vc, animated: true, completion: nil)
-                completion(false)
-            }))
-            present(actionSheet, animated: true, completion: nil)
-        }
-        else {
-            Task {
-                try await DatabaseManager.shared.updateRetweetStatus(type: .unRetweeted, tweet: model)
-                completion(true)
             }
         }
-    }
     
-    func tweetTableViewCellDidTapLikeButton(liked: Bool, model: TweetModel) {
+    func didTapLikeButton(_ cell: TweetTableViewCell, liked: Bool, model: TweetModel) {
         // insert User into the likers collection in the TweetModel and update DB
         Task {
             try await DatabaseManager.shared.updateLikeStatus(type: liked ? .liked : .unliked, tweet: model)
         }
     }
     
-    func tweetTableViewCellDidTapShareButton(tweet: TweetModel) {
+    func didTapShareButton(_ cell: TweetTableViewCell, tweet: TweetModel) {
         let firstAction = "This Tweet"
         let shareAction = UIActivityViewController(activityItems: [firstAction], applicationActivities: nil)
         shareAction.isModalInPresentation = true
@@ -162,7 +166,7 @@ extension SelectedTweetViewController: TweetTableViewCellDelegate {
 
 //MARK: - AddCommentViewControllerDelegate Methods
 extension SelectedTweetViewController: AddCommentViewControllerDelegate {
-    func addCommentViewControllerDidTapReplyButton(tweetBody: String, owner: TweetModel) {
+    func didTapReplyButton(_ sender: AddCommentViewController, tweetBody: String, owner: TweetModel) {
         
     }
 }

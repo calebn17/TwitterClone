@@ -9,15 +9,14 @@ import UIKit
 
 //MARK: - Protocol
 protocol TweetTableViewCellDelegate: AnyObject {
-    func tweetTableViewCellDidTapCommentButton(owner: TweetModel)
-    func tweetTableViewCellDidTapRetweet(
+    func didTapCommentButton(_ cell: TweetTableViewCell, owner: TweetModel)
+    func didTapLikeButton(_ cell: TweetTableViewCell, liked: Bool, model: TweetModel)
+    func didTapShareButton(_ cell: TweetTableViewCell, tweet: TweetModel)
+    func didTapProfilePicture(_ cell: TweetTableViewCell, user: User)
+    func didTapRetweet(_ cell: TweetTableViewCell,
         retweeted: Bool,
         model: TweetModel,
-        completion: @escaping (Bool) -> Void
-    )
-    func tweetTableViewCellDidTapLikeButton(liked: Bool, model: TweetModel)
-    func tweetTableViewCellDidTapShareButton(tweet: TweetModel)
-    func tweetTableViewCellDidTapProfilePicture(user: User)
+        completion: @escaping (Bool) -> Void)
 }
 ///Individual Tweet Cell
 final class TweetTableViewCell: UITableViewCell {
@@ -240,12 +239,12 @@ final class TweetTableViewCell: UITableViewCell {
             userHandle: model.userHandle,
             userEmail: model.userEmail
         )
-        delegate?.tweetTableViewCellDidTapProfilePicture(user: user)
+        delegate?.didTapProfilePicture(self, user: user)
     }
     
     @objc private func tappedCommentButton() {
         guard let model = self.model else {return}
-        delegate?.tweetTableViewCellDidTapCommentButton(owner: model)
+        delegate?.didTapCommentButton(self, owner: model)
     }
     
     @objc private func tappedLikeButton() {
@@ -270,7 +269,7 @@ final class TweetTableViewCell: UITableViewCell {
             likesCountLabel.text = String(likesCount)
         }
         
-        delegate?.tweetTableViewCellDidTapLikeButton(liked: !isCurrentlyLikedByCurrentUser, model: model)
+        delegate?.didTapLikeButton(self, liked: !isCurrentlyLikedByCurrentUser, model: model)
         
         isCurrentlyLikedByCurrentUser = !isCurrentlyLikedByCurrentUser
     }
@@ -280,12 +279,17 @@ final class TweetTableViewCell: UITableViewCell {
         
         // Un-retweet
         if isRetweetedByCurrentUser {
-            delegate?.tweetTableViewCellDidTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: {[weak self] success in
-                guard let strongIsRetweetedByCurrentUser = self?.isRetweetedByCurrentUser else {return}
-                if success {
-                    self?.isRetweetedByCurrentUser = !strongIsRetweetedByCurrentUser
-                }
-            })
+            delegate?.didTapRetweet(
+                self,
+                retweeted: !isRetweetedByCurrentUser,
+                model: model,
+                completion:
+                    {[weak self] success in
+                        guard let strongIsRetweetedByCurrentUser = self?.isRetweetedByCurrentUser else {return}
+                        if success {
+                            self?.isRetweetedByCurrentUser = !strongIsRetweetedByCurrentUser
+                        }
+                    })
             retweetButton.tintColor = .label
             if retweetsCount > 0 {
                 retweetsCount -= 1
@@ -294,23 +298,28 @@ final class TweetTableViewCell: UITableViewCell {
         }
         //Retweet
         else {
-            delegate?.tweetTableViewCellDidTapRetweet(retweeted: !isRetweetedByCurrentUser, model: model, completion: { [weak self] success in
-                DispatchQueue.main.async {
-                    guard let strongIsRetweetedByCurrentUser = self?.isRetweetedByCurrentUser else {return}
-                    if success {
-                        self?.retweetButton.tintColor = .systemGreen
-                        self?.retweetsCount += 1
-                        self?.retweetsCountLabel.text = String(self?.retweetsCount ?? 0)
-                        self?.isRetweetedByCurrentUser = !strongIsRetweetedByCurrentUser
-                    }
-                }
-            })
+            delegate?.didTapRetweet(
+                self,
+                retweeted: !isRetweetedByCurrentUser,
+                model: model,
+                completion:
+                    { [weak self] success in
+                        DispatchQueue.main.async {
+                            guard let strongIsRetweetedByCurrentUser = self?.isRetweetedByCurrentUser else {return}
+                            if success {
+                                self?.retweetButton.tintColor = .systemGreen
+                                self?.retweetsCount += 1
+                                self?.retweetsCountLabel.text = String(self?.retweetsCount ?? 0)
+                                self?.isRetweetedByCurrentUser = !strongIsRetweetedByCurrentUser
+                            }
+                        }
+                    })
         }
     }
     
     @objc private func tappedShareButton() {
         guard let model = self.model else {return}
-        delegate?.tweetTableViewCellDidTapShareButton(tweet: model)
+        delegate?.didTapShareButton(self, tweet: model)
     }
 }
 
