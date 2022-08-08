@@ -8,7 +8,7 @@ Twitter Clone Self Project
 
 ## General info
 This project is a clone of the iOS Twitter app that I built from scratch. 
-The aim of this project is to demonstrate my current technical skills in app and code design, app insfrastrucutre, and the utilization of Apple's
+The aim of this project is to demonstrate my current technical skills in app and code design, app infrastructure, and the utilization of Apple's
 and third party Libraries and APIs.
 	
 ## Technologies
