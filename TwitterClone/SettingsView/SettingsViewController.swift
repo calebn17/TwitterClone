@@ -73,11 +73,9 @@ final class SettingsViewController: UIViewController {
     }
     
     private func updateUI() {
-        viewModel.headerViewModel.bind { headerViewModel in
-            DispatchQueue.main.async {[weak self] in
-                guard let headerViewModel = headerViewModel else {return}
-                self?.headerView?.configure(with: headerViewModel)
-            }
+        viewModel.headerViewModel.bind { [weak self] headerViewModel in
+            guard let headerViewModel = headerViewModel else {return}
+            self?.headerView?.configure(with: headerViewModel)
         }
     }
     

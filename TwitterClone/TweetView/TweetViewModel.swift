@@ -22,10 +22,10 @@ struct TweetModel: Codable {
 
 struct TweetViewModel {
     
-    var profilePictureURL = Observable<URL?>(nil)
     var currentUser: User { return DatabaseManager.shared.currentUser }
+    @MainActor var profilePictureURL = Observable<URL?>(nil)
     
-    func fetchProfilePictureURL(tweet: TweetModel) async throws {
+    @MainActor func fetchProfilePictureURL(tweet: TweetModel) async throws {
         let user = User(
             id: nil,
             userName: tweet.username,

@@ -10,9 +10,9 @@ import Foundation
 struct SearchViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
-    var searchData = Observable<[TweetModel]>([])
+    @MainActor var searchData = Observable<[TweetModel]>([])
     
-    func fetchSearchData(query: String) async throws {
+    @MainActor func fetchSearchData(query: String) async throws {
         let response = try await APICaller.shared.getSearch(with: query)
         let results = response.compactMap({
             TweetModel(

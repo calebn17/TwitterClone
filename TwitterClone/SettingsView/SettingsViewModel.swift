@@ -23,9 +23,9 @@ struct SettingsHeaderViewModel {
 struct SettingsViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
-    var headerViewModel = Observable<SettingsHeaderViewModel>(nil)
+    @MainActor var headerViewModel = Observable<SettingsHeaderViewModel>(nil)
     
-    func fetchData(user: User) async throws {
+    @MainActor func fetchData(user: User) async throws {
         let userInfo = try await DatabaseManager.shared.getUserInfo(user: user)
         let url = try await StorageManager.shared.downloadProfilePicture(user: user)
         let viewModel = SettingsHeaderViewModel(
