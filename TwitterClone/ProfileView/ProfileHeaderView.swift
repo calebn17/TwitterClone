@@ -112,7 +112,7 @@ final class ProfileHeaderView: UIView {
     }
     
 //MARK: - Configure
-    
+    @MainActor
     func configure(with model: ProfileHeaderViewModel) {
         self.model = model
         

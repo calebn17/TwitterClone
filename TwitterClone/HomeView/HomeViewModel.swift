@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@MainActor
 struct HomeViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
