@@ -16,14 +16,13 @@ struct ProfileHeaderViewModel {
     var profileImage: URL?
 }
 
-@MainActor
 struct ProfileViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
-    var headerViewModel = Observable<ProfileHeaderViewModel>(nil)
-    var tweets = Observable<[TweetModel]>([])
+    @MainActor var headerViewModel = Observable<ProfileHeaderViewModel>(nil)
+    @MainActor var tweets = Observable<[TweetModel]>([])
     
-    func getProfileHeaderViewModel(user: User) async throws {
+    @MainActor func getProfileHeaderViewModel(user: User) async throws {
         let userHeaderInfo = try await DatabaseManager.shared.getUserInfo(user: user)
         let profilePictureURL = try await StorageManager.shared.downloadProfilePicture(user: user)
         
@@ -37,12 +36,8 @@ struct ProfileViewModel {
         )
         headerViewModel.value = result
     }
-    
-    static func setProfileBio(bio: String) async throws {
-        try await DatabaseManager.shared.insertUserBio(bio: bio)
-    }
    
-    func getProfileTweets(user: User) async throws {
+    @MainActor func getProfileTweets(user: User) async throws {
         let allTweets = try await DatabaseManager.shared.getTweets()
         print(user.userName)
         let filteredTweets = allTweets.filter { tweet in
@@ -56,6 +51,10 @@ struct ProfileViewModel {
             }
         }
         tweets.value = filteredTweets
+    }
+    
+    static func setProfileBio(bio: String) async throws {
+        try await DatabaseManager.shared.insertUserBio(bio: bio)
     }
     
     static func updateRelationship(targetUser: User, didFollow: Bool) async throws{
