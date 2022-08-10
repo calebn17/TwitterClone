@@ -101,18 +101,14 @@ final class ProfileViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func updateUI() {
+    func updateUI() {
         viewModel.headerViewModel.bind {[weak self] headerViewModel in
-            DispatchQueue.main.async {
-                guard let headerViewModel = headerViewModel else {return}
-                self?.headerView?.configure(with: headerViewModel)
-            }
+            guard let headerViewModel = headerViewModel else {return}
+            self?.headerView?.configure(with: headerViewModel)
         }
         
-        viewModel.tweets.bind { _ in
-            DispatchQueue.main.async {[weak self] in
-                self?.handleEmptyStateUI()
-            }
+        viewModel.tweets.bind { [weak self] _ in
+            self?.handleEmptyStateUI()
         }
     }
     

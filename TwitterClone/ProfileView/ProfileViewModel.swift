@@ -16,6 +16,7 @@ struct ProfileHeaderViewModel {
     var profileImage: URL?
 }
 
+@MainActor
 struct ProfileViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }

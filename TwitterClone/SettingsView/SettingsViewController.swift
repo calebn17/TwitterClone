@@ -81,13 +81,14 @@ final class SettingsViewController: UIViewController {
         }
     }
     
-//MARK: - Actions
+//MARK: - Networking
     @objc private func fetchData() {
         Task {
             try await viewModel.fetchData(user: currentUser)
         }
     }
     
+//MARK: - Actions
     private func presentProfilePage() {
         coordinator?.tappedOnProfilePageCell(user: currentUser)
     }

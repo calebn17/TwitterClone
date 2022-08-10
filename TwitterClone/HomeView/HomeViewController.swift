@@ -245,9 +245,7 @@ extension HomeViewController {
     
     private func updateUI() {
         viewModel.tweetModels.bind {[weak self] _ in
-            DispatchQueue.main.async {
-                self?.homeFeedTableView.reloadData()
-            }
+            self?.homeFeedTableView.reloadData()
         }
     }
 }
