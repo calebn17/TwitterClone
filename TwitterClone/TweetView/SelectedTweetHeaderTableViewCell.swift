@@ -151,10 +151,8 @@ final class SelectedTweetHeaderTableViewCell: UITableViewCell {
     
     private func updateUserImageUI() {
         viewModel.profilePictureURL.bind {[weak self] url in
-            DispatchQueue.main.async {
-                guard let url = url else {return}
-                self?.profileImageView.sd_setImage(with: url, completed: nil)
-            }
+            guard let url = url else {return}
+            self?.profileImageView.sd_setImage(with: url, completed: nil)
         }
     }
     

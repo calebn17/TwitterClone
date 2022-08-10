@@ -23,9 +23,9 @@ struct NotificationsModel: Codable {
 
 struct NotificationsViewModel {
     
-    var notificationModels = Observable<[NotificationsModel]>([])
+    @MainActor var notificationModels = Observable<[NotificationsModel]>([])
     
-    func fetchData() async throws {
+    @MainActor func fetchData() async throws {
         var notifications = try await DatabaseManager.shared.getNotifications()
         
         notifications.sort(by: {

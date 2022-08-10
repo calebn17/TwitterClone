@@ -74,13 +74,11 @@ final class NotificationsViewController: UIViewController {
     }
     
     private func updateUI() {
-        viewModel.notificationModels.bind { _ in
-            DispatchQueue.main.async { [weak self] in
-                self?.spinner.stopAnimating()
-                self?.spinner.isHidden = true
-                self?.emptyStateCheck()
-                self?.tableView.reloadData()
-            }
+        viewModel.notificationModels.bind {[weak self] _ in
+            self?.spinner.stopAnimating()
+            self?.spinner.isHidden = true
+            self?.emptyStateCheck()
+            self?.tableView.reloadData()
         }
     }
 

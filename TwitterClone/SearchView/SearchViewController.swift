@@ -128,10 +128,8 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate, UI
         
         // Update resultsVC UI
         viewModel.searchData.bind { tweets in
-            DispatchQueue.main.async {
-                guard let tweets = tweets else {return}
-                resultsController.updateUI(with: tweets)
-            }
+            guard let tweets = tweets else {return}
+            resultsController.updateUI(with: tweets)
         }
     }
     

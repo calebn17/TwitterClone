@@ -8,13 +8,12 @@
 import Foundation
 import UIKit
 
-@MainActor
 struct HomeViewModel {
     
     var currentUser: User { return DatabaseManager.shared.currentUser }
-    var tweetModels = Observable<[TweetModel]>([])
+    @MainActor var tweetModels = Observable<[TweetModel]>([])
 
-    func fetchData() async throws {
+    @MainActor func fetchData() async throws {
         //let responseTweets = try await APICaller.shared.getSearch(with: "news")
         let dbTweets = try await DatabaseManager.shared.getTweets()
         
@@ -34,13 +33,9 @@ struct HomeViewModel {
 //        })
         tweetModels.value =  dbTweets //+ apiTweets
     }
+   
     
-    static func fetchProfilePictureURL(user: User) async throws -> URL? {
-        let url = try await StorageManager.shared.downloadProfilePicture(user: user)
-        return url
-    }
-    
-    func publishTweet(user: User, body: String) async throws {
+    @MainActor func publishTweet(user: User, body: String) async throws {
         let url = try await HomeViewModel.fetchProfilePictureURL(user: user)
         
         //setting addedTweet as a var so I can update the username values
@@ -58,6 +53,11 @@ struct HomeViewModel {
         )
         try await DatabaseManager.shared.insertTweet(with: addedTweet)
         tweetModels.value?.insert(addedTweet, at: 0)
+    }
+    
+    static func fetchProfilePictureURL(user: User) async throws -> URL? {
+        let url = try await StorageManager.shared.downloadProfilePicture(user: user)
+        return url
     }
     
     static func publishComment(owner: TweetModel, body: String) async throws {
