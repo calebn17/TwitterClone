@@ -53,7 +53,6 @@ final class ProfileViewController: UIViewController {
         configureTableView()
         configureNavBar()
         configureHeaderView()
-        view.addSubview(spinner)
         handleEmptyStateUI()
     }
     
@@ -89,6 +88,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func handleEmptyStateUI() {
+        view.addSubview(spinner)
         if viewModel.headerViewModel.value == nil {
             tableView.isHidden = true
             headerView?.isHidden = true

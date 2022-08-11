@@ -41,10 +41,17 @@ final class HomeViewController: UIViewController {
         return button
     }()
     
-    public let homeFeedTableView: UITableView = {
+    public let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TweetTableViewCell.self, forCellReuseIdentifier: TweetTableViewCell.identifier)
         return tableView
+    }()
+    
+    private let spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.tintColor = .label
+        spinner.startAnimating()
+        return spinner
     }()
 
 //MARK: - Lifecycle
@@ -53,9 +60,9 @@ final class HomeViewController: UIViewController {
         self.tabBarController?.tabBar.isTranslucent = false
         view.backgroundColor = .systemBackground
         configureNavbar()
-        //configureProfileImage()
         configureHomeFeedTableView()
         configureAddTweetButton()
+        handleLoadingStateUI()
         updateUI()
         fetchData()
         configurePullToRefresh()
@@ -63,7 +70,7 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 40)
+        tableView.frame = CGRect(x: 0, y: 50, width: view.width, height: view.height - 40)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -72,7 +79,53 @@ final class HomeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.Name("login"), object: nil)
     }
     
+//MARK: - Configure
+    private func configureNavbar() {
+        var image = UIImage(named: "twitterLogo")
+        image?.accessibilityFrame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        //forces xcode to use the original image (logo comes out as different color if this isnt done)
+        image = image?.withRenderingMode(.alwaysOriginal)
+        navigationItem.titleView = twitterIcon
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = ""
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "person"),
+            style: .done,
+            target: self,
+            action: #selector(didTapLeftNavBarButton)
+        )
+    }
     
+    private func configureHomeFeedTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    private func configurePullToRefresh() {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
+        tableView.refreshControl = control
+    }
+    
+    private func handleLoadingStateUI() {
+        view.addSubview(spinner)
+        if viewModel.tweetModels.value == nil {
+            tableView.isHidden = true
+        } else {
+            spinner.stopAnimating()
+            spinner.isHidden = true
+            tableView.isHidden = false
+        }
+        tableView.reloadData()
+    }
+    
+    private func updateUI() {
+        viewModel.tweetModels.bind {[weak self] _ in
+            self?.handleLoadingStateUI()
+            self?.tableView.reloadData()
+        }
+    }
     
 //MARK: - Networking
     @objc private func fetchData() {
@@ -104,7 +157,6 @@ final class HomeViewController: UIViewController {
 }
 
 //MARK: - TableView Methods
-
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -182,48 +234,8 @@ extension HomeViewController: AddCommentViewControllerDelegate {
     }
 }
 
-//MARK: - Configure
+//MARK: - Constraints
 extension HomeViewController {
-    
-//    private func configureProfileImage() {
-//        view.addSubview(profilePictureImageView)
-//
-//        let profilePictureImageViewConstraints = [
-//            profilePictureImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-//            profilePictureImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
-//            profilePictureImageView.heightAnchor.constraint(equalToConstant: K.userImageSize*0.8),
-//            profilePictureImageView.widthAnchor.constraint(equalToConstant: K.userImageSize*0.8),
-//        ]
-//        NSLayoutConstraint.activate(profilePictureImageViewConstraints)
-//
-//        Task {
-//            let url = try await HomeVCViewModel.fetchProfilePictureURL(user: currentUser)
-//            profilePictureImageView.sd_setImage(with: url)
-//            navigationItem.leftBarButtonItem = UIBarButtonItem(image: profilePictureImageView.image, style: .done, target: self, action: nil)
-//        }
-//    }
-    
-    private func configureNavbar() {
-        var image = UIImage(named: "twitterLogo")
-        image?.accessibilityFrame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        //forces xcode to use the original image (logo comes out as different color if this isnt done)
-        image = image?.withRenderingMode(.alwaysOriginal)
-        navigationItem.titleView = twitterIcon
-        navigationController?.navigationBar.tintColor = .white
-        navigationItem.title = ""
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "person"),
-            style: .done,
-            target: self,
-            action: #selector(didTapLeftNavBarButton)
-        )
-    }
-    
-    private func configureHomeFeedTableView() {
-        view.addSubview(homeFeedTableView)
-        homeFeedTableView.delegate = self
-        homeFeedTableView.dataSource = self
-    }
     
     private func configureAddTweetButton() {
         view.addSubview(addTweetButton)
@@ -235,17 +247,5 @@ extension HomeViewController {
         ]
         NSLayoutConstraint.activate(addTweetButtonConstraints)
         addTweetButton.addTarget(self, action: #selector(didTapAddTweetButton), for: .touchUpInside)
-    }
-    
-    private func configurePullToRefresh() {
-        let control = UIRefreshControl()
-        control.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
-        homeFeedTableView.refreshControl = control
-    }
-    
-    private func updateUI() {
-        viewModel.tweetModels.bind {[weak self] _ in
-            self?.homeFeedTableView.reloadData()
-        }
     }
 }

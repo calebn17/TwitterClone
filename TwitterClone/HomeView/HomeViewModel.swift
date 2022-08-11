@@ -33,7 +33,6 @@ struct HomeViewModel {
 //        })
         tweetModels.value =  dbTweets //+ apiTweets
     }
-   
     
     @MainActor func publishTweet(user: User, body: String) async throws {
         let url = try await HomeViewModel.fetchProfilePictureURL(user: user)
