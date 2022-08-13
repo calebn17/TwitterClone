@@ -78,7 +78,7 @@ final class ProfileHeaderView: UIView {
     
     private let followButton: CustomButton = {
         let button = CustomButton()
-        button.setTitle("Follow", for: .normal)
+        //button.setTitle("Follow", for: .normal)
         button.setTitleColor(UIColor.systemBackground, for: .normal)
         button.backgroundColor = .label
         button.layer.cornerRadius = K.userImageSize/2.4
@@ -115,7 +115,7 @@ final class ProfileHeaderView: UIView {
     @MainActor
     func configure(with model: ProfileHeaderViewModel) {
         self.model = model
-        
+        print("this is the model in the headerview: \(model.followers)")
         if model.profileImage == nil {
             profileImageView.image = UIImage(systemName: "person")
         } else {
@@ -141,8 +141,10 @@ final class ProfileHeaderView: UIView {
             // If the current user is a follower of the viewed user, then show the Unfollow button
             if model.followers.contains(currentUser.userName) {
                 configureFollowButtonState(showFollow: false)
+                print("\nshould show unfollow")
             } else {
                 configureFollowButtonState(showFollow: true)
+                print("\nshould show follow")
             }
         }
         
@@ -176,19 +178,22 @@ final class ProfileHeaderView: UIView {
     }
     
     @objc private func didTapFollowButton() {
-        guard let model = self.model else {return}
-        
-        
+        guard var model = self.model else {return}
+        print("\n\nAfter tapping button: \(model.followers)")
         if model.followers.contains(currentUser.userName) {
             // Already following -> unfollow
-            print("unfollowing")
             configureFollowButtonState(showFollow: true)
             delegate?.profileHeaderViewDidTapOnFollowButton(didFollow: false)
+            //Updating the local reference here (tends to get out of sync if I don't)
+            model.followers.removeAll(where: {$0 == currentUser.userName})
+            self.model = model
         } else {
             // Not following -> follow
-            print("following")
             configureFollowButtonState(showFollow: false)
             delegate?.profileHeaderViewDidTapOnFollowButton(didFollow: true)
+            //Updating the local reference here (tends to get out of sync if I don't)
+            model.followers.append(currentUser.userName)
+            self.model = model
         }
     }
     

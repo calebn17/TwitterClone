@@ -104,6 +104,7 @@ final class ProfileViewController: UIViewController {
     func updateUI() {
         viewModel.headerViewModel.bind {[weak self] headerViewModel in
             guard let headerViewModel = headerViewModel else {return}
+            print(headerViewModel.followers)
             self?.headerView?.configure(with: headerViewModel)
         }
         
@@ -170,7 +171,7 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
     func profileHeaderViewDidTapOnFollowButton(didFollow: Bool) {
         Task {
             try await ProfileViewModel.updateRelationship(targetUser: user, didFollow: didFollow)
-            fetchData()
+            //fetchData()
         }
     }
 }
