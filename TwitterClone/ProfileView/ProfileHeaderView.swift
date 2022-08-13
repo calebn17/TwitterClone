@@ -115,7 +115,6 @@ final class ProfileHeaderView: UIView {
     @MainActor
     func configure(with model: ProfileHeaderViewModel) {
         self.model = model
-        print("this is the model in the headerview: \(model.followers)")
         if model.profileImage == nil {
             profileImageView.image = UIImage(systemName: "person")
         } else {
@@ -141,10 +140,9 @@ final class ProfileHeaderView: UIView {
             // If the current user is a follower of the viewed user, then show the Unfollow button
             if model.followers.contains(currentUser.userName) {
                 configureFollowButtonState(showFollow: false)
-                print("\nshould show unfollow")
             } else {
                 configureFollowButtonState(showFollow: true)
-                print("\nshould show follow")
+                
             }
         }
         
@@ -179,7 +177,6 @@ final class ProfileHeaderView: UIView {
     
     @objc private func didTapFollowButton() {
         guard var model = self.model else {return}
-        print("\n\nAfter tapping button: \(model.followers)")
         if model.followers.contains(currentUser.userName) {
             // Already following -> unfollow
             configureFollowButtonState(showFollow: true)

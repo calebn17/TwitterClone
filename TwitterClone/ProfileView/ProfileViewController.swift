@@ -171,7 +171,6 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
     func profileHeaderViewDidTapOnFollowButton(didFollow: Bool) {
         Task {
             try await ProfileViewModel.updateRelationship(targetUser: user, didFollow: didFollow)
-            //fetchData()
         }
     }
 }
